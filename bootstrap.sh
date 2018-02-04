@@ -23,6 +23,8 @@ sudo apt-get install -y nodejs
 # install php
 apt-get install -y php7.1 php7.1-cli php7.1-fpm php7.1-mysql php7.1-curl php7.1-dev php7.1-mcrypt php7.1-sqlite3 php7.1-mbstring php7.1-xml
 sed -i.bak 's/^;cgi.fix_pathinfo.*$/cgi.fix_pathinfo = 1/g' /etc/php/7.1/fpm/php.ini
+sed -i 's/user = www-data/user = vagrant/g' /etc/php/7.1/fpm/pool.d/www.conf
+sed -i 's/group = www-data/group = vagrant/g' /etc/php/7.1/fpm/pool.d/www.conf
 service php7.1-fpm restart
 
 # install composer globally
