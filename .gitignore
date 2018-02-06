@@ -18,3 +18,5 @@
 
 /.vagrant/
 /.idea/
+/public/js/
+/public/style/
