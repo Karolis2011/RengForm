@@ -33,6 +33,11 @@ class Event
     private $date;
 
     /**
+     * @ORM\Column(type="datetime")
+     */
+    private $endDate;
+
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $place;
@@ -114,6 +119,22 @@ class Event
     public function setDate($date): void
     {
         $this->date = $date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndDate()
+    {
+        return $this->endDate;
+    }
+
+    /**
+     * @param mixed $endDate
+     */
+    public function setEndDate($endDate): void
+    {
+        $this->endDate = $endDate;
     }
 
     /**
