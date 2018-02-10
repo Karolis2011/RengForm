@@ -39,12 +39,13 @@ class Category
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="categories")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, name="eventId")
      */
     private $event;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category")
+     * @ORM\JoinColumn(name="categoryId")
      */
     private $category;
 

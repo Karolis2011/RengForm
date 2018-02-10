@@ -28,6 +28,7 @@ class Registration
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Workshop", inversedBy="registrations")
+     * @ORM\JoinColumn(name="workshopId")
      */
     private $workshop;
 

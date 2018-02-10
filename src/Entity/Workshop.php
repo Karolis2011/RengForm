@@ -59,11 +59,13 @@ class Workshop
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="workshops")
+     * @ORM\JoinColumn(name="categoryId")
      */
     private $category;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FormConfig")
+     * @ORM\JoinColumn(name="formConfigId")
      */
     private $formConfig;
 
@@ -74,6 +76,7 @@ class Workshop
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location")
+     * @ORM\JoinColumn(name="locationId")
      */
     private $location;
 

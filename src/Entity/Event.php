@@ -54,8 +54,9 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Organisation", inversedBy="events")
+     * @ORM\JoinColumn(name="organisationId")
      */
-    private $owner;
+    private $organisation;
 
     /**
      * Event constructor.
@@ -180,16 +181,16 @@ class Event
     /**
      * @return mixed
      */
-    public function getOwner()
+    public function getOrganisation()
     {
-        return $this->owner;
+        return $this->organisation;
     }
 
     /**
-     * @param mixed $owner
+     * @param mixed $organisation
      */
-    public function setOwner($owner): void
+    public function setOrganisation($organisation): void
     {
-        $this->owner = $owner;
+        $this->organisation = $organisation;
     }
 }

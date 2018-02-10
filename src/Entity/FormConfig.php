@@ -37,9 +37,10 @@ class FormConfig
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Organisation")
+     * @ORM\JoinColumn(name="organisationId")
      */
-    private $owner;
+    private $organisation;
 
     /**
      * @return mixed
@@ -116,16 +117,16 @@ class FormConfig
     /**
      * @return mixed
      */
-    public function getOwner()
+    public function getOrganisation()
     {
-        return $this->owner;
+        return $this->organisation;
     }
 
     /**
-     * @param mixed $owner
+     * @param mixed $organisation
      */
-    public function setOwner($owner): void
+    public function setOrganisation($organisation): void
     {
-        $this->owner = $owner;
+        $this->organisation = $organisation;
     }
 }

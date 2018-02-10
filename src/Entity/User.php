@@ -18,7 +18,7 @@ class User
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Organisation", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Organisation", mappedBy="users")
      */
     private $organisations;
 

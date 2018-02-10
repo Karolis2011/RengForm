@@ -28,13 +28,16 @@ class Organisation
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="organisation")
      */
     private $events;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", mappedBy="organisations")
-     * @ORM\JoinTable(name="organisations_users")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="organisations")
+     * @ORM\JoinTable(name="organisations_users",
+     *     joinColumns={@ORM\JoinColumn(fieldName="organisationId", name="organisationId", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(fieldName="userId", name="userId", referencedColumnName="id")}
+     *     )
      */
     private $users;
 
