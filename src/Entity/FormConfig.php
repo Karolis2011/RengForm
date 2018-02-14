@@ -27,7 +27,7 @@ class FormConfig
     private $description;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="json_array")
      */
     private $config;
 

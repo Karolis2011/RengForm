@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Forms | {{ formConfig.title }}{% endblock %}
+
+{% block header %}{{ formConfig.title }}{% endblock %}
+{% block description %}Created {{ formConfig.created|date('Y-m-d H:i:s') }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Form details</h3>
+                    <div class="pull-right">
+                        <a href="{{ path('form_update', { 'formId': formConfig.id }) }}" class="text-muted"
+                           data-toggle="tooltip" title="Edit">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>ID</th>
+                            <td>{{ formConfig.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Organisation</th>
+                            <td>{{ formConfig.organisation ? formConfig.organisation.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ formConfig.description }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active" style="border-top-left-radius: 3px"><a href="#tab_1"
+                                                                              data-toggle="tab">Configuration</a></li>
+                    <li><a href="#tab_2" data-toggle="tab">Preview</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        {{ formConfig.config|json_encode(constant('JSON_PRETTY_PRINT')) }}
+                    </div>
+                    <div class="tab-pane" id="tab_2">
+                        <b>Preview. Someday.</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -14,6 +14,38 @@ module.exports = function (grunt) {
             }
         },
         copy: {
+            'assets': {
+                files: [
+                    {
+                        cwd: 'assets/css',
+                        src: '**/*',
+                        dest: 'public/style/css/custom',
+                        expand: true
+                    },
+                    {
+                        cwd: 'assets/js',
+                        src: '**/*',
+                        dest: 'public/js/custom',
+                        expand: true
+                    }
+                ]
+            },
+            'datatable': {
+                files: [
+                    {
+                        src: 'node_modules/datatables.net/js/jquery.dataTables.js',
+                        dest: 'public/js/datatables/jquery.dataTables.js'
+                    },
+                    {
+                        src: 'node_modules/datatables.net-bs/js/dataTables.bootstrap.js',
+                        dest: 'public/js/datatables/dataTables.bootstrap.js'
+                    },
+                    {
+                        src: 'node_modules/datatables.net-bs/css/dataTables.bootstrap.css',
+                        dest: 'public/style/css/datatables/dataTables.bootstrap.css'
+                    }
+                ]
+            },
             'admin-lte': {
                 files: [
                     {
@@ -97,7 +129,9 @@ module.exports = function (grunt) {
     grunt.registerTask('rengform', [
         'copy:rengform',
         'copy:admin-lte',
-        'copy:bootstrap'
+        'copy:bootstrap',
+        'copy:datatable',
+        'copy:assets'
     ]);
 
     //#################### END TASKS REGISTER ####################

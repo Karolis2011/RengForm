@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/css/datatables/dataTables.bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/custom/dataTables.custom.css') }}">
+
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Forms{% endblock %}
+
+{% block header %}Forms{% endblock %}
+
+{% block body %}
+    <div class="box">
+        <div class="box-body table-responsive hover-pointer">
+            <table id="records" class="table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Organisation</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for formConfig in formConfigs %}
+                    <tr data-href="{{ path('form_show', { 'formId': formConfig.id }) }}">
+                        <td>{{ formConfig.id }}</td>
+                        <td>{{ formConfig.title }}</td>
+                        <td>{{ formConfig.description|length > 30 ? formConfig.description|slice(0, 30) ~ '...' : formConfig.description }}</td>
+                        <td>{{ formConfig.organisation }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <div class="btn-group">
+                <a href="{{ path('form_create') }}"
+                   class="btn btn-primary">Create</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript_inline %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#records").DataTable({
+                searching: false,
+                paging: false,
+                stateSave: true,
+                stateDuration: 3600,
+                fixedHeader: true,
+                order: [[0, "desc"]]
+            }).on('click', 'tbody tr', function () {
+                if ($(this).attr('data-href')) {
+                    window.location.href = $(this).attr('data-href');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('js/datatables/dataTables.bootstrap.js') }}"></script>
+{% endblock %}

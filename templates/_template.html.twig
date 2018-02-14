@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block stylesheets %}
+    {#your style here#}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block description %}{% endblock %}
+
+{% block body %}
+{% endblock %}
+
+{% block javascript_inline %}
+    {{ parent() }}
+
+    {#your js here#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {#your js here#}
+{% endblock %}

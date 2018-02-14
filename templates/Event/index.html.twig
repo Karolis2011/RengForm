@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/css/datatables/dataTables.bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/custom/dataTables.custom.css') }}">
+
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Events{% endblock %}
+
+{% block header %}Events{% endblock %}
+
+{% block body %}
+    <div class="box">
+        <div class="box-body table-responsive hover-pointer">
+            <table id="records" class="table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>End Date</th>
+                    <th>Place</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for event in events %}
+                    <tr data-href="{{ path('event_show', { 'eventId': event.id }) }}">
+                        <td>{{ event.id }}</td>
+                        <td>{{ event.title }}</td>
+                        <td>{{ event.date|date('Y-m-d H:i:s') }}</td>
+                        <td>{% if event.endDate is not null %}{{ event.endDate|date('Y-m-d H:i:s') }}{% endif %}</td>
+                        <td>{{ event.place }}</td>
+                        <td>{{ event.description|length > 30 ? event.description|slice(0, 30) ~ '...' : event.description }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <div class="btn-group">
+                <a href="{{ path('event_create') }}"
+                   class="btn btn-primary">Create</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript_inline %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#records").DataTable({
+                searching: false,
+                paging: false,
+                stateSave: true,
+                stateDuration: 3600,
+                fixedHeader: true,
+                order: [[0, "desc"]]
+            }).on('click', 'tbody tr', function () {
+                if ($(this).attr('data-href')) {
+                    window.location.href = $(this).attr('data-href');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/datatables/jquery.dataTables.js') }}"></script>
+    <script src="{{ asset('js/datatables/dataTables.bootstrap.js') }}"></script>
+{% endblock %}

@@ -4,6 +4,8 @@
 sudo su
 
 apt-add-repository ppa:ondrej/php
+sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+sudo sh -c "echo 'deb https://mirrors.evowise.com/mariadb/repo/10.2/ubuntu '$(lsb_release -cs)' main' > /etc/apt/sources.list.d/MariaDB102.list"
 apt-get update -y && apt-get upgrade -y
 
 # install git
@@ -36,9 +38,9 @@ mv composer.phar /usr/local/bin/composer
 
 # install mariadb
 export DEBIAN_FRONTEND=noninteractive
-debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password password password'
-debconf-set-selections <<< 'mariadb-server-10.0 mysql-server/root_password_again password password'
-apt-get install -y mariadb-server
+debconf-set-selections <<< 'mariadb-server-10.2 mysql-server/root_password password password'
+debconf-set-selections <<< 'mariadb-server-10.2 mysql-server/root_password_again password password'
+apt-get install -y --force-yes mariadb-server
 
 # set up nginx server
 # Configure host
