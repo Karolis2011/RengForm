@@ -24,7 +24,7 @@ class EventController extends Controller
         $events = $this->getRepository()->findAll();
 
         return $this->render(
-            'Event/index.html.twig',
+            'Admin/Event/index.html.twig',
             [
                 'events' => $events,
             ]
@@ -55,7 +55,7 @@ class EventController extends Controller
         }
 
         return $this->render(
-            'Event/show.html.twig',
+            'Admin/Event/show.html.twig',
             [
                 'event' => $event,
             ]

@@ -24,7 +24,7 @@ class FormController extends Controller
         $formConfigs = $this->getRepository()->findAll();
 
         return $this->render(
-            'Form/index.html.twig',
+            'Admin/Form/index.html.twig',
             [
                 'formConfigs' => $formConfigs,
             ]
@@ -55,7 +55,7 @@ class FormController extends Controller
         }
 
         return $this->render(
-            'Form/show.html.twig',
+            'Admin/Form/show.html.twig',
             [
                 'formConfig' => $formConfig,
             ]
