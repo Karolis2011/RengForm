@@ -82,6 +82,9 @@
                         {% else %}
                             <b>No categories</b>
                         {% endif %}
+                        <div class="box-footer">
+                            <a class="btn btn-primary" href="{{ path('category_create', {'eventId': event.id}) }}">Add</a>
+                        </div>
                     </div>
                     <div class="tab-pane" id="tab_2">
                         {% if event.categories is not empty %}

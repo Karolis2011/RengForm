@@ -13,16 +13,29 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    /*
-    public function findBySomething($value)
+    /**
+     * @param Category $category
+     * @param bool     $flush
+     */
+    public function save(Category $category, bool $flush = true): void
     {
-        return $this->createQueryBuilder('c')
-            ->where('c.something = :value')->setParameter('value', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $category->setCreated(new \DateTime());
+
+        $this->_em->persist($category);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
-    */
+
+    /**
+     * @param Category $category
+     * @param bool     $flush
+     */
+    public function update(Category $category, bool $flush = true): void
+    {
+        $this->_em->merge($category);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 }

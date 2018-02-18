@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class EventController
@@ -68,6 +67,7 @@ class EventController extends Controller
      * @Route("/event/{eventId}", name="event_show")
      * @param $eventId
      * @return Response
+     * @throws \Exception
      */
     public function show($eventId)
     {
@@ -75,7 +75,7 @@ class EventController extends Controller
         $event = $this->getRepository()->find($eventId);
 
         if ($event === null) {
-            throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+            throw new \Exception(sprintf('Event by id %s not found', $eventId));
         }
 
         return $this->render(

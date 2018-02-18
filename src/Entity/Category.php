@@ -122,33 +122,33 @@ class Category
     }
 
     /**
-     * @return mixed
+     * @return Event|null
      */
-    public function getEvent()
+    public function getEvent(): ?Event
     {
         return $this->event;
     }
 
     /**
-     * @param mixed $event
+     * @param Event|null $event
      */
-    public function setEvent($event): void
+    public function setEvent(?Event $event): void
     {
         $this->event = $event;
     }
 
     /**
-     * @return mixed
+     * @return Category|null
      */
-    public function getCategory()
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
     /**
-     * @param mixed $category
+     * @param Category|null $category
      */
-    public function setCategory($category): void
+    public function setCategory(?Category $category): void
     {
         $this->category = $category;
     }
