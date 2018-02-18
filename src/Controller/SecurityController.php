@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/register", name="security_register")
+     * @Route("/register", name="register")
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return RedirectResponse|Response
@@ -49,7 +49,7 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/login", name="security_login")
+     * @Route("/login", name="login")
      * @param Request             $request
      * @param AuthenticationUtils $authUtils
      * @return Response

@@ -15,8 +15,8 @@ security:
             anonymous: ~
             provider: db_provider
             form_login:
-                login_path: security_login
-                check_path: security_login
+                login_path: login
+                check_path: login
             logout:
                 path:   /logout
                 target: /login
