@@ -2,18 +2,18 @@
 
 namespace App\Form;
 
-use App\Entity\Event;
+use App\Entity\FormConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class EventType
+ * Class FormType
  */
-class EventType extends AbstractType
+class FormConfigType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -34,35 +34,19 @@ class EventType extends AbstractType
                 ]
             )
             ->add(
-                'date',
-                DateTimeType::class,
+                'config',
+                CollectionType::class,
                 [
-                    'widget' => 'single_text',
-                    'html5'  => false,
-                ]
-            )
-            ->add(
-                'place',
-                TextType::class
-            )
-            ->add(
-                'endDate',
-                DateTimeType::class,
-                [
-                    'required' => false,
-                    'widget'   => 'single_text',
-                    'html5'    => false,
+                    'allow_add'  => true,
+                    'entry_type' => TextType::class,
                 ]
             );
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Event::class,
+            'data_class' => FormConfig::class,
         ]);
     }
 }

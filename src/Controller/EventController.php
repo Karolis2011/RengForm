@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Form\EventType;
 use App\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -33,11 +36,32 @@ class EventController extends Controller
 
     /**
      * @Route("/event/create", name="event_create")
-     * @return Response
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return new Response('create event');
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getRepository()->save($event);
+
+            return $this->redirectToRoute(
+                'event_show',
+                [
+                    'eventId' => $event->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Event/create.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -64,12 +88,41 @@ class EventController extends Controller
 
     /**
      * @Route("/event/{eventId}/update", name="event_update")
-     * @param $eventId
-     * @return Response
+     * @param Request $request
+     * @param         $eventId
+     * @return RedirectResponse|Response
+     * @throws \Exception
      */
-    public function update($eventId)
+    public function update(Request $request, $eventId)
     {
-        return new Response('update event id: ' . $eventId);
+        /** @var Event $event */
+        $event = $this->getRepository()->find($eventId);
+
+        if ($event === null) {
+            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+        }
+
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getRepository()->update($event);
+
+            return $this->redirectToRoute(
+                'event_show',
+                [
+                    'eventId' => $event->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Event/update.html.twig',
+            [
+                'form'  => $form->createView(),
+                'event' => $event,
+            ]
+        );
     }
 
     /**

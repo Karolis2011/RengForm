@@ -30,6 +30,22 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            'datetimepicker': {
+                files: [
+                    {
+                        src: 'node_modules/moment/min/moment.min.js',
+                        dest: 'public/js/moment/moment.min.js'
+                    },
+                    {
+                        src: 'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+                        dest: 'public/js/datetimepicker/bootstrap-datetimepicker.min.js'
+                    },
+                    {
+                        src: 'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
+                        dest: 'public/style/css/datetimepicker/bootstrap-datetimepicker.css'
+                    }
+                ]
+            },
             'datatable': {
                 files: [
                     {
@@ -131,6 +147,7 @@ module.exports = function (grunt) {
         'copy:admin-lte',
         'copy:bootstrap',
         'copy:datatable',
+        'copy:datetimepicker',
         'copy:assets'
     ]);
 

@@ -13,16 +13,29 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-    /*
-    public function findBySomething($value)
+    /**
+     * @param Event $event
+     * @param bool  $flush
+     */
+    public function save(Event $event, bool $flush = true): void
     {
-        return $this->createQueryBuilder('e')
-            ->where('e.something = :value')->setParameter('value', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $event->setCreated(new \DateTime());
+
+        $this->_em->persist($event);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
-    */
+
+    /**
+     * @param Event $event
+     * @param bool  $flush
+     */
+    public function update(Event $event, bool $flush = true): void
+    {
+        $this->_em->merge($event);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 }
