@@ -122,6 +122,11 @@
                                                             <th>ID</th>{#TODO: remove column#}
                                                             <th>Title</th>
                                                             <th>Description</th>
+                                                            <th>Place</th>
+                                                            <th>Start Time</th>
+                                                            <th>End Time</th>
+                                                            <th>Capacity</th>
+                                                            <th>Entries</th>
                                                             <th>Form ID</th>{#TODO: remove column#}
                                                             <th></th>
                                                         </tr>
@@ -132,6 +137,11 @@
                                                                 <td>{{ workshop.id }}</td>
                                                                 <td>{{ workshop.title }}</td>
                                                                 <td>{{ workshop.description|length > 30 ? workshop.description|slice(0, 30) ~ '...' : workshop.description }}</td>
+                                                                <td>{{ workshop.place }}</td>
+                                                                <td>{{ workshop.startTime|date('Y-m-d H:i:s') }}</td>
+                                                                <td>{{ workshop.endTime|date('Y-m-d H:i:s') }}</td>
+                                                                <td>{{ workshop.capacity ? workshop.capacity : 'Unlimited' }}</td>
+                                                                <td>{{ workshop.entries }}</td>
                                                                 <td>{{ workshop.formConfig is not null ? workshop.formConfig.id }}</td>
                                                                 <td>
                                                                     <a href="{{ path('workshop_update', {'workshopId': workshop.id }) }}" class="text-muted"
