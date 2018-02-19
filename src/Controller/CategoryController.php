@@ -60,9 +60,43 @@ class CategoryController extends Controller
         );
     }
 
+    /**
+     * @Route("/category/{categoryId}/update", name="category_update")
+     * @param Request $request
+     * @param         $categoryId
+     * @return RedirectResponse|Response
+     * @throws \Exception
+     */
     public function edit(Request $request, $categoryId)
     {
+        /** @var Category $category */
+        $category = $this->getRepository()->find($categoryId);
 
+        if ($category === null) {
+            throw new \Exception(sprintf('Category by id %s not found', $categoryId));
+        }
+
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getRepository()->update($category);
+
+            return $this->redirectToRoute(
+                'event_show',
+                [
+                    'eventId' => $category->getEvent()->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Category/update.html.twig',
+            [
+                'form'     => $form->createView(),
+                'category' => $category,
+            ]
+        );
     }
 
     /**

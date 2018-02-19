@@ -67,6 +67,7 @@
                                     <th>Description</th>
                                     <th>Workshops</th>
                                     <th>Parent Category</th>{#TODO: remove column#}
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody id="categoriesList">
@@ -79,6 +80,12 @@
                                         <td>{{ category.description|length > 30 ? category.description|slice(0, 30) ~ '...' : category.description }}</td>
                                         <td>{{ category.workshops|length }}</td>
                                         <td>{% if category.category is not null %}{{ category.category.id }}: {{ category.category.title }}{% endif %}</td>
+                                        <td>
+                                            <a href="{{ path('category_update', {'categoryId': category.id }) }}" class="text-muted"
+                                               data-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
