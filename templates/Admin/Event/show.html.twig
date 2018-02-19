@@ -123,6 +123,7 @@
                                                             <th>Title</th>
                                                             <th>Description</th>
                                                             <th>Form ID</th>{#TODO: remove column#}
+                                                            <th></th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -132,6 +133,12 @@
                                                                 <td>{{ workshop.title }}</td>
                                                                 <td>{{ workshop.description|length > 30 ? workshop.description|slice(0, 30) ~ '...' : workshop.description }}</td>
                                                                 <td>{{ workshop.formConfig is not null ? workshop.formConfig.id }}</td>
+                                                                <td>
+                                                                    <a href="{{ path('workshop_update', {'workshopId': workshop.id }) }}" class="text-muted"
+                                                                       data-toggle="tooltip" title="Edit">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </a>
+                                                                </td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>

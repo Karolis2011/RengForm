@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\FormConfig;
+use App\Form\FormConfigType;
 use App\Repository\FormConfigRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -33,11 +35,32 @@ class FormController extends Controller
 
     /**
      * @Route("/form/create", name="form_create")
+     * @param Request $request
      * @return Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return new Response('create form');
+        $formConfig = new FormConfig();
+        $form = $this->createForm(FormConfigType::class, $formConfig);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getRepository()->save($formConfig);
+
+            return $this->redirectToRoute(
+                'form_show',
+                [
+                    'formId' => $formConfig->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Form/create.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**
@@ -64,12 +87,41 @@ class FormController extends Controller
 
     /**
      * @Route("/form/{formId}/update", name="form_update")
-     * @param $formId
+     * @param Request $request
+     * @param         $formId
      * @return Response
+     * @throws \Exception
      */
-    public function update($formId)
+    public function edit(Request $request, $formId)
     {
-        return new Response('update form id: ' . $formId);
+        /** @var FormConfig $formConfig */
+        $formConfig = $this->getRepository()->find($formId);
+
+        if ($formConfig === null) {
+            throw new \Exception(sprintf('Form by id %s not found', $formId));
+        }
+
+        $form = $this->createForm(FormConfigType::class, $formConfig);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getRepository()->update($formConfig);
+
+            return $this->redirectToRoute(
+                'form_show',
+                [
+                    'formId' => $formConfig->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Form/update.html.twig',
+            [
+                'form'       => $form->createView(),
+                'formConfig' => $formConfig,
+            ]
+        );
     }
 
     /**

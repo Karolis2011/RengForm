@@ -59,7 +59,7 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @Route("/workshop/{workshopIs}/update", name="workshop_update")
+     * @Route("/workshop/{workshopId}/update", name="workshop_update")
      * @param Request $request
      * @param         $workshopId
      * @return RedirectResponse|Response

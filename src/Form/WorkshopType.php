@@ -69,6 +69,7 @@ class WorkshopType extends AbstractType
                 [
                     'class'        => FormConfig::class,
                     'choice_label' => 'title',
+                    'placeholder'  => '',
                 ]
             );
     }

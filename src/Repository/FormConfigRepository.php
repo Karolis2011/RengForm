@@ -8,21 +8,38 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class FormConfigRepository extends ServiceEntityRepository
 {
+    /**
+     * FormConfigRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, FormConfig::class);
     }
 
-    /*
-    public function findBySomething($value)
+    /**
+     * @param FormConfig $formConfig
+     * @param bool       $flush
+     */
+    public function save(FormConfig $formConfig, bool $flush = true): void
     {
-        return $this->createQueryBuilder('f')
-            ->where('f.something = :value')->setParameter('value', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $formConfig->setCreated(new \DateTime());
+
+        $this->_em->persist($formConfig);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
-    */
+
+    /**
+     * @param FormConfig $formConfig
+     * @param bool       $flush
+     */
+    public function update(FormConfig $formConfig, bool $flush = true): void
+    {
+        $this->_em->merge($formConfig);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 }

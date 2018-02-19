@@ -169,6 +169,7 @@ module.exports = function (grunt) {
         'copy:datatable',
         'copy:datetimepicker',
         'copy:sortable',
+        'copy:select2',
         'copy:assets'
     ]);
 
