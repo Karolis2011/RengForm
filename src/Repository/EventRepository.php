@@ -8,6 +8,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class EventRepository extends ServiceEntityRepository
 {
+    /**
+     * EventRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Event::class);

@@ -8,21 +8,38 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class WorkshopRepository extends ServiceEntityRepository
 {
+    /**
+     * WorkshopRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Workshop::class);
     }
 
-    /*
-    public function findBySomething($value)
+    /**
+     * @param Workshop $workshop
+     * @param bool     $flush
+     */
+    public function save(Workshop $workshop, bool $flush = true): void
     {
-        return $this->createQueryBuilder('w')
-            ->where('w.something = :value')->setParameter('value', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $workshop->setCreated(new \DateTime());
+
+        $this->_em->persist($workshop);
+        if ($flush) {
+            $this->_em->flush();
+        }
     }
-    */
+
+    /**
+     * @param Workshop $workshop
+     * @param bool     $flush
+     */
+    public function update(Workshop $workshop, bool $flush = true): void
+    {
+        $this->_em->merge($workshop);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 }

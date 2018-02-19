@@ -1,0 +1,105 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}Workshops | {{ workshop.title }} | Update{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/select2/select2.min.css') }}">
+
+    {{ parent() }}
+{% endblock %}
+
+{% block header %}Update Workshop{% endblock %}
+{% block description %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Horizontal Form -->
+            <div class="box box-primary">
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                <div class="box-body">
+                    <div class="form-group">
+                        {{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.description, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.place, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.place, {'attr': {'class': 'form-control', 'placeholder': 'Place'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.startTime, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            <div class="input-group date datetimepicker">
+                                {{ form_widget(form.startTime, {'attr': {'class': 'form-control'}}) }}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.endTime, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            <div class="input-group date datetimepicker">
+                                {{ form_widget(form.endTime, {'attr': {'class': 'form-control'}}) }}
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.capacity, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.capacity, {'attr': {'class': 'form-control', 'placeholder': 'Unlimited'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.formConfig, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.formConfig, {'attr': {'class': 'form-control', 'placeholder': 'Select Registration Form'}}) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript_inline %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".datetimepicker").datetimepicker({
+                'format': 'YYYY-MM-DD HH:mm',
+                'showClose': true
+            });
+
+            $("select").select2();
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
+{% endblock %}

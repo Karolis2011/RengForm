@@ -30,6 +30,18 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            'select2': {
+                files: [
+                    {
+                        src: 'node_modules/select2/dist/js/select2.full.min.js',
+                        dest: 'public/js/select2/select2.full.min.js'
+                    },
+                    {
+                        src: 'node_modules/select2/dist/css/select2.min.css',
+                        dest: 'public/style/css/select2/select2.min.css'
+                    }
+                ]
+            },
             'sortable': {
                 files: [
                     {

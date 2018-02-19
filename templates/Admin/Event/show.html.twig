@@ -140,6 +140,9 @@
                                                     <b>No Workshops in category</b>
                                                 {% endif %}
                                             </div>
+                                            <div class="box-footer">
+                                                <a class="btn btn-primary" href="{{ path('workshop_create', {'categoryId': category.id}) }}">Add</a>
+                                            </div>
                                         </div>
                                     </div>
                                 {% endfor %}
