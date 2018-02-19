@@ -55,22 +55,26 @@
                     <li><a href="#tab_2" data-toggle="tab">Workshops</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane table-responsive no-padding active" id="tab_1">
+                    <div class="tab-pane active" id="tab_1">
                         {% if event.categories is not empty %}
-                            <table class="table">
+                            <table class="table table-bordered table-condensed table-striped">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th></th>
+                                    <th>ID</th>{#TODO: remove column#}
+                                    <th>Order No</th>{#TODO: remove column#}
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>Workshops</th>
-                                    <th>Parent Category</th>
+                                    <th>Parent Category</th>{#TODO: remove column#}
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="categoriesList">
                                 {% for category in event.categories %}
-                                    <tr>
+                                    <tr data-id="{{ category.id }}">
+                                        <td><span class="glyphicon glyphicon-move"></span></td>
                                         <td>{{ category.id }}</td>
+                                        <td>{{ category.orderNo }}</td>
                                         <td>{{ category.title }}</td>
                                         <td>{{ category.description|length > 30 ? category.description|slice(0, 30) ~ '...' : category.description }}</td>
                                         <td>{{ category.workshops|length }}</td>
@@ -84,6 +88,7 @@
                         {% endif %}
                         <div class="box-footer">
                             <a class="btn btn-primary" href="{{ path('category_create', {'eventId': event.id}) }}">Add</a>
+                            <button class="btn btn-primary disabled" id="saveOrder">Save Order</button>
                         </div>
                     </div>
                     <div class="tab-pane" id="tab_2">
@@ -107,9 +112,10 @@
                                                     <table class="table">
                                                         <thead>
                                                         <tr>
-                                                            <th>ID</th>
+                                                            <th>ID</th>{#TODO: remove column#}
                                                             <th>Title</th>
                                                             <th>Description</th>
+                                                            <th>Form ID</th>{#TODO: remove column#}
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -118,6 +124,7 @@
                                                                 <td>{{ workshop.id }}</td>
                                                                 <td>{{ workshop.title }}</td>
                                                                 <td>{{ workshop.description|length > 30 ? workshop.description|slice(0, 30) ~ '...' : workshop.description }}</td>
+                                                                <td>{{ workshop.formConfig is not null ? workshop.formConfig.id }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                         </tbody>
@@ -138,4 +145,47 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript_inline %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var orderChanged = false;
+
+            $("#saveOrder").click(function(){
+                if (orderChanged) {
+                    $(this).addClass('disabled');
+                    orderChanged = false;
+                    console.log('Order saved.');
+                    var order = categoriesList.toArray();
+                    console.log(order);
+                    $.post(
+                        '{{ path('event_save_category_order', {'eventId': event.id}) }}',
+                        {
+                            'order': categoriesList.toArray()
+                        }
+                    ).done(function( data ) {
+                        console.log(data);
+                    });
+                }
+            });
+
+            var categoriesList = Sortable.create(document.getElementById('categoriesList'), {
+                handle: '.glyphicon-move',
+                animation: 150,
+                onUpdate: function () {
+                    orderChanged = true;
+                    $("#saveOrder").removeClass('disabled');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/sortablejs/Sortable.min.js') }}"></script>
 {% endblock %}

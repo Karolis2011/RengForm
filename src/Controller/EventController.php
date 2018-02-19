@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,6 +125,46 @@ class EventController extends Controller
                 'event' => $event,
             ]
         );
+    }
+
+    /**
+     * @Route("/event/{eventId}/save_order", name="event_save_category_order")
+     * @param Request $request
+     * @param         $eventId
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function saveCategoryOrder(Request $request, $eventId)
+    {
+        /** @var Event $event */
+        $event = $this->getRepository()->find($eventId);
+        $response = new JsonResponse(null, 200);
+
+        if ($event !== null) {
+            $order = $request->get('order');
+
+            if (!empty($order) && count($order) == count($event->getCategories())) {
+                $order = array_flip($order);
+
+                /** @var Category $category */
+                foreach ($event->getCategories() as $category) {
+                    $orderNo = $order[$category->getId()];
+                    $category->setOrderNo($orderNo);
+                }
+
+                $this->getDoctrine()->getManager()->flush();
+            } else {
+                $response->setData([
+                    'message' => 'Bad number of ordered categories',
+                ])->setStatusCode(400);
+            }
+        } else {
+            $response->setData([
+                'message' => sprintf('Event by id %s not found', $eventId),
+            ])->setStatusCode(400);
+        }
+
+        return $response;
     }
 
     /**

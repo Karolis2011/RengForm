@@ -49,6 +49,7 @@ class Event
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="event")
+     * @ORM\OrderBy({"orderNo" = "ASC"})
      */
     private $categories;
 

@@ -50,6 +50,11 @@ class Category
     private $category;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $orderNo = 0;
+
+    /**
      * Category constructor.
      */
     public function __construct()
@@ -151,5 +156,21 @@ class Category
     public function setCategory(?Category $category): void
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrderNo(): int
+    {
+        return $this->orderNo;
+    }
+
+    /**
+     * @param int $orderNo
+     */
+    public function setOrderNo(int $orderNo)
+    {
+        $this->orderNo = $orderNo;
     }
 }

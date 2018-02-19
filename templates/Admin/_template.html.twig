@@ -17,7 +17,11 @@
 {% block javascript_inline %}
     {{ parent() }}
 
-    {#your js here#}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            {#your js here#}
+        });
+    </script>
 {% endblock %}
 
 {% block javascripts %}

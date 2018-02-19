@@ -30,6 +30,14 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            'sortable': {
+                files: [
+                    {
+                        src: 'node_modules/sortablejs/Sortable.min.js',
+                        dest: 'public/js/sortablejs/Sortable.min.js'
+                    }
+                ]
+            },
             'datetimepicker': {
                 files: [
                     {
@@ -148,6 +156,7 @@ module.exports = function (grunt) {
         'copy:bootstrap',
         'copy:datatable',
         'copy:datetimepicker',
+        'copy:sortable',
         'copy:assets'
     ]);
 
