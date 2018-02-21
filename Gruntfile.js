@@ -30,6 +30,22 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            'formBuilder': {
+                files: [
+                    {
+                        src: 'node_modules/formBuilder/dist/form-builder.min.js',
+                        dest: 'public/js/formBuilder/form-builder.min.js'
+                    },
+                    {
+                        src: 'node_modules/formBuilder/dist/form-render.min.js',
+                        dest: 'public/js/formBuilder/form-render.min.js'
+                    },
+                    {
+                        src: 'node_modules/jquery-ui-sortable/jquery-ui.min.js',
+                        dest: 'public/js/jquery-ui-sortable/jquery-ui.min.js'
+                    }
+                ]
+            },
             'select2': {
                 files: [
                     {
@@ -170,6 +186,7 @@ module.exports = function (grunt) {
         'copy:datetimepicker',
         'copy:sortable',
         'copy:select2',
+        'copy:formBuilder',
         'copy:assets'
     ]);
 
