@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\UserType;
@@ -25,6 +25,10 @@ class SecurityController extends Controller
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('admin_index');
+        }
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -37,7 +41,7 @@ class SecurityController extends Controller
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('index');
+            return $this->redirectToRoute('login');
         }
 
         return $this->render(
@@ -50,12 +54,15 @@ class SecurityController extends Controller
 
     /**
      * @Route("/login", name="login")
-     * @param Request             $request
      * @param AuthenticationUtils $authUtils
      * @return Response
      */
-    public function login(Request $request, AuthenticationUtils $authUtils)
+    public function login(AuthenticationUtils $authUtils)
     {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('admin_index');
+        }
+
         // get the login error if there is one
         $error = $authUtils->getLastAuthenticationError();
 
