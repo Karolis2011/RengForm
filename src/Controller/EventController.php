@@ -19,13 +19,27 @@ use Symfony\Component\HttpFoundation\Response;
 class EventController extends Controller
 {
     /**
+     * @var EventRepository
+     */
+    private $repository;
+
+    /**
+     * EventController constructor.
+     * @param EventRepository $repository
+     */
+    public function __construct(EventRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
      * @Route("/event", name="event_index")
      * @return Response
      */
     public function index()
     {
         /** @var Event[] $events */
-        $events = $this->getRepository()->findAll();
+        $events = $this->repository->findAll();
 
         return $this->render(
             'Admin/Event/index.html.twig',
@@ -47,7 +61,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getRepository()->save($event);
+            $this->repository->save($event);
 
             return $this->redirectToRoute(
                 'event_show',
@@ -74,7 +88,7 @@ class EventController extends Controller
     public function show($eventId)
     {
         /** @var Event $event */
-        $event = $this->getRepository()->find($eventId);
+        $event = $this->repository->find($eventId);
 
         if ($event === null) {
             throw new \Exception(sprintf('Event by id %s not found', $eventId));
@@ -98,7 +112,7 @@ class EventController extends Controller
     public function update(Request $request, $eventId)
     {
         /** @var Event $event */
-        $event = $this->getRepository()->find($eventId);
+        $event = $this->repository->find($eventId);
 
         if ($event === null) {
             throw new \Exception(sprintf('Event by id %s not found', $eventId));
@@ -108,7 +122,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getRepository()->update($event);
+            $this->repository->update($event);
 
             return $this->redirectToRoute(
                 'event_show',
@@ -137,7 +151,7 @@ class EventController extends Controller
     public function saveCategoryOrder(Request $request, $eventId)
     {
         /** @var Event $event */
-        $event = $this->getRepository()->find($eventId);
+        $event = $this->repository->find($eventId);
         $response = new JsonResponse(null, 200);
 
         if ($event !== null) {
@@ -165,15 +179,5 @@ class EventController extends Controller
         }
 
         return $response;
-    }
-
-    /**
-     * @return EventRepository
-     */
-    private function getRepository(): EventRepository
-    {
-        $repository = $this->getDoctrine()->getRepository(Event::class);
-
-        return $repository;
     }
 }

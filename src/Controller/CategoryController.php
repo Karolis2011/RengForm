@@ -19,6 +19,27 @@ use Symfony\Component\HttpFoundation\Response;
 class CategoryController extends Controller
 {
     /**
+     * @var CategoryRepository
+     */
+    private $repository;
+
+    /**
+     * @var EventRepository
+     */
+    private $eventRepository;
+
+    /**
+     * CategoryController constructor.
+     * @param CategoryRepository $repository
+     * @param EventRepository    $eventRepository
+     */
+    public function __construct(CategoryRepository $repository, EventRepository $eventRepository)
+    {
+        $this->repository = $repository;
+        $this->eventRepository = $eventRepository;
+    }
+
+    /**
      * @Route("/event/{eventId}/category/create", name="category_create")
      * @param Request $request
      * @param         $eventId
@@ -28,7 +49,7 @@ class CategoryController extends Controller
     public function create(Request $request, $eventId)
     {
         /** @var Event $event */
-        $event = $this->getEventRepository()->find($eventId);
+        $event = $this->eventRepository->find($eventId);
 
         if ($event === null) {
             throw new \Exception(sprintf('Event by id %s not found', $eventId));
@@ -40,7 +61,7 @@ class CategoryController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $category->setEvent($event);
-            $this->getRepository()->save($category);
+            $this->repository->save($category);
             $category->setOrderNo($category->getId());
             $this->getDoctrine()->getManager()->flush();
 
@@ -70,7 +91,7 @@ class CategoryController extends Controller
     public function edit(Request $request, $categoryId)
     {
         /** @var Category $category */
-        $category = $this->getRepository()->find($categoryId);
+        $category = $this->repository->find($categoryId);
 
         if ($category === null) {
             throw new \Exception(sprintf('Category by id %s not found', $categoryId));
@@ -80,7 +101,7 @@ class CategoryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getRepository()->update($category);
+            $this->repository->update($category);
 
             return $this->redirectToRoute(
                 'event_show',
@@ -97,25 +118,5 @@ class CategoryController extends Controller
                 'category' => $category,
             ]
         );
-    }
-
-    /**
-     * @return EventRepository
-     */
-    private function getEventRepository(): EventRepository
-    {
-        $repository = $this->getDoctrine()->getRepository(Event::class);
-
-        return $repository;
-    }
-
-    /**
-     * @return CategoryRepository
-     */
-    private function getRepository(): CategoryRepository
-    {
-        $repository = $this->getDoctrine()->getRepository(Category::class);
-
-        return $repository;
     }
 }

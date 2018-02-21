@@ -17,13 +17,27 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FormController extends Controller
 {
     /**
+     * @var FormConfigRepository
+     */
+    private $repository;
+
+    /**
+     * FormController constructor.
+     * @param FormConfigRepository $repository
+     */
+    public function __construct(FormConfigRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
      * @Route("/form", name="form_index")
      * @return Response
      */
     public function index()
     {
         /** @var FormConfig[] $formConfigs */
-        $formConfigs = $this->getRepository()->findAll();
+        $formConfigs = $this->repository->findAll();
 
         return $this->render(
             'Admin/Form/index.html.twig',
@@ -45,7 +59,7 @@ class FormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getRepository()->save($formConfig);
+            $this->repository->save($formConfig);
 
             return $this->redirectToRoute(
                 'form_show',
@@ -71,7 +85,7 @@ class FormController extends Controller
     public function show($formId)
     {
         /** @var FormConfig $formConfig */
-        $formConfig = $this->getRepository()->find($formId);
+        $formConfig = $this->repository->find($formId);
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
@@ -95,7 +109,7 @@ class FormController extends Controller
     public function edit(Request $request, $formId)
     {
         /** @var FormConfig $formConfig */
-        $formConfig = $this->getRepository()->find($formId);
+        $formConfig = $this->repository->find($formId);
 
         if ($formConfig === null) {
             throw new \Exception(sprintf('Form by id %s not found', $formId));
@@ -105,7 +119,7 @@ class FormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getRepository()->update($formConfig);
+            $this->repository->update($formConfig);
 
             return $this->redirectToRoute(
                 'form_show',
@@ -122,15 +136,5 @@ class FormController extends Controller
                 'formConfig' => $formConfig,
             ]
         );
-    }
-
-    /**
-     * @return FormConfigRepository
-     */
-    private function getRepository(): FormConfigRepository
-    {
-        $repository = $this->getDoctrine()->getRepository(FormConfig::class);
-
-        return $repository;
     }
 }

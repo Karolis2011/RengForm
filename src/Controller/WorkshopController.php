@@ -19,6 +19,27 @@ use Symfony\Component\HttpFoundation\Response;
 class WorkshopController extends Controller
 {
     /**
+     * @var WorkshopRepository
+     */
+    private $repository;
+
+    /**
+     * @var CategoryRepository
+     */
+    private $categoryRepository;
+
+    /**
+     * WorkshopController constructor.
+     * @param WorkshopRepository $repository
+     * @param CategoryRepository $categoryRepository
+     */
+    public function __construct(WorkshopRepository $repository, CategoryRepository $categoryRepository)
+    {
+        $this->repository = $repository;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+    /**
      * @Route("/category/{categoryId}/workshop/create", name="workshop_create")
      * @param Request $request
      * @param         $categoryId
@@ -28,7 +49,7 @@ class WorkshopController extends Controller
     public function create(Request $request, $categoryId)
     {
         /** @var Category $category */
-        $category = $this->getCategoryRepository()->find($categoryId);
+        $category = $this->categoryRepository->find($categoryId);
 
         if ($category === null) {
             throw new \Exception(sprintf('Category by id %s not found', $categoryId));
@@ -40,7 +61,7 @@ class WorkshopController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $workshop->setCategory($category);
-            $this->getRepository()->save($workshop);
+            $this->repository->save($workshop);
 
             return $this->redirectToRoute(
                 'event_show',
@@ -68,7 +89,7 @@ class WorkshopController extends Controller
     public function edit(Request $request, $workshopId)
     {
         /** @var Workshop $workshop */
-        $workshop = $this->getRepository()->find($workshopId);
+        $workshop = $this->repository->find($workshopId);
 
         if ($workshop === null) {
             throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
@@ -78,7 +99,7 @@ class WorkshopController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getRepository()->update($workshop);
+            $this->repository->update($workshop);
 
             return $this->redirectToRoute(
                 'event_show',
@@ -95,25 +116,5 @@ class WorkshopController extends Controller
                 'workshop' => $workshop,
             ]
         );
-    }
-
-    /**
-     * @return CategoryRepository
-     */
-    private function getCategoryRepository(): CategoryRepository
-    {
-        $repository = $this->getDoctrine()->getRepository(Category::class);
-
-        return $repository;
-    }
-
-    /**
-     * @return WorkshopRepository
-     */
-    private function getRepository(): WorkshopRepository
-    {
-        $repository = $this->getDoctrine()->getRepository(Workshop::class);
-
-        return $repository;
     }
 }
