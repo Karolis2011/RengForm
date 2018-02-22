@@ -10,5 +10,11 @@
     <li><a href="{{ path('logout') }}" >Logout</a></li>
     <li><a href="{{ path('admin_index') }}" >Admin panel</a></li>
 </ul>
+<h1>Events:</h1>
+<ul>
+    {% for event in events %}
+        <li><a href="{{ path('event', {'eventId': event.id}) }}">{{ event.title }}</a></li>
+    {% endfor %}
+</ul>
 </body>
 </html>

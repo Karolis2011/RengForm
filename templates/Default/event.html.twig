@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>{{ event.title }}</title>
+</head>
+<body>
+<h1>{{ event.title }}</h1>
+{% for category in event.categories if event.categories is not empty %}
+    <h2>{{ category.title }}</h2>
+    <p>{{ category.description }}</p>
+    <h3>Workshops</h3>
+    {% if category.workshops is not empty %}
+        <ul>
+            {% for workshop in category.workshops %}
+                <li><a href="{{ path('registration', {'workshopId': workshop.id}) }}">{{ workshop.title }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No workshops in category</p>
+    {% endif %}
+{% else %}
+    <p>No categories in event</p>
+{% endfor %}
+</body>
+</html>
