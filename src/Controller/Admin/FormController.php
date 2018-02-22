@@ -59,6 +59,7 @@ class FormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $formConfig->setConfig(json_decode($formConfig->getConfig()));
             $this->repository->save($formConfig);
 
             return $this->redirectToRoute(
@@ -72,7 +73,8 @@ class FormController extends Controller
         return $this->render(
             'Admin/Form/create.html.twig',
             [
-                'form' => $form->createView(),
+                'form'       => $form->createView(),
+                'formConfig' => $formConfig,
             ]
         );
     }
@@ -115,10 +117,13 @@ class FormController extends Controller
             throw new \Exception(sprintf('Form by id %s not found', $formId));
         }
 
+        $formConfig->setConfig(json_encode($formConfig->getConfig()));
+
         $form = $this->createForm(FormConfigType::class, $formConfig);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $formConfig->setConfig(json_decode($formConfig->getConfig()));
             $this->repository->update($formConfig);
 
             return $this->redirectToRoute(

@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\FormConfig;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,11 +35,7 @@ class FormConfigType extends AbstractType
             )
             ->add(
                 'config',
-                CollectionType::class,
-                [
-                    'allow_add'  => true,
-                    'entry_type' => TextType::class,
-                ]
+                HiddenType::class
             );
     }
 

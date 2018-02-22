@@ -7,42 +7,45 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-md-6">
-            <!-- Horizontal Form -->
-            <div class="box box-primary">
+        <div class="col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active" style="border-top-left-radius: 3px">
+                        <a href="#tab_1" data-toggle="tab">Data</a>
+                    </li>
+                    <li>
+                        <a href="#tab_2" data-toggle="tab">Builder</a>
+                    </li>
+                </ul>
                 {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-                <div class="box-body">
-                    <div class="form-group">
-                        {{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                        <div class="col-sm-10">
-                            {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <div class="box-body">
+                            <div class="form-group">
+                                {{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                                <div class="col-sm-10">
+                                    {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.description, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+                                <div class="col-sm-10">
+                                    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+                                </div>
+                            </div>
+                            {{ form_widget(form.config, {'attr': {'class': 'form-config-holder'}}) }}
                         </div>
                     </div>
-                    <div class="form-group">
-                        {{ form_label(form.description, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                        <div class="col-sm-10">
-                            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+                    <div class="tab-pane" id="tab_2" style="pointer-events: none;">
+                        <div class="box-body">
+                            <div id="formBuilder"></div>
                         </div>
                     </div>
-                    {{ form_widget(form.config) }}
                 </div>
                 <div class="box-footer">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>
                 {{ form_end(form) }}
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header">
-                    <h3 class="box-title">Form configuration</h3>
-                </div>
-                <div class="box-body">
-                    <div id="formBuilder">
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -53,7 +56,45 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#formBuilder').formBuilder();
+            var formBuilder = $('#formBuilder').formBuilder({
+                disableFields: [
+                    'autocomplete',
+                    'button',
+                    'file',
+                    'hidden'
+                ],
+                controlOrder: [
+                    'header',
+                    'paragraph',
+                    'text',
+                    'textarea',
+                    'number',
+                    'checkbox',
+                    'checkbox-group',
+                    'radio-group',
+                    'date',
+                    'select'
+                ],
+                disabledAttrs: [
+                    'access',
+                    'className',
+                    'inline',
+                    'name',
+                    'other',
+                    'rows',
+                    'step',
+                    'style'
+                ],
+                disabledActionButtons: ['data', 'save'],
+                formData: {{ formConfig.config|json_encode|raw }},
+                onClearAll: function () {
+                    $(".form-config-holder").val('');
+                }
+            });
+
+            document.addEventListener('fieldAdded', function () {
+                $(".form-config-holder").val(formBuilder.formData);
+            });
         });
     </script>
 {% endblock %}

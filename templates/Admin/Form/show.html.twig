@@ -50,11 +50,30 @@
                     <div class="tab-pane active" id="tab_1">
                         {{ formConfig.config|json_encode(constant('JSON_PRETTY_PRINT')) }}
                     </div>
-                    <div class="tab-pane" id="tab_2">
-                        <b>Preview. Someday.</b>
+                    <div class="tab-pane" id="tab_2" style="pointer-events: none;">
+                        <div id="formPreview"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascript_inline %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#formPreview').formRender({
+                formData: {{ formConfig.config|json_encode|raw }}
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/formBuilder/form-render.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-ui-sortable/jquery-ui.min.js') }}"></script>
 {% endblock %}
