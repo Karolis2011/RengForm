@@ -3,12 +3,3 @@
 #    controller: App\Controller\DefaultController::index
 logout:
     path: /admin/logout
-index:
-    path: /
-    controller: App\Controller\IndexController::index
-event:
-    path: /event/{eventId}
-    controller: App\Controller\EventController::index
-registration:
-    path: /register/{workshopId}
-    controller: App\Controller\WorkshopController::register

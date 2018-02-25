@@ -17,7 +17,7 @@
                         <a href="#tab_2" data-toggle="tab">Builder</a>
                     </li>
                 </ul>
-                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                {{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'config-form'}}) }}
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">
                         <div class="box-body">
@@ -92,9 +92,9 @@
                 }
             });
 
-            document.addEventListener('fieldAdded', function () {
+            $("#config-form").submit(function () {
                 $(".form-config-holder").val(formBuilder.formData);
-            });
+            })
         });
     </script>
 {% endblock %}

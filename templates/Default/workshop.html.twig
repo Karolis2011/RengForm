@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>Registration to {{ workshop.title }}</title>
+</head>
+<body>
+<h1>Registration to {{ workshop.title }}</h1>
+<div>
+    <form action="{{ path('registration', {'workshopId': workshop.id}) }}" name="registration" method="post">
+        <div id="regForm"></div>
+        <button type="submit">Register</button>
+    </form>
+</div>
+<script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('js/formBuilder/form-render.min.js') }}"></script>
+<script src="{{ asset('js/jquery-ui-sortable/jquery-ui.min.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#regForm').formRender({
+            formData: {{ workshop.formConfig.config|json_encode|raw }}
+        });
+    });
+</script>
+</body>
+</html>

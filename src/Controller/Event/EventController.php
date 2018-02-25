@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use App\Entity\Event;
 use App\Repository\EventRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,6 +28,7 @@ class EventController extends Controller
     }
 
     /**
+     * @Route("/event/{eventId}", name="event")
      * @param $eventId
      * @return Response
      * @throws \Exception

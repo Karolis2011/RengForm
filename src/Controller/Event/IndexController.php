@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use App\Repository\EventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

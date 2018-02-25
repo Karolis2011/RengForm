@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Event;
 
 use App\Entity\Workshop;
 use App\Repository\WorkshopRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -28,11 +29,13 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @param $workshopId
+     * @Route("/register/{workshopId}", name="registration")
+     * @param Request $request
+     * @param         $workshopId
      * @return Response
      * @throws \Exception
      */
-    public function register($workshopId)
+    public function register(Request $request, $workshopId)
     {
         /** @var Workshop $workshop */
         $workshop = $this->repository->find($workshopId);

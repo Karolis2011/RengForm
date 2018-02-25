@@ -2,3 +2,8 @@ admin_controllers:
     resource: ../../src/Controller/Admin/
     type: annotation
     prefix: /admin
+
+event_controllers:
+    resource: ../../src/Controller/Event/
+    type: annotation
+    prefix: /
