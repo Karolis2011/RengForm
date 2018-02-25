@@ -14,7 +14,7 @@
                         <a href="#tab_1" data-toggle="tab">Data</a>
                     </li>
                     <li>
-                        <a href="#tab_2" data-toggle="tab">Builder</a>
+                        <a href="#tab_2" data-toggle="tab" id="builder-tab-link">Builder</a>
                     </li>
                 </ul>
                 {{ form_start(form, {'attr': {'class': 'form-horizontal', 'id': 'config-form'}}) }}
@@ -56,41 +56,44 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var formBuilder = $('#formBuilder').formBuilder({
-                disableFields: [
-                    'autocomplete',
-                    'button',
-                    'file',
-                    'hidden'
-                ],
-                controlOrder: [
-                    'header',
-                    'paragraph',
-                    'text',
-                    'textarea',
-                    'number',
-                    'checkbox',//TODO: add
-                    'radio',//TODO: add
-                    'checkbox-group',
-                    'radio-group',
-                    'date',
-                    'select'
-                ],
-                disabledAttrs: [
-                    'access',
-                    'className',
-                    'inline',
-                    'name',
-                    'other',
-                    'rows',
-                    'step',
-                    'style'
-                ],
-                disabledActionButtons: ['data', 'save'],
-                formData: {{ formConfig.config|json_encode|raw }},
-                onClearAll: function () {
-                    $(".form-config-holder").val('');
-                }
+            var formBuilder = {
+                formData: []
+            };
+
+            $('#builder-tab-link').one('shown.bs.tab', function () {
+                formBuilder = $('#formBuilder').formBuilder({
+                    disableFields: [
+                        'autocomplete',
+                        'button',
+                        'file',
+                        'hidden'
+                    ],
+                    controlOrder: [
+                        'header',
+                        'paragraph',
+                        'text',
+                        'textarea',
+                        'number',
+                        'checkbox',//TODO: add
+                        'radio',//TODO: add
+                        'checkbox-group',
+                        'radio-group',
+                        'date',
+                        'select'
+                    ],
+                    disabledAttrs: [
+                        'access',
+                        'className',
+                        'inline',
+                        'name',
+                        'other',
+                        'rows',
+                        'step',
+                        'style'
+                    ],
+                    disabledActionButtons: ['data', 'save'],
+                    formData: {{ formConfig.config|json_encode|raw }}
+                });
             });
 
             $("#config-form").submit(function () {
