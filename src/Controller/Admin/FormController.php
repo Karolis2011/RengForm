@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\FormConfig;
 use App\Form\FormConfigType;
 use App\Repository\FormConfigRepository;
+use App\Service\Form\ConfigEnricher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,17 +50,19 @@ class FormController extends Controller
 
     /**
      * @Route("/form/create", name="form_create")
-     * @param Request $request
+     * @param Request        $request
+     * @param ConfigEnricher $enricher
      * @return Response
      */
-    public function create(Request $request)
+    public function create(Request $request, ConfigEnricher $enricher)
     {
         $formConfig = new FormConfig();
         $form = $this->createForm(FormConfigType::class, $formConfig);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formConfig->setConfig(json_decode($formConfig->getConfig()));
+            $formConfig->setConfig(json_decode($formConfig->getConfig(), true));
+            $enricher->enrich($formConfig);
             $this->repository->save($formConfig);
 
             return $this->redirectToRoute(
@@ -103,12 +106,13 @@ class FormController extends Controller
 
     /**
      * @Route("/form/{formId}/update", name="form_update")
-     * @param Request $request
-     * @param         $formId
+     * @param Request        $request
+     * @param ConfigEnricher $enricher
+     * @param                $formId
      * @return Response
      * @throws \Exception
      */
-    public function edit(Request $request, $formId)
+    public function edit(Request $request, ConfigEnricher $enricher, $formId)
     {
         /** @var FormConfig $formConfig */
         $formConfig = $this->repository->find($formId);
@@ -123,7 +127,8 @@ class FormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formConfig->setConfig(json_decode($formConfig->getConfig()));
+            $formConfig->setConfig(json_decode($formConfig->getConfig(), true));
+            $enricher->enrich($formConfig);
             $this->repository->update($formConfig);
 
             return $this->redirectToRoute(

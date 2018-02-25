@@ -2,7 +2,9 @@
 
 namespace App\Controller\Event;
 
+use App\Entity\Registration;
 use App\Entity\Workshop;
+use App\Repository\RegistrationRepository;
 use App\Repository\WorkshopRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,18 +32,30 @@ class WorkshopController extends Controller
 
     /**
      * @Route("/register/{workshopId}", name="registration")
-     * @param Request $request
-     * @param         $workshopId
+     * @param Request                $request
+     * @param RegistrationRepository $registrationRepository
+     * @param                        $workshopId
      * @return Response
      * @throws \Exception
      */
-    public function register(Request $request, $workshopId)
+    public function register(Request $request, RegistrationRepository $registrationRepository, $workshopId)
     {
         /** @var Workshop $workshop */
         $workshop = $this->repository->find($workshopId);
 
         if ($workshop === null) {
             throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+        }
+
+        $formData = $request->get('registration', null);
+
+        if ($formData !== null) {
+            //TODO: validation
+            $registration = new Registration();
+            $registration->setData($formData);
+            $registration->setWorkshop($workshop);
+            $registrationRepository->save($registration);
+            //TODO: display successful registration message
         }
 
         return $this->render(
