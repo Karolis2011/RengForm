@@ -12,7 +12,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-        // replace this line with your own code!
         return $this->render('Admin/base.html.twig');
     }
 }

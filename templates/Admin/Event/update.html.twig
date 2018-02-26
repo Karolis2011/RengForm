@@ -8,62 +8,49 @@
     {{ parent() }}
 {% endblock %}
 
-{% block header %}Update Event{% endblock %}
-{% block description %}{% endblock %}
-
 {% block body %}
+    <h2 class="border-bottom">
+        {% block header %}Edit Event{% endblock %}
+    </h2>
     <div class="row">
-        <div class="col-md-6">
-            <!-- Horizontal Form -->
-            <div class="box box-primary">
-                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-                <div class="box-body">
-                    <div class="form-group">
-                        {{ form_label(form.title, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                        <div class="col-sm-10">
-                            {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.date, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                        <div class="col-sm-10">
-                            <div class="input-group date datetimepicker">
-                                {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.endDate, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                        <div class="col-sm-10">
-                            <div class="input-group date datetimepicker">
-                                {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.place, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                        <div class="col-sm-10">
-                            {{ form_widget(form.place, {'attr': {'class': 'form-control', 'placeholder': 'Location'}}) }}
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        {{ form_label(form.description, null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-                        <div class="col-sm-10">
-                            {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-                {{ form_end(form) }}
+        <div class="col-lg-6">
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+            <div class="form-group">
+                {{ form_label(form.title) }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
             </div>
+            <div class="form-group">
+                {{ form_label(form.date) }}
+                <div class="input-group datetimepicker">
+                    {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+                    <div class="input-group-append">
+                        <span class="input-group-text input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.endDate) }}
+                <div class="input-group datetimepicker">
+                    {{ form_widget(form.endDate, {'attr': {'class': 'form-control'}}) }}
+                    <div class="input-group-append">
+                        <span class="input-group-text input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.place) }}
+                {{ form_widget(form.place, {'attr': {'class': 'form-control', 'placeholder': 'Location'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

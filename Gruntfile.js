@@ -55,6 +55,10 @@ module.exports = function (grunt) {
                     {
                         src: 'node_modules/select2/dist/css/select2.min.css',
                         dest: 'public/style/css/select2/select2.min.css'
+                    },
+                    {
+                        src: 'node_modules/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css',
+                        dest: 'public/style/css/select2/select2-bootstrap4.min.css'
                     }
                 ]
             },
@@ -73,44 +77,12 @@ module.exports = function (grunt) {
                         dest: 'public/js/moment/moment.min.js'
                     },
                     {
-                        src: 'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+                        src: 'node_modules/pc-bootstrap4-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
                         dest: 'public/js/datetimepicker/bootstrap-datetimepicker.min.js'
                     },
                     {
-                        src: 'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
+                        src: 'node_modules/pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css',
                         dest: 'public/style/css/datetimepicker/bootstrap-datetimepicker.css'
-                    }
-                ]
-            },
-            'datatable': {
-                files: [
-                    {
-                        src: 'node_modules/datatables.net/js/jquery.dataTables.js',
-                        dest: 'public/js/datatables/jquery.dataTables.js'
-                    },
-                    {
-                        src: 'node_modules/datatables.net-bs/js/dataTables.bootstrap.js',
-                        dest: 'public/js/datatables/dataTables.bootstrap.js'
-                    },
-                    {
-                        src: 'node_modules/datatables.net-bs/css/dataTables.bootstrap.css',
-                        dest: 'public/style/css/datatables/dataTables.bootstrap.css'
-                    }
-                ]
-            },
-            'admin-lte': {
-                files: [
-                    {
-                        src: 'node_modules/admin-lte/dist/js/adminlte.min.js',
-                        dest: 'public/js/adminlte/adminlte.min.js'
-                    },
-                    {
-                        src: 'node_modules/admin-lte/dist/css/AdminLTE.min.css',
-                        dest: 'public/style/css/adminlte/AdminLTE.min.css'
-                    },
-                    {
-                        src: 'node_modules/admin-lte/dist/css/skins/skin-blue.min.css',
-                        dest: 'public/style/css/adminlte/skin-blue.min.css'
                     }
                 ]
             },
@@ -123,13 +95,6 @@ module.exports = function (grunt) {
                     {
                         src: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
                         dest: 'public/style/css/bootstrap/bootstrap.min.css'
-                    },
-                    {
-                        cwd: 'node_modules/',
-                        src: 'bootstrap/fonts/*',
-                        flatten: true,
-                        expand: true,
-                        dest: 'public/style/css/fonts/'
                     }
                 ]
             },
@@ -180,9 +145,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('rengform', [
         'copy:rengform',
-        'copy:admin-lte',
         'copy:bootstrap',
-        'copy:datatable',
         'copy:datetimepicker',
         'copy:sortable',
         'copy:select2',

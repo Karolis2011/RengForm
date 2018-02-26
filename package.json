@@ -2,13 +2,13 @@
   "name": "rengform",
   "version": "1.0.0",
   "dependencies": {
-    "admin-lte": "^2.4.2",
-    "datatables.net-bs": "^1.10.16",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "bootstrap": "^4.0.0",
     "font-awesome": "^4.7.0",
     "formBuilder": "^2.9.8",
     "jquery": "^3.3.1",
+    "pc-bootstrap4-datetimepicker": "^4.17.50",
     "select2": "^4.0.4",
+    "select2-bootstrap4-theme": "^1.0.0",
     "sortablejs": "^1.7.0"
   },
   "devDependencies": {
