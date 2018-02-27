@@ -26,7 +26,7 @@
             <th>Description</th>
         </tr>
         </thead>
-        <tbody class="hover-pointer">
+        <tbody>
         {% for event in events %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
                 <td>{{ event.id }}</td>

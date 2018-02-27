@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Repository\WorkshopRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,14 +23,20 @@ class EventController extends Controller
      * @var EventRepository
      */
     private $repository;
+    /**
+     * @var WorkshopRepository
+     */
+    private $workshopRepository;
 
     /**
      * EventController constructor.
-     * @param EventRepository $repository
+     * @param EventRepository    $repository
+     * @param WorkshopRepository $workshopRepository
      */
-    public function __construct(EventRepository $repository)
+    public function __construct(EventRepository $repository, WorkshopRepository $workshopRepository)
     {
         $this->repository = $repository;
+        $this->workshopRepository = $workshopRepository;
     }
 
     /**
@@ -94,10 +101,13 @@ class EventController extends Controller
             throw new \Exception(sprintf('Event by id %s not found', $eventId));
         }
 
+        $workshops = $this->workshopRepository->getByEvent($event);
+
         return $this->render(
             'Admin/Event/show.html.twig',
             [
-                'event' => $event,
+                'event'     => $event,
+                'workshops' => $workshops,
             ]
         );
     }

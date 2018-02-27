@@ -1,0 +1,40 @@
+{% if event.categories is not empty %}
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+        <tr>
+            <th></th>
+            <th>ID</th>{#TODO: remove column#}
+            <th>Title</th>
+            <th>Description</th>
+            <th>Workshops</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="categoriesList">
+        {% for category in event.categories %}
+            <tr data-id="{{ category.id }}">
+                <td><span class="fa fa-arrows"></span></td>
+                <td>{{ category.id }}</td>
+                <td>{{ category.title }}</td>
+                <td>{{ category.description|length > 30 ? category.description|slice(0, 30) ~ '...' : category.description }}</td>
+                <td>{{ category.workshops|length }}</td>
+                <td>
+                    <a href="{{ path('category_update', {'categoryId': category.id }) }}"
+                       class="text-muted"
+                       data-toggle="tooltip" title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <b>No categories</b>
+{% endif %}
+<div>
+    <a class="btn btn-primary" href="{{ path('category_create', {'eventId': event.id}) }}">Add</a>
+    {% if event.categories is not empty %}
+        <button class="btn btn-primary disabled" id="saveOrder">Save Order</button>
+    {% endif %}
+</div>

@@ -1,0 +1,59 @@
+{% if workshops is not empty %}
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+        <tr>
+            <th>ID</th>{#TODO: remove column#}
+            <th>Title</th>
+            <th>Category</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Entries</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for workshop in workshops %}
+            <tr class="expandable-row" data-toggle="collapse" data-target="#collapse_{{ workshop.id }}"
+                aria-expanded="false" aria-controls="collapseExample">
+                <td>{{ workshop.id }}</td>
+                <td>{{ workshop.title }}</td>
+                <td>{{ workshop.category.title }}</td>
+                <td>{{ workshop.startTime|date('Y-m-d H:i:s') }}</td>
+                <td>{{ workshop.endTime|date('Y-m-d H:i:s') }}</td>
+                <td>{{ workshop.entries }}</td>
+            </tr>
+            <tr>
+                <td class="p-0" colspan="6">
+                    <div class="collapse" id="collapse_{{ workshop.id }}">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <h6 class="my-0">Place</h6>
+                                <span>{{ workshop.place }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <h6 class="my-0">Capacity</h6>
+                                <span>{{ workshop.capacity ? workshop.capacity : 'Unlimited' }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <h6 class="my-0">Form</h6>
+                                <span>{{ workshop.formConfig.title }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <h6 class="my-0">Description</h6>
+                                <span>{{ workshop.description }}</span>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="btn btn-primary" href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
+                                    Edit
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <b>No workshops</b>
+{% endif %}
+<a class="btn btn-primary" href="{{ path('workshop_create') }}">Add</a>

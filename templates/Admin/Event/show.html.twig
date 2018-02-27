@@ -1,5 +1,11 @@
 {% extends 'Admin/base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
+
+    {{ parent() }}
+{% endblock %}
+
 {% block title %}Events | {{ event.title }}{% endblock %}
 
 {% block header %}{{ event.title }}{% endblock %}
@@ -19,31 +25,43 @@
                         </span>
                     </h5>
                 </div>
-                <div class="card-body">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th style="width:50%">Date</th>
-                            <td>{{ event.date|date('Y-m-d H:i:s') }}</td>
-                        </tr>
+                <div class="card-body p-0">
+                    <div class="container">
+                        <div class="row border-bottom">
+                            <div class="col-md-4">
+                                Date
+                            </div>
+                            <div class="col-md-8">
+                                {{ event.date|date('Y-m-d H:i:s') }}
+                            </div>
+                        </div>
                         {% if event.endDate is not null %}
-                            <tr>
-                                <th>End Date</th>
-                                <td>
+                            <div class="row border-bottom">
+                                <div class="col-md-4">
+                                    End Date
+                                </div>
+                                <div class="col-md-8">
                                     {{ event.endDate|date('Y-m-d H:i:s') }}
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         {% endif %}
-                        <tr>
-                            <th>Place</th>
-                            <td>{{ event.place }}</td>
-                        </tr>
-                        <tr>
-                            <th>Description</th>
-                            <td>{{ event.description }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <div class="row border-bottom">
+                            <div class="col-md-4">
+                                Place
+                            </div>
+                            <div class="col-md-8">
+                                {{ event.place }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                Description
+                            </div>
+                            <div class="col-md-8">
+                                {{ event.description }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,122 +79,10 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
-                    {% if event.categories is not empty %}
-                        <table class="table table-bordered table-striped table-sm">
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>ID</th>{#TODO: remove column#}
-                                <th>Order No</th>{#TODO: remove column#}
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Workshops</th>
-                                <th>Parent Category</th>{#TODO: remove column#}
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody id="categoriesList">
-                            {% for category in event.categories %}
-                                <tr data-id="{{ category.id }}">
-                                    <td><span class="fa fa-arrows"></span></td>
-                                    <td>{{ category.id }}</td>
-                                    <td>{{ category.orderNo }}</td>
-                                    <td>{{ category.title }}</td>
-                                    <td>{{ category.description|length > 30 ? category.description|slice(0, 30) ~ '...' : category.description }}</td>
-                                    <td>{{ category.workshops|length }}</td>
-                                    <td>{% if category.category is not null %}{{ category.category.id }}: {{ category.category.title }}{% endif %}</td>
-                                    <td>
-                                        <a href="{{ path('category_update', {'categoryId': category.id }) }}"
-                                           class="text-muted"
-                                           data-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <b>No categories</b>
-                    {% endif %}
-                    <div>
-                        <a class="btn btn-primary" href="{{ path('category_create', {'eventId': event.id}) }}">Add</a>
-                        {% if event.categories is not empty %}
-                            <button class="btn btn-primary disabled" id="saveOrder">Save Order</button>
-                        {% endif %}
-                    </div>
+                    {% include 'Admin/Event/tabs/categories.html.twig' %}
                 </div>
                 <div class="tab-pane fade" id="tab_2" role="tabpanel" aria-labelledby="tab_2">
-                    {% if event.categories is not empty %}
-                        <div class="box-group" id="accordion">
-                            {% for category in event.categories %}
-                                <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
-                                <div class="panel box">
-                                    <a data-toggle="collapse" data-parent="#accordion"
-                                       href="#collapseC{{ category.id }}">
-                                        <div class="box-header with-border">
-                                            <h4 class="box-title">
-                                                {{ category.title }}
-                                            </h4>
-                                        </div>
-                                    </a>
-                                    <div id="collapseC{{ category.id }}"
-                                         class="panel-collapse collapse {% if loop.first %}in{% endif %}">
-                                        <div class="box-body table-responsive no-padding">
-                                            {% if category.workshops is not empty %}
-                                                <table class="table">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>ID</th>{#TODO: remove column#}
-                                                        <th>Title</th>
-                                                        <th>Description</th>
-                                                        <th>Place</th>
-                                                        <th>Start Time</th>
-                                                        <th>End Time</th>
-                                                        <th>Capacity</th>
-                                                        <th>Entries</th>
-                                                        <th>Form ID</th>{#TODO: remove column#}
-                                                        <th></th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {% for workshop in category.workshops %}
-                                                        <tr>
-                                                            <td>{{ workshop.id }}</td>
-                                                            <td>{{ workshop.title }}</td>
-                                                            <td>{{ workshop.description|length > 30 ? workshop.description|slice(0, 30) ~ '...' : workshop.description }}</td>
-                                                            <td>{{ workshop.place }}</td>
-                                                            <td>{{ workshop.startTime|date('Y-m-d H:i:s') }}</td>
-                                                            <td>{{ workshop.endTime|date('Y-m-d H:i:s') }}</td>
-                                                            <td>{{ workshop.capacity ? workshop.capacity : 'Unlimited' }}</td>
-                                                            <td>{{ workshop.entries }}</td>
-                                                            <td>{{ workshop.formConfig is not null ? workshop.formConfig.id }}</td>
-                                                            <td>
-                                                                <a href="{{ path('workshop_update', {'workshopId': workshop.id }) }}"
-                                                                   class="text-muted"
-                                                                   data-toggle="tooltip" title="Edit">
-                                                                    <i class="fa fa-edit"></i>
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                    </tbody>
-                                                </table>
-                                            {% else %}
-                                                <b>No Workshops in category</b>
-                                            {% endif %}
-                                        </div>
-                                        <div class="box-footer">
-                                            <a class="btn btn-primary"
-                                               href="{{ path('workshop_create', {'categoryId': category.id}) }}">Add</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <b>No categories</b>
-                    {% endif %}
+                    {% include 'Admin/Event/tabs/workshops.html.twig' %}
                 </div>
             </div>
         </div>

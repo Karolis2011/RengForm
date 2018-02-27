@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Category;
 use App\Entity\Workshop;
 use App\Form\WorkshopType;
 use App\Repository\CategoryRepository;
@@ -40,33 +39,24 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @Route("/category/{categoryId}/workshop/create", name="workshop_create")
+     * @Route("/workshop/create", name="workshop_create")
      * @param Request $request
-     * @param         $categoryId
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function create(Request $request, $categoryId)
+    public function create(Request $request)
     {
-        /** @var Category $category */
-        $category = $this->categoryRepository->find($categoryId);
-
-        if ($category === null) {
-            throw new \Exception(sprintf('Category by id %s not found', $categoryId));
-        }
-
         $workshop = new Workshop();
         $form = $this->createForm(WorkshopType::class, $workshop);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $workshop->setCategory($category);
             $this->repository->save($workshop);
 
             return $this->redirectToRoute(
                 'event_show',
                 [
-                    'eventId' => $category->getEvent()->getId(),
+                    'eventId' => $workshop->getCategory()->getEvent()->getId(),
                 ]
             );
         }

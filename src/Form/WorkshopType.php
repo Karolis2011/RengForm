@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\FormConfig;
 use App\Entity\Workshop;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -68,6 +69,15 @@ class WorkshopType extends AbstractType
                 EntityType::class,
                 [
                     'class'        => FormConfig::class,
+                    'choice_label' => 'title',
+                    'placeholder'  => '',
+                ]
+            )
+            ->add(
+                'category',
+                EntityType::class,
+                [
+                    'class'        => Category::class,
                     'choice_label' => 'title',
                     'placeholder'  => '',
                 ]

@@ -1,3 +1,7 @@
-.hover-pointer tr {
+.clickable-row {
+    cursor: pointer;
+}
+
+.expandable-row {
     cursor: pointer;
 }
