@@ -2,7 +2,8 @@
     <table class="table table-bordered table-striped table-sm">
         <thead>
         <tr>
-            <th></th>
+            <th id="categories_spinner">
+            </th>
             <th>ID</th>{#TODO: remove column#}
             <th>Title</th>
             <th>Description</th>
@@ -34,7 +35,4 @@
 {% endif %}
 <div>
     <a class="btn btn-primary" href="{{ path('category_create', {'eventId': event.id}) }}">Add</a>
-    {% if event.categories is not empty %}
-        <button class="btn btn-primary disabled" id="saveOrder">Save Order</button>
-    {% endif %}
 </div>

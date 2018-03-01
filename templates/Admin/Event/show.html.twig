@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/custom/spinner.css') }}">
 
     {{ parent() }}
 {% endblock %}
@@ -95,32 +96,19 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-                var orderChanged = false;
-
-                $("#saveOrder").click(function () {
-                    if (orderChanged) {
-                        $(this).addClass('disabled');
-                        orderChanged = false;
-                        console.log('Order saved.');
-                        var order = categoriesList.toArray();
-                        console.log(order);
+                var categoriesList = Sortable.create(document.getElementById('categoriesList'), {
+                    handle: '.fa-arrows',
+                    animation: 150,
+                    onUpdate: function () {
+                        $('#categories_spinner').addClass('spinner');
                         $.post(
                             '{{ path('event_save_category_order', {'eventId': event.id}) }}',
                             {
                                 'order': categoriesList.toArray()
                             }
-                        ).done(function (data) {
-                            console.log(data);
+                        ).done(function () {
+                            $("#categories_spinner").removeClass('spinner');
                         });
-                    }
-                });
-
-                var categoriesList = Sortable.create(document.getElementById('categoriesList'), {
-                    handle: '.fa-arrows',
-                    animation: 150,
-                    onUpdate: function () {
-                        orderChanged = true;
-                        $("#saveOrder").removeClass('disabled');
                     }
                 });
             });
