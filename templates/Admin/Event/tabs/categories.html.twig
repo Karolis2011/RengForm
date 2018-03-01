@@ -14,7 +14,7 @@
         <tbody id="categoriesList">
         {% for category in event.categories %}
             <tr data-id="{{ category.id }}">
-                <td><span class="fa fa-arrows"></span></td>
+                <td class="category-list-handle" align="center" valign="center"><span class="fa fa-arrows"></span></td>
                 <td>{{ category.id }}</td>
                 <td>{{ category.title }}</td>
                 <td>{{ category.description|length > 30 ? category.description|slice(0, 30) ~ '...' : category.description }}</td>

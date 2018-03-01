@@ -97,17 +97,21 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var categoriesList = Sortable.create(document.getElementById('categoriesList'), {
-                    handle: '.fa-arrows',
+                    handle: '.category-list-handle',
                     animation: 150,
                     onUpdate: function () {
+                        categoriesList.option("disabled", true);
                         $('#categories_spinner').addClass('spinner');
+                        $('.category-list-handle').addClass('text-muted');
                         $.post(
                             '{{ path('event_save_category_order', {'eventId': event.id}) }}',
                             {
                                 'order': categoriesList.toArray()
                             }
                         ).done(function () {
+                            categoriesList.option("disabled", false);
                             $("#categories_spinner").removeClass('spinner');
+                            $('.category-list-handle').removeClass('text-muted');
                         });
                     }
                 });
