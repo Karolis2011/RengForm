@@ -1,0 +1,11 @@
+{% if config is not empty %}
+    <ul class="nav flex-column">
+        {% for item in config %}
+            <li class="nav-item">
+                <a class="nav-link {% if item.active is defined and item.active %}active{% endif %}" href="{{ path(item.route) }}">
+                    <i class="fa {{ item.icon }}"></i> <span>{{ item.title }}</span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
