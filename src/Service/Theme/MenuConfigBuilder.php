@@ -13,24 +13,31 @@ class MenuConfigBuilder
      * @var array
      */
     private $config = [
-        'home'   => [
-            'title' => 'Home',
-            'icon'  => 'fa fa-home',
-            'route' => 'admin_index',
-        ],
         'events' => [
-            'title' => 'Events',
-            'icon'  => 'fa fa-link',
-            'route' => 'event_index',
+            'title'        => 'Events',
+            'icon'         => 'fa fa-link',
+            'route'        => 'event_index',
+            'child_routes' => [
+                'event_create',
+                'event_show',
+                'event_update',
+                'category_create',
+                'category_update',
+                'workshop_create',
+                'workshop_update',
+            ],
         ],
         'forms'  => [
-            'title' => 'Forms',
-            'icon'  => 'fa fa-link',
-            'route' => 'form_index',
+            'title'        => 'Forms',
+            'icon'         => 'fa fa-link',
+            'route'        => 'form_index',
+            'child_routes' => [
+                'form_create',
+                'form_show',
+                'form_update',
+            ],
         ],
     ];
-
-    private $defaultActive = 'home';
 
     /**
      * @var \Twig_Environment
@@ -60,18 +67,12 @@ class MenuConfigBuilder
     {
         $config = $this->config;
         $route = $this->requestStack->getMasterRequest()->get('_route');
-        $foundActive = false;
 
         foreach ($config as $name => $item) {
-            if ($item['route'] == $route) {
+            if ($item['route'] == $route || in_array($route, $item['child_routes'])) {
                 $config[$name]['active'] = true;
-                $foundActive = true;
                 break;
             }
-        }
-
-        if (!$foundActive) {
-            $config[$this->defaultActive]['active'] = true;
         }
 
         return $config;

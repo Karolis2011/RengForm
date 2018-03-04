@@ -26,7 +26,7 @@ class SecurityController extends Controller
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('admin_index');
+            return $this->redirectToRoute('event_index');
         }
 
         $user = new User();
@@ -60,7 +60,7 @@ class SecurityController extends Controller
     public function login(AuthenticationUtils $authUtils)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('admin_index');
+            return $this->redirectToRoute('event_index');
         }
 
         // get the login error if there is one
