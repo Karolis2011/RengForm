@@ -279,4 +279,12 @@ class Workshop
     {
         $this->location = $location;
     }
+
+    /**
+     * @param int $count
+     */
+    public function increaseEntries(int $count = 1)
+    {
+        $this->entries += $count;
+    }
 }

@@ -22,23 +22,29 @@ class WorkshopController extends Controller
     private $repository;
 
     /**
-     * WorkshopController constructor.
-     * @param WorkshopRepository $repository
+     * @var RegistrationRepository
      */
-    public function __construct(WorkshopRepository $repository)
+    private $registrationRepository;
+
+    /**
+     * WorkshopController constructor.
+     * @param WorkshopRepository     $repository
+     * @param RegistrationRepository $registrationRepository
+     */
+    public function __construct(WorkshopRepository $repository, RegistrationRepository $registrationRepository)
     {
         $this->repository = $repository;
+        $this->registrationRepository = $registrationRepository;
     }
 
     /**
      * @Route("/register/{workshopId}", name="registration")
-     * @param Request                $request
-     * @param RegistrationRepository $registrationRepository
-     * @param                        $workshopId
+     * @param Request $request
+     * @param         $workshopId
      * @return Response
      * @throws \Exception
      */
-    public function register(Request $request, RegistrationRepository $registrationRepository, $workshopId)
+    public function register(Request $request, $workshopId)
     {
         /** @var Workshop $workshop */
         $workshop = $this->repository->find($workshopId);
@@ -49,13 +55,18 @@ class WorkshopController extends Controller
 
         $formData = $request->get('registration', null);
 
-        if ($formData !== null) {
-            //TODO: validation
+        if ($workshop->getCapacity() !== null && $workshop->getEntries() >= $workshop->getCapacity()) {
+            $this->addFlash('error', 'Workshop is full.');
+        } elseif (empty($formData) || !$this->valid($workshop, $formData)) {
+            $this->addFlash('error', 'Registration form is not filled correctly');
+        } else {
             $registration = new Registration();
             $registration->setData($formData);
             $registration->setWorkshop($workshop);
-            $registrationRepository->save($registration);
-            //TODO: display successful registration message
+            $this->registrationRepository->save($registration);
+            $workshop->increaseEntries();
+            $this->repository->save($workshop);
+            $this->addFlash('success', 'Registration successful');
         }
 
         return $this->render(
@@ -64,5 +75,19 @@ class WorkshopController extends Controller
                 'workshop' => $workshop,
             ]
         );
+    }
+
+    /**
+     * @param Workshop $workshop
+     * @param array    $formData
+     * @return bool
+     */
+    private function valid(Workshop $workshop, array $formData): bool
+    {
+        $valid = true;
+
+        //TODO: validation
+
+        return $valid;
     }
 }
