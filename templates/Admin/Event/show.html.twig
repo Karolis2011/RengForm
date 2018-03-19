@@ -68,20 +68,27 @@
         <div class="col-md-8">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab" aria-controls="tab_1"
+                    <a class="nav-link active" data-toggle="tab" href="#categories_tab" role="tab" aria-controls="categories_tab"
                        aria-selected="true">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#tab_2" role="tab" aria-controls="tab_2"
+                    <a class="nav-link" data-toggle="tab" href="#workshops_tab" role="tab" aria-controls="workshops_tab"
                        aria-selected="false">Workshops</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#registrations_tab" role="tab" aria-controls="registrations_tab"
+                       aria-selected="false">Registrations</a>
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane fade show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
+                <div class="tab-pane fade show active" id="categories_tab" role="tabpanel" aria-labelledby="categories_tab">
                     {% include 'Admin/Event/tabs/categories.html.twig' %}
                 </div>
-                <div class="tab-pane fade" id="tab_2" role="tabpanel" aria-labelledby="tab_2">
+                <div class="tab-pane fade" id="workshops_tab" role="tabpanel" aria-labelledby="workshops_tab">
                     {% include 'Admin/Event/tabs/workshops.html.twig' %}
+                </div>
+                <div class="tab-pane fade" id="registrations_tab" role="tabpanel" aria-labelledby="registrations_tab">
+                    {% include 'Admin/Event/tabs/registrations.html.twig' %}
                 </div>
             </div>
         </div>

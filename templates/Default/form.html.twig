@@ -12,7 +12,7 @@
                 {% endif %}
                 {% if field.required %}*{% endif %}
             </label>
-            <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.maxlength is not null %}maxlength="{{ field.maxlength }}"{% endif %} {% if field.required %}required{% endif %}>
+            <input type="text" class="form-control" name="registration[{{ field.name }}]" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.maxlength is not null %}maxlength="{{ field.maxlength }}"{% endif %} {% if field.required %}required{% endif %}>
         </div>
     {% elseif field.type == 'textarea' %}
         <div class="mb-3">
@@ -23,7 +23,7 @@
                 {% endif %}
                 {% if field.required %}*{% endif %}
             </label>
-            <textarea type="textarea" class="form-control" name="{{ field.name }}" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.maxlength is not null %}maxlength="{{ field.maxlength }}"{% endif %} {% if field.required %}required{% endif %}></textarea>
+            <textarea type="textarea" class="form-control" name="registration[{{ field.name }}]" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.maxlength is not null %}maxlength="{{ field.maxlength }}"{% endif %} {% if field.required %}required{% endif %}></textarea>
         </div>
     {% elseif field.type == 'number' %}
         <div class="mb-3">
@@ -34,7 +34,7 @@
                 {% endif %}
                 {% if field.required %}*{% endif %}
             </label>
-            <input type="number" class="form-control" name="{{ field.name }}" id="{{ field.name }}" {% if field.value is not null %}value="{{ field.value }}"{% endif %} {% if field.min is not null %} min="{{ field.min }}"{% endif %} {% if field.max is not null %} max="{{ field.max }}"{% endif %}>
+            <input type="number" class="form-control" name="registration[{{ field.name }}]" id="{{ field.name }}" {% if field.value is not null %}value="{{ field.value }}"{% endif %} {% if field.min is not null %} min="{{ field.min }}"{% endif %} {% if field.max is not null %} max="{{ field.max }}"{% endif %}>
         </div>
     {% elseif field.type == 'checkbox-group' %}
         <div class="mb-3">
@@ -47,7 +47,7 @@
             </div>
             {% for key, value in field.values %}
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" value="{{ value.value }}" name="{{ field.name }}[]" id="{{ field.name }}-{{ key }}" {% if value.selected %}checked="checked"{% endif %}>
+                    <input type="checkbox" class="form-check-input" value="{{ value.value }}" name="registration[{{ field.name }}][]" id="{{ field.name }}-{{ key }}" {% if value.selected %}checked="checked"{% endif %}>
                     <label class="form-check-label" for="{{ field.name }}-{{ key }}">
                         {{ value.label }}
                     </label>
@@ -65,7 +65,7 @@
             </div>
             {% for key, value in field.values %}
                 <div class="form-check">
-                    <input type="radio" class="form-check-input" value="{{ value.value }}" name="{{ field.name }}[]" id="{{ field.name }}-{{ key }}" {% if value.selected %}checked="checked"{% endif %}>
+                    <input type="radio" class="form-check-input" value="{{ value.value }}" name="registration[{{ field.name }}][]" id="{{ field.name }}-{{ key }}" {% if value.selected %}checked="checked"{% endif %}>
                     <label class="form-check-label" for="{{ field.name }}-{{ key }}">
                         {{ value.label }}
                     </label>
@@ -83,7 +83,7 @@
                     {% if field.required %}*{% endif %}
                 </label>
                 <div class="input-group datetimepicker">
-                    <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.value is not null %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %}>
+                    <input type="text" class="form-control" name="registration[{{ field.name }}]" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.value is not null %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %}>
                     <div class="input-group-append">
                     <span class="input-group-text input-group-addon">
                         <span class="fa fa-calendar"></span>
@@ -101,7 +101,7 @@
                 {% endif %}
                 {% if field.required %}*{% endif %}
             </label>
-            <select class="custom-select formSelect" id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required{% endif %}>
+            <select class="custom-select formSelect" id="{{ field.name }}" name="registration[{{ field.name }}]" {% if field.required %}required{% endif %}>
                 {% for value in field.values %}
                     <option value="{{ value.value }}" {% if value.selected %}selected="selected"{% endif %}>{{ value.label }}</option>
                 {% endfor %}

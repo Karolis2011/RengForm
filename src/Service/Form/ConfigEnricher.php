@@ -34,13 +34,10 @@ class ConfigEnricher
             $label = $field[self::LABEL];
 
             if ($name === null) {
-                $rawName = sprintf(
-                    'registration[%s]',
-                    preg_replace(
-                        '/[^a-zA-Z0-9]+/',
-                        '-',
-                        strtolower($label)
-                    )
+                $rawName = preg_replace(
+                    '/[^a-zA-Z0-9]+/',
+                    '-',
+                    strtolower($label)
                 );
                 $name = $rawName;
                 $i = 1;
