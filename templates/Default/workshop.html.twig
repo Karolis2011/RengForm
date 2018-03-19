@@ -1,22 +1,64 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Registration to {{ workshop.title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ workshop.category.event.title }} | {{ workshop.title }}</title>
+
+    <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/select2/select2-bootstrap4.min.css') }}">
 </head>
-<body>
-<h1>Registration to {{ workshop.title }}</h1>
-<div>
-    <form action="{{ path('registration', {'workshopId': workshop.id}) }}" name="registration" method="post">
-        <div id="regForm"></div>
-        <button type="submit">Register</button>
-    </form>
+
+<body class="bg-light">
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>{{ workshop.title }}</h2>
+        <p class="lead">{{ workshop.description }}</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h4 class="mb-3">Registration</h4>
+            {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshop.formConfig.config })) }}
+        </div>
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2018 RengForm</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+    </footer>
 </div>
+
+
 <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('js/formBuilder/form-render.min.js') }}"></script>
-<script src="{{ asset('js/jquery-ui-sortable/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('js/popper/popper.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/moment/moment.min.js') }}"></script>
+<script src="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#regForm').formRender({
-            formData: {{ workshop.formConfig.config|json_encode|raw }}
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(".datetimepicker").datetimepicker({
+            'format': 'YYYY-MM-DD HH:mm',
+            'showClose': true
+        });
+
+        $(".formSelect").select2({
+            'placeholder': 'Select Registration Form',
+            theme: "bootstrap4"
         });
     });
 </script>

@@ -13,7 +13,6 @@ class ConfigEnricher
     const LABEL = 'label';
     const NAME = 'name';
     const TYPE_BLACKLIST = [
-        'header',
         'paragraph',
     ];
 

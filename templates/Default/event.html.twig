@@ -1,24 +1,77 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
     <title>{{ event.title }}</title>
+
+    <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
 </head>
-<body>
-<h1>{{ event.title }}</h1>
-{% for category in event.categories if event.categories is not empty %}
-    <h2>{{ category.title }}</h2>
-    <p>{{ category.description }}</p>
-    <h3>Workshops</h3>
-    {% if category.workshops is not empty %}
-        <ul>
-            {% for workshop in category.workshops %}
-                <li><a href="{{ path('registration', {'workshopId': workshop.id}) }}">{{ workshop.title }}</a></li>
-            {% endfor %}
-        </ul>
+
+<body class="bg-light">
+<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">{{ event.title }}</h1>
+    <p class="lead">{{ event.description }}</p>
+</div>
+<div class="container">
+    {% for category in event.categories if event.categories is not empty %}
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">{{ category.title }}</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ category.description }}</p>
+                {% if category.workshops is not empty %}
+                    <table class="table table-sm table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Workshop</th>
+                            <th>Duration</th>
+                            <th>Times</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for workshop in category.workshops %}
+                            <tr class="clickable-row"
+                                data-href="{{ path('registration', {'workshopId': workshop.id}) }}">
+                                <td>{{ workshop.title }}</td>
+                                <td>Duration TBA</td> {#TODO: add duration#}
+                                <td>Times TBA</td> {#TODO: add times#}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No workshops in category yet.</p>
+                {% endif %}
+            </div>
+        </div>
     {% else %}
-        <p>No workshops in category</p>
-    {% endif %}
-{% else %}
-    <p>No categories in event</p>
-{% endfor %}
+        <p>No categories in event yet.</p>
+    {% endfor %}
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2018 RengForm</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Support</a></li>
+        </ul>
+    </footer>
+</div>
+
+<script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+    });
+</script>
 </body>
 </html>

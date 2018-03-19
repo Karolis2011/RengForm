@@ -1,0 +1,115 @@
+<form name="registration" method="post">
+
+    {% for field in form.fields %}
+        {% if field.type == 'paragraph' %}
+            <div class="row">
+                <p>{{ field.label }}</p>
+            </div>
+        {% elseif field.type == 'text' %}
+            <div class="mb-3">
+                <label for="{{ field.name }}">
+                    {{ field.label }}
+                    {% if field.description is not empty %}
+                        <i class="fa fa-question-circle" data-placement="top" data-toggle="tooltip" title="{{ field.description }}"></i>
+                    {% endif %}
+                    {% if field.required %}*{% endif %}
+                </label>
+                <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.maxlength is not null %}maxlength="{{ field.maxlength }}"{% endif %} {% if field.required %}required{% endif %}>
+            </div>
+        {% elseif field.type == 'textarea' %}
+            <div class="mb-3">
+                <label for="{{ field.name }}">
+                    {{ field.label }}
+                    {% if field.description is not empty %}
+                        <i class="fa fa-question-circle" data-placement="top" data-toggle="tooltip" title="{{ field.description }}"></i>
+                    {% endif %}
+                    {% if field.required %}*{% endif %}
+                </label>
+                <textarea type="textarea" class="form-control" name="{{ field.name }}" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.maxlength is not null %}maxlength="{{ field.maxlength }}"{% endif %} {% if field.required %}required{% endif %}></textarea>
+            </div>
+        {% elseif field.type == 'number' %}
+            <div class="mb-3">
+                <label for="{{ field.name }}">
+                    {{ field.label }}
+                    {% if field.description is not empty %}
+                        <i class="fa fa-question-circle" data-placement="top" data-toggle="tooltip" title="{{ field.description }}"></i>
+                    {% endif %}
+                    {% if field.required %}*{% endif %}
+                </label>
+                <input type="number" class="form-control" name="{{ field.name }}" id="{{ field.name }}" {% if field.value is not null %}value="{{ field.value }}"{% endif %} {% if field.min is not null %} min="{{ field.min }}"{% endif %} {% if field.max is not null %} max="{{ field.max }}"{% endif %}>
+            </div>
+        {% elseif field.type == 'checkbox-group' %}
+            <div class="mb-3">
+                <div>
+                    {{ field.label }}
+                    {% if field.description is not empty %}
+                        <i class="fa fa-question-circle" data-placement="top" data-toggle="tooltip" title="{{ field.description }}"></i>
+                    {% endif %}
+                    {% if field.required %}*{% endif %}
+                </div>
+                {% for key, value in field.values %}
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" value="{{ value.value }}" name="{{ field.name }}[]" id="{{ field.name }}-{{ key }}" {% if value.selected %}checked="checked"{% endif %}>
+                        <label class="form-check-label" for="{{ field.name }}-{{ key }}">
+                            {{ value.label }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% elseif field.type == 'radio-group' %}
+            <div class="mb-3">
+                <div>
+                    {{ field.label }}
+                    {% if field.description is not empty %}
+                        <i class="fa fa-question-circle" data-placement="top" data-toggle="tooltip" title="{{ field.description }}"></i>
+                    {% endif %}
+                    {% if field.required %}*{% endif %}
+                </div>
+                {% for key, value in field.values %}
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" value="{{ value.value }}" name="{{ field.name }}[]" id="{{ field.name }}-{{ key }}" {% if value.selected %}checked="checked"{% endif %}>
+                        <label class="form-check-label" for="{{ field.name }}-{{ key }}">
+                            {{ value.label }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% elseif field.type == 'date' %}
+            <div class="mb-3">
+                <div class="form-group">
+                    <label for="{{ field.name }}">
+                        {{ field.label }}
+                        {% if field.description is not empty %}
+                            <i class="fa fa-question-circle" data-placement="top" data-toggle="tooltip" title="{{ field.description }}"></i>
+                        {% endif %}
+                        {% if field.required %}*{% endif %}
+                    </label>
+                    <div class="input-group datetimepicker">
+                        <input type="text" class="form-control" name="{{ field.name }}" id="{{ field.name }}" placeholder="{{ field.placeholder }}" {% if field.value is not null %}value="{{ field.value }}"{% endif %} {% if field.required %}required{% endif %}>
+                        <div class="input-group-append">
+                        <span class="input-group-text input-group-addon">
+                            <span class="fa fa-calendar"></span>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elseif field.type == 'select' %}
+            <div class="mb-3">
+                <label for="{{ field.name }}">
+                    {{ field.label }}
+                    {% if field.description is not empty %}
+                        <i class="fa fa-question-circle" data-placement="top" data-toggle="tooltip" title="{{ field.description }}"></i>
+                    {% endif %}
+                    {% if field.required %}*{% endif %}
+                </label>
+                <select class="custom-select formSelect" id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required{% endif %}>
+                    {% for value in field.values %}
+                        <option value="{{ value.value }}" {% if value.selected %}selected="selected"{% endif %}>{{ value.label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Register</button>
+</form>

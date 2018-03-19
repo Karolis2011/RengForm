@@ -225,7 +225,7 @@ class Workshop
     }
 
     /**
-     * @return mixed
+     * @return Category
      */
     public function getCategory()
     {
@@ -233,7 +233,7 @@ class Workshop
     }
 
     /**
-     * @param mixed $category
+     * @param Category $category
      */
     public function setCategory($category): void
     {
@@ -241,7 +241,7 @@ class Workshop
     }
 
     /**
-     * @return mixed
+     * @return FormConfig
      */
     public function getFormConfig()
     {
@@ -249,7 +249,7 @@ class Workshop
     }
 
     /**
-     * @param mixed $formConfig
+     * @param FormConfig $formConfig
      */
     public function setFormConfig($formConfig): void
     {

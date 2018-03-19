@@ -95,6 +95,10 @@ module.exports = function (grunt) {
                     {
                         src: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
                         dest: 'public/style/css/bootstrap/bootstrap.min.css'
+                    },
+                    {
+                        src: 'node_modules/popper.js/dist/umd/popper.min.js',
+                        dest: 'public/js/popper/popper.min.js'
                     }
                 ]
             },
