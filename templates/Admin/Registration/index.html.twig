@@ -1,0 +1,25 @@
+{% extends 'Admin/base.html.twig' %}
+
+{% block title %}{{ workshop.title }} | Registrations{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Registrations to {{ workshop.title }}</h1>
+    </div>
+    <table id="records" class="table table-sm table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>{#TODO: remove column#}
+            <th>Registration Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for registration in workshop.registrations %}
+            <tr>
+                <td>{{ registration.id }}</td>{#TODO: remove column#}
+                <td>{{ registration.created|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

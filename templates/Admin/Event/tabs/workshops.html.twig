@@ -14,7 +14,7 @@
         {% for workshop in workshops %}
             <tr class="expandable-row" data-toggle="collapse" data-target="#collapse_{{ workshop.id }}"
                 aria-expanded="false" aria-controls="collapseExample">
-                <td>{{ workshop.id }}</td>
+                <td>{{ workshop.id }}</td>{#TODO: remove column#}
                 <td>{{ workshop.title }}</td>
                 <td>{{ workshop.category.title }}</td>
                 <td>{{ workshop.startTime|date('Y-m-d H:i:s') }}</td>
@@ -44,6 +44,9 @@
                             <li class="list-group-item">
                                 <a class="btn btn-primary" href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
                                     Edit
+                                </a>
+                                <a class="btn btn-primary" href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
+                                    View registrations
                                 </a>
                             </li>
                         </ul>

@@ -8,7 +8,7 @@
     "jquery": "^3.3.1",
     "pc-bootstrap4-datetimepicker": "^4.17.50",
     "popper.js": "^1.14.1",
-    "select2": "^4.0.4",
+    "select2": "^4.0.5",
     "select2-bootstrap4-theme": "^1.0.0",
     "sortablejs": "^1.7.0"
   },
