@@ -2,6 +2,12 @@
 
 {% block title %}{{ workshop.title }} | Registrations{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
+
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2">Registrations to {{ workshop.title }}</h1>
@@ -15,9 +21,30 @@
         </thead>
         <tbody>
         {% for registration in workshop.registrations %}
-            <tr>
+            <tr class="expandable-row" data-toggle="collapse" data-target="#collapse_{{ registration.id }}"
+                aria-expanded="false" aria-controls="collapseExample">
                 <td>{{ registration.id }}</td>{#TODO: remove column#}
                 <td>{{ registration.created|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <td class="p-0" colspan="6">
+                    <div class="collapse" id="collapse_{{ registration.id }}">
+                        <ul class="list-group list-group-flush">
+                            {% for field, value in registration.data %}
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <h6 class="my-0">{{ field }}</h6>
+                                    <span>
+                                        {% if value is iterable %}
+                                            {{ value|join(', ') }}
+                                        {% else %}
+                                            {{ value }}
+                                        {% endif %}
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </td>
             </tr>
         {% endfor %}
         </tbody>

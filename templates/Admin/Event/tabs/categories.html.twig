@@ -15,7 +15,7 @@
         {% for category in event.categories %}
             <tr data-id="{{ category.id }}">
                 <td class="category-list-handle" align="center" valign="center"><span class="fa fa-arrows"></span></td>
-                <td>{{ category.id }}</td>
+                <td>{{ category.id }}</td>{#TODO: remove#}
                 <td>{{ category.title }}</td>
                 <td>{{ category.description|length > 30 ? category.description|slice(0, 30) ~ '...' : category.description }}</td>
                 <td>{{ category.workshops|length }}</td>

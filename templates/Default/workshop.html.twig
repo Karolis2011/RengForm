@@ -25,7 +25,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h4 class="mb-3">Registration</h4>
-            {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshop.formConfig.config })) }}
+            <form name="registration" method="post">
+                {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshop.formConfig.config })) }}
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Register</button>
+            </form>
         </div>
     </div>
 

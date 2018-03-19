@@ -28,7 +28,7 @@
         <tbody>
         {% for formConfig in formConfigs %}
             <tr class="clickable-row" data-href="{{ path('form_show', { 'formId': formConfig.id }) }}">
-                <td>{{ formConfig.id }}</td>
+                <td>{{ formConfig.id }}</td>{#TODO: remove#}
                 <td>{{ formConfig.title }}</td>
                 <td>{{ formConfig.description|length > 30 ? formConfig.description|slice(0, 30) ~ '...' : formConfig.description }}</td>
             </tr>
