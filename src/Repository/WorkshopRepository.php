@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Event;
 use App\Entity\Workshop;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -45,17 +44,17 @@ class WorkshopRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Event $event
+     * @param $eventId
      * @return array
      */
-    public function getByEvent(Event $event): array
+    public function getByEventId($eventId): array
     {
         $query = $this->createQueryBuilder('w')
             ->select('w')
             ->leftJoin('w.category', 'c')
             ->leftJoin('c.event', 'e')
-            ->where('e = :event')
-            ->setParameter('event', $event)
+            ->where('e.id = :eventId')
+            ->setParameter('eventId', $eventId)
             ->getQuery();
 
         $workshops = $query->getResult();

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Category;
 use App\Entity\FormConfig;
 use App\Entity\Workshop;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -77,9 +78,12 @@ class WorkshopType extends AbstractType
                 'category',
                 EntityType::class,
                 [
-                    'class'        => Category::class,
-                    'choice_label' => 'title',
-                    'placeholder'  => '',
+                    'class'         => Category::class,
+                    'choice_label'  => 'title',
+                    'placeholder'   => '',
+                    'query_builder' => function (CategoryRepository $repository) use ($options) {
+                        return $repository->createGetByEventIdQuery($options['eventId']);
+                    },
                 ]
             );
     }
@@ -89,8 +93,12 @@ class WorkshopType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Workshop::class,
-        ]);
+        $resolver
+            ->setDefaults([
+                'data_class' => Workshop::class,
+            ])
+            ->setRequired([
+                'eventId'
+            ]);
     }
 }

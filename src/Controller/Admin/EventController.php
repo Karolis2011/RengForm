@@ -101,7 +101,7 @@ class EventController extends Controller
             throw new \Exception(sprintf('Event by id %s not found', $eventId));
         }
 
-        $workshops = $this->workshopRepository->getByEvent($event);
+        $workshops = $this->workshopRepository->getByEventId($event->getId());
 
         return $this->render(
             'Admin/Event/show.html.twig',

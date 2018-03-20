@@ -27,9 +27,13 @@ class CategoryParser implements Parser
             ],
         ];
 
-        foreach ($object->getWorkshops() as $workshop) {
-            $data[] = [];
-            $data = array_merge($data, WorkshopParser::parse($workshop));
+        if (!empty($object->getWorkshops())) {
+            foreach ($object->getWorkshops() as $workshop) {
+                $data[] = [];
+                $data = array_merge($data, WorkshopParser::parse($workshop));
+            }
+        } else {
+            $data[] = ['No workshops in category'];
         }
 
         return $data;

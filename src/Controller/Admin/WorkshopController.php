@@ -39,15 +39,21 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @Route("/workshop/create", name="workshop_create")
+     * @Route("/event/{eventId}/workshop/create", name="workshop_create")
+     * @param         $eventId
      * @param Request $request
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
-    public function create(Request $request)
+    public function create($eventId, Request $request)
     {
         $workshop = new Workshop();
-        $form = $this->createForm(WorkshopType::class, $workshop);
+        $form = $this->createForm(
+            WorkshopType::class,
+            $workshop,
+            [
+                'eventId' => $eventId,
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -85,7 +91,13 @@ class WorkshopController extends Controller
             throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
         }
 
-        $form = $this->createForm(WorkshopType::class, $workshop);
+        $form = $this->createForm(
+            WorkshopType::class,
+            $workshop,
+            [
+                'eventId' => $workshop->getCategory()->getEvent()->getId(),
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

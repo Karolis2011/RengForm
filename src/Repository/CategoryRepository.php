@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class CategoryRepository extends ServiceEntityRepository
@@ -41,5 +42,20 @@ class CategoryRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    /**
+     * @param $eventId
+     * @return QueryBuilder
+     */
+    public function createGetByEventIdQuery($eventId): QueryBuilder
+    {
+        $builder = $this->createQueryBuilder('c')
+            ->select('c')
+            ->leftJoin('c.event', 'e')
+            ->where('e.id = :eventId')
+            ->setParameter('eventId', $eventId);
+
+        return $builder;
     }
 }

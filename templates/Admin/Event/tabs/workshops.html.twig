@@ -42,10 +42,12 @@
                                 <span>{{ workshop.description }}</span>
                             </li>
                             <li class="list-group-item">
-                                <a class="btn btn-primary" href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
+                                <a class="btn btn-primary"
+                                   href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
                                     Edit
                                 </a>
-                                <a class="btn btn-primary" href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
+                                <a class="btn btn-primary"
+                                   href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
                                     View registrations
                                 </a>
                             </li>
@@ -60,5 +62,12 @@
     <b>No workshops</b>
 {% endif %}
 <div>
-    <a class="btn btn-primary" href="{{ path('workshop_create') }}">Add</a>
+    {% if event.categories is empty %}
+        <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
+                title="Categories required">
+            Add
+        </button>
+    {% else %}
+        <a class="btn btn-primary" href="{{ path('workshop_create', {'eventId': event.id}) }}">Add</a>
+    {% endif %}
 </div>

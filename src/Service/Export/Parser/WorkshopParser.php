@@ -21,38 +21,43 @@ class WorkshopParser implements Parser
             throw new \Exception(sprintf('Workshop expected, got %s', get_class($object)));
         }
 
-        $fieldList = [];
-
-        foreach ($object->getFormConfig()->getConfig() as $field) {
-            if ($field['type'] != 'paragraph') {
-                $fieldList[$field['name']] = $field['label'];
-            }
-        }
-
         $data = [
             [
                 'Workshop',
                 $object->getTitle(),
             ],
-            ['Registration Date'] + array_values($fieldList),
         ];
 
-        /** @var Registration $registration */
-        foreach ($object->getRegistrations() as $registration) {
-            $row = [
-                $registration->getCreated()->format('Y-m-d H:i:s'),
-            ];
+        if (!empty($object->getRegistrations())) {
+            $fieldList = [];
 
-            $rawData = $registration->getData();
-            foreach (array_keys($fieldList) as $field) {
-                if (is_array($rawData[$field])) {
-                    $row[] = join(', ', $rawData[$field]);
-                } else {
-                    $row[] = $rawData[$field];
+            foreach ($object->getFormConfig()->getConfig() as $field) {
+                if ($field['type'] != 'paragraph') {
+                    $fieldList[$field['name']] = $field['label'];
                 }
             }
 
-            $data[] = $row;
+            $data[] = array_merge(['Registration Date'], array_values($fieldList));
+
+            /** @var Registration $registration */
+            foreach ($object->getRegistrations() as $registration) {
+                $row = [
+                    $registration->getCreated()->format('Y-m-d H:i:s'),
+                ];
+
+                $rawData = $registration->getData();
+                foreach (array_keys($fieldList) as $field) {
+                    if (is_array($rawData[$field])) {
+                        $row[] = join(', ', $rawData[$field]);
+                    } else {
+                        $row[] = $rawData[$field];
+                    }
+                }
+
+                $data[] = $row;
+            }
+        } else {
+            $data[] = ['No registrations in workshop'];
         }
 
         return $data;

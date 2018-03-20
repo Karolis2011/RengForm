@@ -1,4 +1,99 @@
+<div class="modal fade" id="workshopModal" tabindex="-1" role="dialog" aria-labelledby="workshopModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="workshopModalLabel">Choose workshop to download</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ path('download_registrations_workshop') }}" id="workshopModalForm">
+                <div class="modal-body">
+                    <select class="custom-select formSelect" name="workshop" id="workshopModalSelect" required>
+                        {% for workshop in workshops %}
+                            {% if workshop.registrations is empty %}
+                                <option value="{{ workshop.id }}" disabled="disabled">
+                                    {{ workshop.title }} - Empty
+                                </option>
+                            {% else %}
+                                <option value="{{ workshop.id }}">
+                                    {{ workshop.title }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Download</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalLabel">Choose category to download</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ path('download_registrations_category') }}" id="categoryModalForm">
+                <div class="modal-body">
+                    <select class="custom-select formSelect" name="category" id="categoryModalSelect" required>
+                        {% for category in event.categories %}
+                            {% if category.workshops is empty %}
+                                <option value="{{ category.id }}" disabled="disabled">
+                                    {{ category.title }} - Empty
+                                </option>
+                            {% else %}
+                                <option value="{{ category.id }}">
+                                    {{ category.title }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Download</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <h4>Download registrations</h4>
-<a class="btn btn-primary" href="#">Single Workshop</a> {#TODO#}
-<a class="btn btn-primary" href="#">Single Category</a> {#TODO#}
-<a class="btn btn-primary" href="{{ path('download_registrations_event', {'eventId': event.id}) }}">All</a>
+{% if workshops is empty %}
+    <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
+            title="No workshops">
+        Single Workshop
+    </button>
+{% else %}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#workshopModal">
+        Single Workshop
+    </button>
+{% endif %}
+{% if event.categories is empty %}
+    <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
+            title="No categories">
+        Single Category
+    </button>
+{% else %}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryModal">
+        Single Category
+    </button>
+{% endif %}
+{% if event.categories is empty or workshops is empty %}
+    <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
+            title="Event is empty">
+        All
+    </button>
+{% else %}
+    <a class="btn btn-primary" href="{{ path('download_registrations_event', {'eventId': event.id}) }}">All</a>
+{% endif %}
