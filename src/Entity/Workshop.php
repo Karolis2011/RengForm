@@ -33,14 +33,14 @@ class Workshop
     private $place;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="json_array")
      */
-    private $startTime;
+    private $startTimes = [];
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="time")
      */
-    private $endTime;
+    private $duration;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -147,33 +147,41 @@ class Workshop
     /**
      * @return mixed
      */
-    public function getStartTime()
+    public function getStartTimes()
     {
-        return $this->startTime;
+        if (is_array($this->startTimes)) {
+            foreach ($this->startTimes as &$time) {
+                if (is_array($time)) {
+                    $time = new \DateTime($time['date'], new \DateTimeZone($time['timezone']));
+                }
+            }
+        }
+
+        return $this->startTimes;
     }
 
     /**
-     * @param mixed $startTime
+     * @param mixed $startTimes
      */
-    public function setStartTime($startTime): void
+    public function setStartTimes($startTimes): void
     {
-        $this->startTime = $startTime;
+        $this->startTimes = $startTimes;
     }
 
     /**
      * @return mixed
      */
-    public function getEndTime()
+    public function getDuration()
     {
-        return $this->endTime;
+        return $this->duration;
     }
 
     /**
-     * @param mixed $endTime
+     * @param mixed $duration
      */
-    public function setEndTime($endTime): void
+    public function setDuration($duration): void
     {
-        $this->endTime = $endTime;
+        $this->duration = $duration;
     }
 
     /**

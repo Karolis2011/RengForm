@@ -70,7 +70,8 @@ class WorkshopController extends Controller
         return $this->render(
             'Admin/Workshop/create.html.twig',
             [
-                'form' => $form->createView(),
+                'form'   => $form->createView(),
+                'errors' => $form->getErrors(true),
             ]
         );
     }
@@ -116,6 +117,7 @@ class WorkshopController extends Controller
             [
                 'form'     => $form->createView(),
                 'workshop' => $workshop,
+                'errors'   => $form->getErrors(),
             ]
         );
     }

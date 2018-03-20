@@ -5,8 +5,7 @@
             <th>ID</th>{#TODO: remove column#}
             <th>Title</th>
             <th>Category</th>
-            <th>Start Time</th>
-            <th>End Time</th>
+            <th>Duration</th>
             <th>Entries</th>
         </tr>
         </thead>
@@ -17,8 +16,7 @@
                 <td>{{ workshop.id }}</td>{#TODO: remove column#}
                 <td>{{ workshop.title }}</td>
                 <td>{{ workshop.category.title }}</td>
-                <td>{{ workshop.startTime|date('Y-m-d H:i:s') }}</td>
-                <td>{{ workshop.endTime|date('Y-m-d H:i:s') }}</td>
+                <td>{{ workshop.duration|date('H:i') }}</td>
                 <td>{{ workshop.entries }}</td>
             </tr>
             <tr>
@@ -36,6 +34,14 @@
                             <li class="list-group-item d-flex justify-content-between">
                                 <h6 class="my-0">Form</h6>
                                 <span>{{ workshop.formConfig.title }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <h6 class="my-0">Times</h6>
+                                <div>
+                                    {% for time in workshop.startTimes if workshop.startTimes is not empty %}
+                                        <span class="badge badge-primary">{{ time|date('Y-m-d H:i:s') }}</span>
+                                    {% endfor %}
+                                </div>
                             </li>
                             <li class="list-group-item">
                                 <h6 class="my-0">Description</h6>
