@@ -33,11 +33,6 @@ class Workshop
     private $place;
 
     /**
-     * @ORM\Column(type="json_array")
-     */
-    private $startTimes = [];
-
-    /**
      * @ORM\Column(type="time")
      */
     private $duration;
@@ -70,22 +65,22 @@ class Workshop
     private $formConfig;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="workshop")
-     */
-    private $registrations;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Location")
      * @ORM\JoinColumn(name="locationId")
      */
     private $location;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\WorkshopTime", mappedBy="workshop", cascade={"persist"})
+     */
+    private $times;
+
+    /**
      * Workshop constructor.
      */
     public function __construct()
     {
-        $this->registrations = new ArrayCollection();
+        $this->times = new ArrayCollection();
     }
 
     /**
@@ -142,30 +137,6 @@ class Workshop
     public function setPlace($place): void
     {
         $this->place = $place;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStartTimes()
-    {
-        if (is_array($this->startTimes)) {
-            foreach ($this->startTimes as &$time) {
-                if (is_array($time)) {
-                    $time = new \DateTime($time['date'], new \DateTimeZone($time['timezone']));
-                }
-            }
-        }
-
-        return $this->startTimes;
-    }
-
-    /**
-     * @param mixed $startTimes
-     */
-    public function setStartTimes($startTimes): void
-    {
-        $this->startTimes = $startTimes;
     }
 
     /**
@@ -267,14 +238,6 @@ class Workshop
     /**
      * @return mixed
      */
-    public function getRegistrations()
-    {
-        return $this->registrations;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getLocation()
     {
         return $this->location;
@@ -289,10 +252,30 @@ class Workshop
     }
 
     /**
-     * @param int $count
+     * @return mixed
      */
-    public function increaseEntries(int $count = 1)
+    public function getTimes()
     {
-        $this->entries += $count;
+        return $this->times;
+    }
+
+    /**
+     * @param WorkshopTime $time
+     */
+    public function addTime($time)
+    {
+        if (!$this->times->contains($time)) {
+            $this->times->add($time);
+        }
+        $time->setWorkshop($this);
+    }
+
+    /**
+     * @param WorkshopTime $time
+     */
+    public function removeTime($time)
+    {
+        $this->times->remove($time);
+        $time->setWorkshop(null);
     }
 }

@@ -12,15 +12,17 @@
                 <div class="modal-body">
                     <select class="custom-select formSelect" name="workshop" id="workshopModalSelect" required>
                         {% for workshop in workshops %}
-                            {% if workshop.registrations is empty %}
-                                <option value="{{ workshop.id }}" disabled="disabled">
-                                    {{ workshop.title }} - Empty
-                                </option>
-                            {% else %}
-                                <option value="{{ workshop.id }}">
-                                    {{ workshop.title }}
-                                </option>
-                            {% endif %}
+                            {% for time in workshop.times %}
+                                {% if time.registrations is empty %}
+                                    <option value="{{ time.id }}" disabled="disabled">
+                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i:s') }}) - Empty
+                                    </option>
+                                {% else %}
+                                    <option value="{{ time.id }}">
+                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i:s') }})
+                                    </option>
+                                {% endif %}
+                            {% endfor %}
                         {% endfor %}
                     </select>
                 </div>

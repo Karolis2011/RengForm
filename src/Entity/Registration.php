@@ -27,10 +27,10 @@ class Registration
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Workshop", inversedBy="registrations")
-     * @ORM\JoinColumn(name="workshopId")
+     * @ORM\ManyToOne(targetEntity="App\Entity\WorkshopTime", inversedBy="registrations")
+     * @ORM\JoinColumn(name="workshopTimeId")
      */
-    private $workshop;
+    private $workshopTime;
 
     /**
      * @return mixed
@@ -75,16 +75,16 @@ class Registration
     /**
      * @return mixed
      */
-    public function getWorkshop()
+    public function getWorkshopTime()
     {
-        return $this->workshop;
+        return $this->workshopTime;
     }
 
     /**
-     * @param mixed $workshop
+     * @param mixed $workshopTime
      */
-    public function setWorkshop($workshop): void
+    public function setWorkshopTime($workshopTime): void
     {
-        $this->workshop = $workshop;
+        $this->workshopTime = $workshopTime;
     }
 }

@@ -6,6 +6,8 @@ use App\Entity\Workshop;
 use App\Form\WorkshopType;
 use App\Repository\CategoryRepository;
 use App\Repository\WorkshopRepository;
+use App\Repository\WorkshopTimeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,14 +30,24 @@ class WorkshopController extends Controller
     private $categoryRepository;
 
     /**
+     * @var WorkshopTimeRepository
+     */
+    private $workshopTimeRepository;
+
+    /**
      * WorkshopController constructor.
      * @param WorkshopRepository $repository
      * @param CategoryRepository $categoryRepository
+     * @param WorkshopTimeRepository $workshopTimeRepository
      */
-    public function __construct(WorkshopRepository $repository, CategoryRepository $categoryRepository)
-    {
+    public function __construct(
+        WorkshopRepository $repository,
+        CategoryRepository $categoryRepository,
+        WorkshopTimeRepository $workshopTimeRepository
+    ) {
         $this->repository = $repository;
         $this->categoryRepository = $categoryRepository;
+        $this->workshopTimeRepository = $workshopTimeRepository;
     }
 
     /**
@@ -99,9 +111,21 @@ class WorkshopController extends Controller
                 'eventId' => $workshop->getCategory()->getEvent()->getId(),
             ]
         );
+
+        $originalTimes = new ArrayCollection();
+        foreach ($workshop->getTimes() as $time) {
+            $originalTimes->add($time);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($originalTimes as $time) {
+                if (false === $workshop->getTimes()->contains($time)) {
+                    $this->workshopTimeRepository->remove($time);
+                }
+            }
+
             $this->repository->update($workshop);
 
             return $this->redirectToRoute(

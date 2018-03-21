@@ -3,9 +3,9 @@
 namespace App\Controller\Event;
 
 use App\Entity\Registration;
-use App\Entity\Workshop;
+use App\Entity\WorkshopTime;
 use App\Repository\RegistrationRepository;
-use App\Repository\WorkshopRepository;
+use App\Repository\WorkshopTimeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class WorkshopController extends Controller
 {
     /**
-     * @var WorkshopRepository
+     * @var WorkshopTimeRepository
      */
     private $repository;
 
@@ -28,61 +28,61 @@ class WorkshopController extends Controller
 
     /**
      * WorkshopController constructor.
-     * @param WorkshopRepository     $repository
+     * @param WorkshopTimeRepository     $repository
      * @param RegistrationRepository $registrationRepository
      */
-    public function __construct(WorkshopRepository $repository, RegistrationRepository $registrationRepository)
+    public function __construct(WorkshopTimeRepository $repository, RegistrationRepository $registrationRepository)
     {
         $this->repository = $repository;
         $this->registrationRepository = $registrationRepository;
     }
 
     /**
-     * @Route("/register/{workshopId}", name="registration")
+     * @Route("/register/{timeId}", name="registration")
      * @param Request $request
-     * @param         $workshopId
+     * @param         $timeId
      * @return Response
      * @throws \Exception
      */
-    public function register(Request $request, $workshopId)
+    public function register(Request $request, $timeId)
     {
-        /** @var Workshop $workshop */
-        $workshop = $this->repository->find($workshopId);
+        /** @var WorkshopTime $workshopTime */
+        $workshopTime = $this->repository->find($timeId);
 
-        if ($workshop === null) {
-            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+        if ($workshopTime === null) {
+            throw new \Exception(sprintf('Workshop by id %s not found', $timeId));
         }
 
         $formData = $request->get('registration', null);
 
-        if ($workshop->getCapacity() !== null && $workshop->getEntries() >= $workshop->getCapacity()) {
+        if (!$workshopTime->isAvailable()) {
             $this->addFlash('error', 'Workshop is full.');
-        } elseif (empty($formData) || !$this->valid($workshop, $formData)) {
+        } elseif (empty($formData) || !$this->valid($workshopTime, $formData)) {
             $this->addFlash('error', 'Registration form is not filled correctly');
         } else {
             $registration = new Registration();
             $registration->setData($formData);
-            $registration->setWorkshop($workshop);
+            $registration->setWorkshopTime($workshopTime);
             $this->registrationRepository->save($registration);
-            $workshop->increaseEntries();
-            $this->repository->save($workshop);
+            $workshopTime->increaseEntries();
+            $this->repository->save($workshopTime);
             $this->addFlash('success', 'Registration successful');
         }
 
         return $this->render(
             'Default/workshop.html.twig',
             [
-                'workshop' => $workshop,
+                'workshopTime' => $workshopTime,
             ]
         );
     }
 
     /**
-     * @param Workshop $workshop
-     * @param array    $formData
+     * @param WorkshopTime $workshopTime
+     * @param array        $formData
      * @return bool
      */
-    private function valid(Workshop $workshop, array $formData): bool
+    private function valid(WorkshopTime $workshopTime, array $formData): bool
     {
         $valid = true;
 

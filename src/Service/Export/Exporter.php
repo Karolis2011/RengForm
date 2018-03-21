@@ -5,6 +5,7 @@ namespace App\Service\Export;
 use App\Entity\Category;
 use App\Entity\Event;
 use App\Entity\Workshop;
+use App\Entity\WorkshopTime;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,6 +18,7 @@ class Exporter
         Event::class    => Parser\EventParser::class,
         Category::class => Parser\CategoryParser::class,
         Workshop::class => Parser\WorkshopParser::class,
+        WorkshopTime::class => Parser\WorkshopTimeParser::class,
     ];
 
     /**

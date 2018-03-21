@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Event;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
-use App\Repository\WorkshopRepository;
+use App\Repository\WorkshopTimeRepository;
 use App\Service\Export\Exporter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -53,20 +53,20 @@ class DownloadController extends Controller
     /**
      * @Route("/download/workshop", name="download_registrations_workshop")
      * @param Request            $request
-     * @param WorkshopRepository $repository
+     * @param WorkshopTimeRepository $repository
      * @return Response
      * @throws \Exception
      */
-    public function workshop(Request $request, WorkshopRepository $repository)
+    public function workshop(Request $request, WorkshopTimeRepository $repository)
     {
-        $workshopId = $request->get('workshop');
-        $workshop = $repository->find($workshopId);
+        $workshopTimeId = $request->get('workshop');
+        $workshopTime = $repository->find($workshopTimeId);
 
-        if ($workshop === null) {
-            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+        if ($workshopTime === null) {
+            throw new \Exception(sprintf('Workshop by id %s not found', $workshopTimeId));
         }
 
-        return $this->exporter->export($workshop);
+        return $this->exporter->export($workshopTime);
     }
 
     /**

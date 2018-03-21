@@ -1,5 +1,13 @@
 {% extends 'Admin/base.html.twig' %}
 
+{% form_theme form _self %}
+
+{% block workshop_time_widget %}
+    {% spaceless %}
+        {{ form_widget(form.startTime, {'attr': {'class': 'form-control'}}) }}
+    {% endspaceless %}
+{% endblock %}
+
 {% block title %}Workshops | {{ workshop.title }} | Update{% endblock %}
 
 {% block stylesheets %}
@@ -46,13 +54,13 @@
                 </div>
             </div>
             <div class="form-group">
-                {{ form_label(form.startTimes) }}
+                {{ form_label(form.times) }}
                 <div id="timesList"
-                     data-prototype="{{ form_widget(form.startTimes.vars.prototype)|e }}"
+                     data-prototype="{{ form_widget(form.times.vars.prototype)|e }}"
                      data-widget-tags="{{ '<div class="input-group date">__widget__<div class="input-group-append"><span class="input-group-text input-group-addon"><span class="fa fa-calendar"></span></span><span class="input-group-text removeTime"><span class="fa fa-times"></span></span></div></div>'|e }}">
-                    {% for startTime in form.startTimes %}
+                    {% for time in form.times %}
                         <div class="input-group date datetimepicker">
-                            {{ form_widget(startTime, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_widget(time) }}
                             <div class="input-group-append">
                                 <span class="input-group-addon input-group-text">
                                     <span class="fa fa-calendar"></span>
@@ -127,6 +135,7 @@
             });
 
             $(".removeTime").click(function () {
+                console.log('Remove clicked');
                 var item = $(this).parent().parent();
                 item.remove();
             });

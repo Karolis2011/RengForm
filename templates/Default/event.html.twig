@@ -13,11 +13,11 @@
 </head>
 
 <body class="bg-light">
-<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">{{ event.title }}</h1>
-    <p class="lead">{{ event.description }}</p>
-</div>
 <div class="container">
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">{{ event.title }}</h1>
+        <p class="lead">{{ event.description }}</p>
+    </div>
     {% for category in event.categories if event.categories is not empty %}
         <div class="card">
             <div class="card-header">
@@ -30,18 +30,24 @@
                         <thead>
                         <tr>
                             <th>Workshop</th>
+                            <th>Start Time</th>
                             <th>Duration</th>
-                            <th>Times</th>
+                            <th>Places left</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for workshop in category.workshops %}
-                            <tr class="clickable-row"
-                                data-href="{{ path('registration', {'workshopId': workshop.id}) }}">
-                                <td>{{ workshop.title }}</td>
-                                <td>Duration TBA</td> {#TODO: add duration#}
-                                <td>Times TBA</td> {#TODO: add times#}
-                            </tr>
+                            {% for time in workshop.times %}
+                                <tr class="clickable-row"
+                                    data-href="{{ path('registration', {'timeId': time.id}) }}">
+                                    <td>{{ workshop.title }}</td>
+                                    <td>{{ time.startTime|date('Y-m-d H:i:s') }}</td>
+                                    <td>{{ workshop.duration|date('H:i') }}</td>
+                                    <td>
+                                        <span class="badge badge-pill {% if time.available %}badge-primary{% else %}badge-secondary{% endif %}">{{ time.entriesLeft }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                         {% endfor %}
                         </tbody>
                     </table>

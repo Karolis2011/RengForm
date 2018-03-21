@@ -9,7 +9,6 @@ use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -45,14 +44,10 @@ class WorkshopType extends AbstractType
                 TextType::class
             )
             ->add(
-                'startTimes',
+                'times',
                 CollectionType::class,
                 [
-                    'entry_type'    => DateTimeType::class,
-                    'entry_options' => [
-                        'widget' => 'single_text',
-                        'html5'  => false,
-                    ],
+                    'entry_type'    => WorkshopTimeType::class,
                     'allow_add'     => true,
                     'allow_delete'  => true,
                     'required'      => true,

@@ -6,7 +6,7 @@
             <th>Title</th>
             <th>Category</th>
             <th>Duration</th>
-            <th>Entries</th>
+            <th>Capacity</th>
         </tr>
         </thead>
         <tbody>
@@ -17,7 +17,7 @@
                 <td>{{ workshop.title }}</td>
                 <td>{{ workshop.category.title }}</td>
                 <td>{{ workshop.duration|date('H:i') }}</td>
-                <td>{{ workshop.entries }}</td>
+                <td>{{ workshop.capacity }}</td>
             </tr>
             <tr>
                 <td class="p-0" colspan="6">
@@ -28,18 +28,14 @@
                                 <span>{{ workshop.place }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
-                                <h6 class="my-0">Capacity</h6>
-                                <span>{{ workshop.capacity ? workshop.capacity : 'Unlimited' }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
                                 <h6 class="my-0">Form</h6>
                                 <span>{{ workshop.formConfig.title }}</span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between">
                                 <h6 class="my-0">Times</h6>
                                 <div>
-                                    {% for time in workshop.startTimes if workshop.startTimes is not empty %}
-                                        <span class="badge badge-primary">{{ time|date('Y-m-d H:i:s') }}</span>
+                                    {% for time in workshop.times %}
+                                        <span class="badge badge-primary">{{ time.startTime|date('Y-m-d H:i:s') }}, {{ time.entries }}</span>
                                     {% endfor %}
                                 </div>
                             </li>

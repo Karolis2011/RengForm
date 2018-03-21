@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Workshop;
+use App\Entity\WorkshopTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -24,6 +25,10 @@ class WorkshopRepository extends ServiceEntityRepository
     public function save(Workshop $workshop, bool $flush = true): void
     {
         $workshop->setCreated(new \DateTime());
+        /** @var WorkshopTime $time */
+        foreach ($workshop->getTimes() as $time) {
+            $time->setWorkshop($workshop);
+        }
 
         $this->_em->persist($workshop);
         if ($flush) {
@@ -37,6 +42,11 @@ class WorkshopRepository extends ServiceEntityRepository
      */
     public function update(Workshop $workshop, bool $flush = true): void
     {
+        /** @var WorkshopTime $time */
+        foreach ($workshop->getTimes() as $time) {
+            $time->setWorkshop($workshop);
+        }
+
         $this->_em->merge($workshop);
         if ($flush) {
             $this->_em->flush();

@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ workshop.category.event.title }} | {{ workshop.title }}</title>
+    <title>{{ workshopTime.workshop.category.event.title }} | {{ workshopTime.workshop.title }} | {{ workshopTime.startTime|date('Y-m-d H:i:s') }}</title>
 
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
@@ -18,15 +18,16 @@
 <body class="bg-light">
 <div class="container">
     <div class="py-5 text-center">
-        <h2>{{ workshop.title }}</h2>
-        <p class="lead">{{ workshop.description }}</p>
+        <h2>{{ workshopTime.workshop.title }}</h2>
+        <h5>{{ workshopTime.startTime|date('Y-m-d H:i:s') }}</h5>
+        <p class="lead">{{ workshopTime.workshop.description }}</p>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h4 class="mb-3">Registration</h4>
             <form name="registration" method="post">
-                {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshop.formConfig.config })) }}
+                {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshopTime.workshop.formConfig.config })) }}
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Register</button>
             </form>
         </div>
@@ -55,7 +56,7 @@
         $('[data-toggle="tooltip"]').tooltip();
 
         $(".datetimepicker").datetimepicker({
-            'format': 'YYYY-MM-DD HH:mm',
+            'format': 'YYYY-MM-DD',
             'showClose': true
         });
 
