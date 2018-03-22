@@ -29,7 +29,7 @@ class WorkshopTimeParser implements Parser
             ],
         ];
 
-        if (!empty($object->getRegistrations())) {
+        if (is_iterable($object->getRegistrations()) && count($object->getRegistrations()) > 0) {
             $fieldList = [];
 
             foreach ($object->getWorkshop()->getFormConfig()->getConfig() as $field) {

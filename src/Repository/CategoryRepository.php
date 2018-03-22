@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -28,8 +29,10 @@ class CategoryRepository extends ServiceEntityRepository
 
         $this->_em->persist($category);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($category);
         }
+        $category->setOrderNo($this->getNextOrderNo($category));
+        $this->_em->flush($category);
     }
 
     /**
@@ -40,7 +43,7 @@ class CategoryRepository extends ServiceEntityRepository
     {
         $this->_em->merge($category);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($category);
         }
     }
 
@@ -57,5 +60,27 @@ class CategoryRepository extends ServiceEntityRepository
             ->setParameter('eventId', $eventId);
 
         return $builder;
+    }
+
+    /**
+     * @param Category $category
+     * @return int|mixed
+     */
+    private function getNextOrderNo(Category $category)
+    {
+        try {
+            $query = $this->createQueryBuilder('c')
+                ->select('COUNT(c)')
+                ->where('c.event = :event')
+                ->andWhere('c.orderNo IS NULL OR c.orderNo = 0')
+                ->setParameter('event', $category->getEvent())
+                ->getQuery();
+
+            $categoriesCount = $query->getSingleScalarResult() + 1;
+        } catch (NonUniqueResultException $e) {
+            $categoriesCount = 0;
+        }
+
+        return $categoriesCount;
     }
 }

@@ -32,7 +32,7 @@ class WorkshopRepository extends ServiceEntityRepository
 
         $this->_em->persist($workshop);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($workshop);
         }
     }
 
@@ -49,7 +49,7 @@ class WorkshopRepository extends ServiceEntityRepository
 
         $this->_em->merge($workshop);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($workshop);
         }
     }
 

@@ -27,7 +27,7 @@ class RegistrationRepository extends ServiceEntityRepository
 
         $this->_em->persist($registration);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($registration);
         }
     }
 
@@ -39,7 +39,7 @@ class RegistrationRepository extends ServiceEntityRepository
     {
         $this->_em->merge($registration);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($registration);
         }
     }
 }

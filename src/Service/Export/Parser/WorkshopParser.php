@@ -22,7 +22,7 @@ class WorkshopParser implements Parser
 
         $data = [];
 
-        if (!empty($object->getTimes())) {
+        if (is_iterable($object->getTimes()) && count($object->getTimes()) > 0) {
             foreach ($object->getTimes() as $workshopTime) {
                 $data[] = [];
                 $data = array_merge($data, WorkshopTimeParser::parse($workshopTime));

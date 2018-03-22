@@ -27,7 +27,7 @@ class FormConfigRepository extends ServiceEntityRepository
 
         $this->_em->persist($formConfig);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($formConfig);
         }
     }
 
@@ -39,7 +39,7 @@ class FormConfigRepository extends ServiceEntityRepository
     {
         $this->_em->merge($formConfig);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($formConfig);
         }
     }
 }

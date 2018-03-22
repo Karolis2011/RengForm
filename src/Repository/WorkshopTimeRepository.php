@@ -37,7 +37,7 @@ class WorkshopTimeRepository extends ServiceEntityRepository
     {
         $this->_em->merge($time);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($time);
         }
     }
 
@@ -45,7 +45,7 @@ class WorkshopTimeRepository extends ServiceEntityRepository
     {
         $this->_em->remove($time);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($time);
         }
     }
 }

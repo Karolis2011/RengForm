@@ -65,7 +65,7 @@ class WorkshopController extends Controller
             $registration->setWorkshopTime($workshopTime);
             $this->registrationRepository->save($registration);
             $workshopTime->increaseEntries();
-            $this->repository->save($workshopTime);
+            $this->repository->update($workshopTime);
             $this->addFlash('success', 'Registration successful');
         }
 

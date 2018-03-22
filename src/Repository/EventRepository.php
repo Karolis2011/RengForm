@@ -27,7 +27,7 @@ class EventRepository extends ServiceEntityRepository
 
         $this->_em->persist($event);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($event);
         }
     }
 
@@ -39,7 +39,7 @@ class EventRepository extends ServiceEntityRepository
     {
         $this->_em->merge($event);
         if ($flush) {
-            $this->_em->flush();
+            $this->_em->flush($event);
         }
     }
 }

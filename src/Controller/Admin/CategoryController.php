@@ -62,8 +62,6 @@ class CategoryController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $category->setEvent($event);
             $this->repository->save($category);
-            $category->setOrderNo($category->getId());
-            $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute(
                 'event_show',
