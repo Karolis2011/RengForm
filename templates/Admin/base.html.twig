@@ -16,14 +16,39 @@
 </head>
 
 <body>
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap navbar-expand-sm p-0">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('index') }}">RengForm</a>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="{{ path('logout') }}">Sign out</a>
-        </li>
-    </ul>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-sm-auto px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{{ path('user_profile') }}">Profile</a>
+            </li>
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{{ path('logout') }}">Sign out</a>
+            </li>
+        </ul>
+    </div>
 </nav>
+
+{#<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 navbar-expand-sm">#}
+    {#<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('index') }}">RengForm</a>#}
+    {#<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+        {#<span class="navbar-toggler-icon"></span>#}
+    {#</button>#}
+    {#<div class="collapse navbar-collapse" id="navbarNav">#}
+        {#<ul class="navbar-nav px-3">#}
+            {#<li class="nav-item text-nowrap">#}
+                {#<a class="nav-link" href="{{ path('user_profile') }}">My Profile</a>#}
+            {#</li>#}
+            {#<li class="nav-item text-nowrap">#}
+                {#<a class="nav-link" href="{{ path('logout') }}">Sign out</a>#}
+            {#</li>#}
+        {#</ul>#}
+    {#</div>#}
+{#</nav>#}
 
 <div class="container-fluid">
     <div class="row">

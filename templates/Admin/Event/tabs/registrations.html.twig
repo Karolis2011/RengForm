@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ path('download_registrations_workshop') }}" id="workshopModalForm">
+            <form action="{{ path('download_registrations_workshop') }}" method="post" id="workshopModalForm">
                 <div class="modal-body">
                     <select class="custom-select formSelect" name="workshop" id="workshopModalSelect" required>
                         {% for workshop in workshops %}
@@ -45,7 +45,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ path('download_registrations_category') }}" id="categoryModalForm">
+            <form action="{{ path('download_registrations_category') }}" method="post" id="categoryModalForm">
                 <div class="modal-body">
                     <select class="custom-select formSelect" name="category" id="categoryModalSelect" required>
                         {% for category in event.categories %}

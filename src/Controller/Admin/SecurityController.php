@@ -69,9 +69,38 @@ class SecurityController extends Controller
         // last username entered by the user
         $lastUsername = $authUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', array(
+        return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error'         => $error,
-        ));
+        ]);
+    }
+
+    /**
+     * @Route("/change_password", name="change_password")
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @return RedirectResponse
+     */
+    public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        if (!$passwordEncoder->isPasswordValid($this->getUser(), $request->get('old-password'))) {
+            $this->addFlash('danger', 'Old username does not match!');
+        } elseif (empty($request->get('new-password'))) {
+            $this->addFlash('danger', 'No new password entered!');
+        } elseif ($request->get('new-password') != $request->get('new-password-2')) {
+            $this->addFlash('danger', 'New password does not match!');
+        } elseif ($request->get('new-password') == $request->get('old-password')) {
+            $this->addFlash('danger', 'New password is same as old one!');
+        } else {
+            /** @var User $user */
+            $user = $this->getUser();
+            $user->setPassword($passwordEncoder->encodePassword($user, $request->get('new-password')));
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash('success', 'Password changed!');
+        }
+
+        return $this->redirectToRoute('user_profile');
     }
 }
