@@ -20,40 +20,32 @@
                 <td>{{ workshop.capacity }}</td>
             </tr>
             <tr>
-                <td class="p-0" colspan="6">
+                <td class="p-0" colspan="5">
                     <div class="collapse" id="collapse_{{ workshop.id }}">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between">
-                                <h6 class="my-0">Place</h6>
-                                <span>{{ workshop.place }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <h6 class="my-0">Form</h6>
-                                <span>{{ workshop.formConfig.title }}</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <h6 class="my-0">Times</h6>
-                                <div>
-                                    {% for time in workshop.times %}
-                                        <span class="badge badge-primary">{{ time.startTime|date('Y-m-d H:i:s') }}, {{ time.entries }}</span>
-                                    {% endfor %}
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <h6 class="my-0">Description</h6>
-                                <span>{{ workshop.description }}</span>
-                            </li>
-                            <li class="list-group-item">
-                                <a class="btn btn-primary"
-                                   href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
-                                    Edit
-                                </a>
-                                <a class="btn btn-primary"
-                                   href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
-                                    View registrations
-                                </a>
-                            </li>
-                        </ul>
+                        <dl class="row px-2">
+                            <dt class="col-md-3">Place</dt>
+                            <dd class="col-md-9">{{ workshop.place }}</dd>
+                            <dt class="col-md-3">Form</dt>
+                            <dd class="col-md-9"><a href="{{ path('form_show', {'formId': workshop.formConfig.id}) }}">{{ workshop.formConfig.title }}</a></dd>
+                            <dt class="col-md-3">Times</dt>
+                            <dd class="col-md-9">
+                                {% for time in workshop.times %}
+                                    <span class="badge badge-primary">{{ time.startTime|date('Y-m-d H:i:s') }}, {{ time.entries }}</span>
+                                {% endfor %}
+                            </dd>
+                            <dt class="col-md-3">Description</dt>
+                            <dd class="col-md-9">{{ workshop.description }}</dd>
+                        </dl>
+                        <div class="px-2 pb-2">
+                            <a class="btn btn-primary"
+                               href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
+                                Edit
+                            </a>
+                            <a class="btn btn-primary"
+                               href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
+                                View registrations
+                            </a>
+                        </div>
                     </div>
                 </td>
             </tr>
