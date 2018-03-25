@@ -40,23 +40,16 @@ class MenuConfigBuilder
     ];
 
     /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
      * @var RequestStack
      */
     private $requestStack;
 
     /**
      * MenuBuilder constructor.
-     * @param \Twig_Environment $twig
-     * @param RequestStack      $requestStack
+     * @param RequestStack $requestStack
      */
-    public function __construct(\Twig_Environment $twig, RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->twig = $twig;
         $this->requestStack = $requestStack;
     }
 

@@ -11,6 +11,7 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
         <link rel="stylesheet" href="{{ asset('style/css/custom/dashboard.css') }}">
     {% endblock %}
 </head>
@@ -24,6 +25,20 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-sm-auto px-3">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    {% trans %}Language{% endtrans %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="languageDropdown" style="min-width: 0">
+                    <a class="dropdown-item" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
+                        <span class="flag-icon flag-icon-gb"></span>
+                    </a>
+                    <a class="dropdown-item" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
+                        <span class="flag-icon flag-icon-lt"></span>
+                    </a>
+                </div>
+            </li>
             <li class="nav-item text-nowrap">
                 <a class="nav-link" href="{{ path('user_profile') }}">{% trans %}Profile{% endtrans %}</a>
             </li>
