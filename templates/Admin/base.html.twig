@@ -33,23 +33,6 @@
     </div>
 </nav>
 
-{#<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 navbar-expand-sm">#}
-    {#<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('index') }}">RengForm</a>#}
-    {#<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
-        {#<span class="navbar-toggler-icon"></span>#}
-    {#</button>#}
-    {#<div class="collapse navbar-collapse" id="navbarNav">#}
-        {#<ul class="navbar-nav px-3">#}
-            {#<li class="nav-item text-nowrap">#}
-                {#<a class="nav-link" href="{{ path('user_profile') }}">My Profile</a>#}
-            {#</li>#}
-            {#<li class="nav-item text-nowrap">#}
-                {#<a class="nav-link" href="{{ path('logout') }}">Sign out</a>#}
-            {#</li>#}
-        {#</ul>#}
-    {#</div>#}
-{#</nav>#}
-
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -59,6 +42,15 @@
         </nav>
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             {% block body %}
             {% endblock %}
         </main>
