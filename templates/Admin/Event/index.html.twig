@@ -1,6 +1,6 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Events{% endblock %}
+{% block title %}{% trans %}Events{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
@@ -10,10 +10,10 @@
 
 {% block body %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Events</h1>
+        <h1 class="h2">{% trans %}Events{% endtrans %}</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_create') }}">Create</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_create') }}">{% trans %}Create{% endtrans %}</a>
             </div>
         </div>
     </div>
@@ -21,11 +21,11 @@
         <thead>
         <tr>
             <th>ID</th>{#TODO: remove column#}
-            <th>Title</th>
-            <th>Date</th>
-            <th>End Date</th>
-            <th>Place</th>
-            <th>Description</th>
+            <th>{% trans %}Title{% endtrans %}</th>
+            <th>{% trans %}Date{% endtrans %}</th>
+            <th>{% trans %}End date{% endtrans %}</th>
+            <th>{% trans %}Place{% endtrans %}</th>
+            <th>{% trans %}Description{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>

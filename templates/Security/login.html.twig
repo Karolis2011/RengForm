@@ -1,23 +1,24 @@
 {% extends 'Security/base.html.twig' %}
 
-{% block title %}Log in{% endblock %}
+{% block title %}{% trans %}Log in{% endtrans %}{% endblock %}
 
 {% block body %}
     <form class="form-signin" action="{{ path('login') }}" method="post">
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <h1 class="h3 mb-3 font-weight-normal">{% trans %}Please sign in{% endtrans %}</h1>
         {% if error %}
             <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
-        <label for="inputUsername" class="sr-only">Username</label>
+        <label for="inputUsername" class="sr-only">{% trans %}Username{% endtrans %}</label>
         <input type="text" id="inputUsername" class="form-control" value="{{ last_username }}" name="_username"
-               placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" name="_password" placeholder="Password" required>
+               placeholder="{% trans %}Username{% endtrans %}" required autofocus>
+        <label for="inputPassword" class="sr-only">{% trans %}Password{% endtrans %}</label>
+        <input type="password" id="inputPassword" class="form-control" name="_password"
+               placeholder="{% trans %}Password{% endtrans %}" required>
         <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input type="checkbox" value="remember-me"> {% trans %}Remember me{% endtrans %}
         </label>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a class="btn btn-secondary btn-block" href="{{ path('register') }}">Register</a>
-        <a class="btn btn-secondary btn-block" href="#">I forgot my password</a>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans %}Sign in{% endtrans %}</button>
+        <a class="btn btn-secondary btn-block" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>
+        <a class="btn btn-secondary btn-block" href="#">{% trans %}I forgot my password{% endtrans %}</a>
     </form>
 {% endblock %}

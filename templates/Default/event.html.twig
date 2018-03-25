@@ -18,21 +18,21 @@
         <h1 class="display-4">{{ event.title }}</h1>
         <p class="lead">{{ event.description }}</p>
     </div>
-    {% for category in event.categories if event.categories is not empty %}
-        <div class="card mt-2">
-            <div class="card-header">
-                <h5 class="card-title">{{ category.title }}</h5>
-            </div>
-            <div class="card-body">
-                <p>{{ category.description }}</p>
-                {% if category.workshops is not empty %}
+    {% for category in event.categories if not event.empty %}
+        {% if category.workshops is not empty %}
+            <div class="card mt-2">
+                <div class="card-header">
+                    <h5 class="card-title">{{ category.title }}</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ category.description }}</p>
                     <table class="table table-sm table-striped table-hover">
                         <thead>
                         <tr>
-                            <th>Workshop</th>
-                            <th>Start Time</th>
-                            <th>Duration</th>
-                            <th>Places left</th>
+                            <th>{% trans %}Workshop{% endtrans %}</th>
+                            <th>{% trans %}Start Time{% endtrans %}</th>
+                            <th>{% trans %}Duration{% endtrans %}</th>
+                            <th>{% trans %}Places left{% endtrans %}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -47,7 +47,7 @@
                                         {% if workshop.capacity is not null %}
                                             <span class="badge badge-pill {% if time.available %}badge-primary{% else %}badge-secondary{% endif %}">{{ time.entriesLeft }}</span>
                                         {% else %}
-                                            Unlimited
+                                            {% trans %}Unlimited{% endtrans %}
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -55,21 +55,19 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                {% else %}
-                    <p>No workshops in category yet.</p>
-                {% endif %}
+                </div>
             </div>
-        </div>
+        {% endif %}
     {% else %}
-        <p>No categories in event yet.</p>
+        <p>{% trans %}Event is empty{% endtrans %}.</p>
     {% endfor %}
 
     <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">&copy; 2018 RengForm</p>
         <ul class="list-inline">
-            <li class="list-inline-item"><a href="#">Privacy</a></li>
-            <li class="list-inline-item"><a href="#">Terms</a></li>
-            <li class="list-inline-item"><a href="#">Support</a></li>
+            <li class="list-inline-item"><a href="#">{% trans %}Privacy{% endtrans %}</a></li>
+            <li class="list-inline-item"><a href="#">{% trans %}Terms{% endtrans %}</a></li>
+            <li class="list-inline-item"><a href="#">{% trans %}Support{% endtrans %}</a></li>
         </ul>
     </footer>
 </div>

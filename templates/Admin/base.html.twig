@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>RengForm | {% block title %}Index{% endblock %}</title>
+    <title>RengForm | {% block title %}{% trans %}Index{% endtrans %}{% endblock %}</title>
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
@@ -18,16 +18,17 @@
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap navbar-expand-sm p-0">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('index') }}">RengForm</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-sm-auto px-3">
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="{{ path('user_profile') }}">Profile</a>
+                <a class="nav-link" href="{{ path('user_profile') }}">{% trans %}Profile{% endtrans %}</a>
             </li>
             <li class="nav-item text-nowrap">
-                <a class="nav-link" href="{{ path('logout') }}">Sign out</a>
+                <a class="nav-link" href="{{ path('logout') }}">{% trans %}Sign out{% endtrans %}</a>
             </li>
         </ul>
     </div>
@@ -46,7 +47,7 @@
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }}" role="alert">
-                        {{ message }}
+                        {{ message|trans }}
                     </div>
                 {% endfor %}
             {% endfor %}

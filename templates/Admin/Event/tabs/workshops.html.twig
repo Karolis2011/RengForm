@@ -3,10 +3,10 @@
         <thead>
         <tr>
             <th>ID</th>{#TODO: remove column#}
-            <th>Title</th>
-            <th>Category</th>
-            <th>Duration</th>
-            <th>Capacity</th>
+            <th>{% trans %}Title{% endtrans %}</th>
+            <th>{% trans %}Category{% endtrans %}</th>
+            <th>{% trans %}Duration{% endtrans %}</th>
+            <th>{% trans %}Capacity{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
@@ -23,27 +23,27 @@
                 <td class="p-0" colspan="5">
                     <div class="collapse" id="collapse_{{ workshop.id }}">
                         <dl class="row px-2">
-                            <dt class="col-md-3">Place</dt>
+                            <dt class="col-md-3">{% trans %}Place{% endtrans %}</dt>
                             <dd class="col-md-9">{{ workshop.place }}</dd>
-                            <dt class="col-md-3">Form</dt>
+                            <dt class="col-md-3">{% trans %}Form{% endtrans %}</dt>
                             <dd class="col-md-9"><a href="{{ path('form_show', {'formId': workshop.formConfig.id}) }}">{{ workshop.formConfig.title }}</a></dd>
-                            <dt class="col-md-3">Times</dt>
+                            <dt class="col-md-3">{% trans %}Times{% endtrans %}</dt>
                             <dd class="col-md-9">
                                 {% for time in workshop.times %}
                                     <span class="badge badge-primary">{{ time.startTime|date('Y-m-d H:i:s') }}, {{ time.entries }}</span>
                                 {% endfor %}
                             </dd>
-                            <dt class="col-md-3">Description</dt>
+                            <dt class="col-md-3">{% trans %}Description{% endtrans %}</dt>
                             <dd class="col-md-9">{{ workshop.description }}</dd>
                         </dl>
                         <div class="px-2 pb-2">
                             <a class="btn btn-primary"
                                href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
-                                Edit
+                                {% trans %}Edit{% endtrans %}
                             </a>
                             <a class="btn btn-primary"
                                href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
-                                View registrations
+                                {% trans %}View registrations{% endtrans %}
                             </a>
                         </div>
                     </div>
@@ -52,16 +52,14 @@
         {% endfor %}
         </tbody>
     </table>
-{% else %}
-    <b>No workshops</b>
 {% endif %}
 <div>
     {% if event.categories is empty %}
         <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
-                title="Categories required">
-            Add
+                title="{% trans %}At leats 1 category must exist{% endtrans %}">
+            {% trans %}Add{% endtrans %}
         </button>
     {% else %}
-        <a class="btn btn-primary" href="{{ path('workshop_create', {'eventId': event.id}) }}">Add</a>
+        <a class="btn btn-primary" href="{{ path('workshop_create', {'eventId': event.id}) }}">{% trans %}Add{% endtrans %}</a>
     {% endif %}
 </div>

@@ -1,19 +1,19 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Forms | {{ formConfig.title }} | Update{% endblock %}
+{% block title %}{% trans %}Forms{% endtrans %} | {{ formConfig.title }} | {% trans %}Update{% endtrans %}{% endblock %}
 
 {% block body %}
     <h2 class="border-bottom">
-        {% block header %}Edit Form{% endblock %}
+        {% block header %}{% trans %}Edit Form{% endtrans %}{% endblock %}
     </h2>
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab" aria-controls="tab_1"
-               aria-selected="true">Data</a>
+               aria-selected="true">{% trans %}Details{% endtrans %}</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="builder-tab-link" data-toggle="tab" href="#tab_2" role="tab" aria-controls="tab_2"
-               aria-selected="false">Builder</a>
+               aria-selected="false">{% trans %}Form Builder{% endtrans %}</a>
         </li>
 
     </ul>
@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">{% trans %}Save{% endtrans %}</button>
     </div>
     {{ form_end(form) }}
 {% endblock %}

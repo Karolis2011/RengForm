@@ -1,6 +1,6 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Events | {{ event.title }} | Update{% endblock %}
+{% block title %}{% trans %}Events{% endtrans %} | {{ event.title }} | {% trans %}Update{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
@@ -10,7 +10,7 @@
 
 {% block body %}
     <h2 class="border-bottom">
-        {% block header %}Edit Event{% endblock %}
+        {% block header %}{% trans %}Edit Event{% endtrans %}{% endblock %}
     </h2>
     <div class="row">
         <div class="col-lg-6">
@@ -43,13 +43,13 @@
             </div>
             <div class="form-group">
                 {{ form_label(form.place) }}
-                {{ form_widget(form.place, {'attr': {'class': 'form-control', 'placeholder': 'Location'}}) }}
+                {{ form_widget(form.place, {'attr': {'class': 'form-control', 'placeholder': 'Place'}}) }}
             </div>
             <div class="form-group">
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">{% trans %}Save{% endtrans %}</button>
             {{ form_end(form) }}
         </div>
     </div>

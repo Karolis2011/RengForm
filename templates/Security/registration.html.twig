@@ -1,16 +1,18 @@
 {% extends 'Security/base.html.twig' %}
 
-{% block title %}Registration{% endblock %}
+{% block title %}{% trans %}Registration{% endtrans %}{% endblock %}
 
 {% block body %}
     {{ form_start(form, {'attr': {'class': 'form-signin' }}) }}
-    <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+    <h1 class="h3 mb-3 font-weight-normal">{% trans %}Register{% endtrans %}</h1>
     {{ form_row(form._token) }}
     {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Username'}}) }}
     {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}
     {{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
     {{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control mb-2', 'placeholder': 'Retype password'}}) }}
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
-    <a class="btn btn-secondary btn-block" href="{{ path('login') }}">I already have an account</a>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans %}Register{% endtrans %}</button>
+    <a class="btn btn-secondary btn-block" href="{{ path('login') }}">
+        {% trans %}I already have an account{% endtrans %}
+    </a>
     {{ form_end(form) }}
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'Admin/base.html.twig' %}
 
-{% block title %}Forms | {{ formConfig.title }}{% endblock %}
+{% block title %}{% trans %}Forms{% endtrans %} | {{ formConfig.title }}{% endblock %}
 
 {% block body %}
     <h2 class="border-bottom">{{ formConfig.title }}</h2>
@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title">
-                        Form details
+                        {% trans %}Form details{% endtrans %}
                         <span class="pull-right">
                             <a href="{{ path('form_update', { 'formId': formConfig.id }) }}">
                                 <i class="fa fa-edit"></i>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="card-body p-0">
                     <dl class="row px-2">
-                        <dt class="col-md-4">Description</dt>
+                        <dt class="col-md-4">{% trans %}Description{% endtrans %}</dt>
                         <dd class="col-md-8">{{ formConfig.description }}</dd>
                     </dl>
                 </div>
@@ -30,7 +30,7 @@
             <ul class="nav nav-tabs">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#tab_2" role="tab" aria-controls="tab_2"
-                       aria-selected="false">Preview</a>
+                       aria-selected="false">{% trans %}Preview{% endtrans %}</a>
                 </li>
                 <li class="nav-item">{#TODO: remove#}
                     <a class="nav-link" data-toggle="tab" href="#tab_1" role="tab" aria-controls="tab_1"

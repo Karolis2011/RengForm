@@ -9,6 +9,7 @@
     <title>RengForm</title>
 
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/custom/cover.css') }}">
 </head>
 
@@ -19,19 +20,25 @@
         <div class="inner">
             <h3 class="masthead-brand">RengForm</h3>
             <nav class="nav nav-masthead justify-content-center">
-                <a class="nav-link active" href="{{ path('index') }}">Home</a>
-                <a class="nav-link" href="{{ path('login') }}">Login</a>
-                <a class="nav-link" href="{{ path('register') }}">Register</a>
+                <a class="nav-link active" href="{{ path('index') }}">{% trans %}Home{% endtrans %}</a>
+                <a class="nav-link" href="{{ path('login') }}">{% trans %}Login{% endtrans %}</a>
+                <a class="nav-link" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>
+                <a class="nav-link" href="{{ path('index', {'_locale': 'lt'}) }}">
+                    <span class="flag-icon flag-icon-lt"></span>
+                </a>
+                <a class="nav-link" href="{{ path('index', {'_locale': 'en'}) }}">
+                    <span class="flag-icon flag-icon-gb"></span>
+                </a>
             </nav>
         </div>
     </header>
 
     <main role="main" class="inner cover">
         <h1 class="cover-heading">RengForm</h1>
-        <h2 class="cover-heading">Registrations management system</h2>
+        <h2 class="cover-heading">{% trans %}Registrations management system{% endtrans %}</h2>
         <p class="lead">RengForm is a registrations management system build specifically for events with multiple sub-events, lectures or workshops that all require separate registration. To cope with thet we build a system that allows you to build one or several registration forms and reuse them for all sub-events and even share them between events.</p>
         <p class="lead">
-            <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+            <a href="#" class="btn btn-lg btn-secondary">{% trans %}Learn more{% endtrans %}</a>
         </p>
     </main>
 

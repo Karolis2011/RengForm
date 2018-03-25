@@ -3,7 +3,7 @@
         {% for item in config %}
             <li class="nav-item">
                 <a class="nav-link {% if item.active is defined and item.active %}active{% endif %}" href="{{ path(item.route) }}">
-                    <i class="fa {{ item.icon }}"></i> <span>{{ item.title }}</span>
+                    <i class="fa {{ item.icon }}"></i> <span>{{ item.title|trans }}</span>
                 </a>
             </li>
         {% endfor %}

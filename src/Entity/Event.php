@@ -194,4 +194,23 @@ class Event
     {
         $this->organisation = $organisation;
     }
+
+    /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        $empty = $this->categories->isEmpty();
+
+        if (!$empty) {
+            $empty = true;
+
+            /** @var Category $category */
+            foreach ($this->categories as $category) {
+                $empty = $empty && $category->getWorkshops()->isEmpty();
+            }
+        }
+
+        return $empty;
+    }
 }

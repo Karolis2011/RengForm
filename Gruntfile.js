@@ -102,6 +102,28 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            'flag-icon-css': {
+                files: [
+                    {
+                        src: 'node_modules/flag-icon-css/css/flag-icon.min.css',
+                        dest: 'public/style/css/flag-icon/flag-icon.min.css'
+                    },
+                    {
+                        cwd: 'node_modules/',
+                        src: 'flag-icon-css/flags/1x1/*',
+                        flatten: true,
+                        expand: true,
+                        dest: 'public/style/css/flags/1x1'
+                    },
+                    {
+                        cwd: 'node_modules/',
+                        src: 'flag-icon-css/flags/4x3/*',
+                        flatten: true,
+                        expand: true,
+                        dest: 'public/style/css/flags/4x3'
+                    }
+                ]
+            },
             'rengform': {
                 files: [
                     {
@@ -154,6 +176,7 @@ module.exports = function (grunt) {
         'copy:sortable',
         'copy:select2',
         'copy:formBuilder',
+        'copy:flag-icon-css',
         'copy:assets'
     ]);
 

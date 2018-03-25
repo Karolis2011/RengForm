@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "bootstrap": "^4.0.0",
+    "flag-icon-css": "^3.0.0",
     "font-awesome": "^4.7.0",
     "formBuilder": "^2.9.8",
     "jquery": "^3.3.1",

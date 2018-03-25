@@ -9,7 +9,7 @@
     {{ parent() }}
 {% endblock %}
 
-{% block title %}Events | {{ event.title }}{% endblock %}
+{% block title %}{% trans %}Events{% endtrans %} | {{ event.title }}{% endblock %}
 
 {% block body %}
     <h2 class="border-bottom">{{ event.title }}</h2>
@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title">
-                        Event details
+                        {% trans %}Event details{% endtrans %}
                         <span class="pull-right">
                             <a href="{{ path('event_update', { 'eventId': event.id }) }}">
                                 <i class="fa fa-edit"></i>
@@ -28,15 +28,15 @@
                 </div>
                 <div class="card-body p-0">
                     <dl class="row px-2">
-                        <dt class="col-md-4">Date</dt>
+                        <dt class="col-md-4">{% trans %}Date{% endtrans %}</dt>
                         <dd class="col-md-8">{{ event.date|date('Y-m-d H:i:s') }}</dd>
                         {% if event.endDate is not null %}
-                            <dt class="col-md-4">End Date</dt>
+                            <dt class="col-md-4">{% trans %}End date{% endtrans %}</dt>
                             <dd class="col-md-8">{{ event.endDate|date('Y-m-d H:i:s') }}</dd>
                         {% endif %}
-                        <dt class="col-md-4">Place</dt>
+                        <dt class="col-md-4">{% trans %}Place{% endtrans %}</dt>
                         <dd class="col-md-8">{{ event.place }}</dd>
-                        <dt class="col-md-4">Description</dt>
+                        <dt class="col-md-4">{% trans %}Description{% endtrans %}</dt>
                         <dd class="col-md-8">{{ event.description }}</dd>
                     </dl>
                 </div>
@@ -48,16 +48,16 @@
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#categories_tab" role="tab"
                        aria-controls="categories_tab"
-                       aria-selected="true">Categories</a>
+                       aria-selected="true">{% trans %}Categories{% endtrans %}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#workshops_tab" role="tab" aria-controls="workshops_tab"
-                       aria-selected="false">Workshops</a>
+                       aria-selected="false">{% trans %}Workshops{% endtrans %}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#registrations_tab" role="tab"
                        aria-controls="registrations_tab"
-                       aria-selected="false">Registrations</a>
+                       aria-selected="false">{% trans %}Registrations{% endtrans %}</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -79,15 +79,15 @@
 {% block javascript_inline %}
     {{ parent() }}
     <script type="text/javascript">
-        function configureModal(modal, modalSelect, modalForm) {
-            var workshopModalSelect = modalSelect.select2({
-                'placeholder': 'Select Registration Form',
+        function configureModal(modal, select, modalForm, placeholder) {
+            var modalSelect = select.select2({
+                'placeholder': placeholder,
                 theme: "bootstrap4",
                 dropdownParent: modal
             });
 
             modal.on('shown.bs.modal', function () {
-                workshopModalSelect.select2('open');
+                modalSelect.select2('open');
             });
 
             modalForm.submit(function () {
@@ -120,8 +120,8 @@
             });
             {% endif %}
 
-            configureModal($('#workshopModal'), $("#workshopModalSelect"), $("#workshopModalForm"));
-            configureModal($('#categoryModal'), $("#categoryModalSelect"), $("#categoryModalForm"));
+            configureModal($('#workshopModal'), $("#workshopModalSelect"), $("#workshopModalForm"), "{% trans %}Select workshop{% endtrans %}");
+            configureModal($('#categoryModal'), $("#categoryModalSelect"), $("#categoryModalForm"), "{% trans %}Select category{% endtrans %}");
         });
     </script>
 {% endblock %}

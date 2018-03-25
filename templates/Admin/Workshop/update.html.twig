@@ -8,7 +8,7 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block title %}Workshops | {{ workshop.title }} | Update{% endblock %}
+{% block title %}{% trans %}Workshops{% endtrans %} | {{ workshop.title }} | {% trans %}Update{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
@@ -20,7 +20,7 @@
 
 {% block body %}
     <h2 class="border-bottom">
-        {% block header %}Edit Workshop{% endblock %}
+        {% block header %}{% trans %}Edit Workshop{% endtrans %}{% endblock %}
     </h2>
     {% if errors is not empty %}
         <div class="alert alert-danger" role="alert">
@@ -72,7 +72,7 @@
                         </div>
                     {% endfor %}
                 </div>
-                <button type="button" class="btn btn-primary" id="addTime" data-list="#timesList">Add Time</button>
+                <button type="button" class="btn btn-primary" id="addTime" data-list="#timesList">{% trans %}Add Time{% endtrans %}</button>
             </div>
             <div class="form-group">
                 {{ form_label(form.capacity) }}
@@ -80,13 +80,13 @@
             </div>
             <div class="form-group">
                 {{ form_label(form.category) }}
-                {{ form_widget(form.category, {'attr': {'class': 'form-control formSelect' }}) }}
+                {{ form_widget(form.category, {'attr': {'class': 'form-control formSelectCategory' }}) }}
             </div>
             <div class="form-group">
-                {{ form_label(form.formConfig) }}
-                {{ form_widget(form.formConfig, {'attr': {'class': 'form-control formSelect' }}) }}
+                {{ form_label(form.formConfig, 'Registration form') }}
+                {{ form_widget(form.formConfig, {'attr': {'class': 'form-control formSelectRegistration' }}) }}
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">{% trans %}Save{% endtrans %}</button>
             {{ form_row(form._token) }}
             {{ form_end(form, {'render_rest': false}) }}
         </div>
@@ -108,23 +108,22 @@
                 'showClose': true
             });
 
-            $(".formSelect").select2({
-                'placeholder': 'Select Registration Form',
+            $(".formSelectCategory").select2({
+                'placeholder': '{% trans %}Select category{% endtrans %}',
+                theme: "bootstrap4"
+            });
+
+            $(".formSelectRegistration").select2({
+                'placeholder': '{% trans %}Select registration form{% endtrans %}',
                 theme: "bootstrap4"
             });
 
             $('#addTime').click(function (e) {
                 e.preventDefault();
+
                 var list = $($(this).attr('data-list'));
-
-                // grab the prototype template
                 var newWidget = list.attr('data-prototype');
-                // replace the "__name__" used in the id and name of the prototype
-                // with a number that's unique to your emails
-                // end name attribute looks like name="contact[emails][2]"
                 newWidget = $(newWidget.replace(/__name__/g, '')).addClass('form-control');
-
-                // create a new list element and add it to the list
                 var newElem = $(list.attr('data-widget-tags').replace(/__widget__/g, newWidget[0].outerHTML));
 
                 newElem.appendTo(list);
@@ -135,7 +134,6 @@
             });
 
             $(".removeTime").click(function () {
-                console.log('Remove clicked');
                 var item = $(this).parent().parent();
                 item.remove();
             });

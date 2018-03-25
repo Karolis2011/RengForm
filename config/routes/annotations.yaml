@@ -1,9 +1,13 @@
 admin_controllers:
     resource: ../../src/Controller/Admin/
     type: annotation
-    prefix: /admin
+    prefix: /{_locale}/admin
+    requirements:
+        _locale: en|lt
 
 event_controllers:
     resource: ../../src/Controller/Event/
     type: annotation
-    prefix: /
+    prefix: /{_locale}/
+    requirements:
+        _locale: en|lt

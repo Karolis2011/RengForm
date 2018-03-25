@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="workshopModalLabel">Choose workshop to download</h5>
+                <h5 class="modal-title" id="workshopModalLabel">{% trans %}Choose workshop to download{% endtrans %}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -15,7 +15,7 @@
                             {% for time in workshop.times %}
                                 {% if time.registrations is empty %}
                                     <option value="{{ time.id }}" disabled="disabled">
-                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i:s') }}) - Empty
+                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i:s') }}) - {% trans %}Empty{% endtrans %}
                                     </option>
                                 {% else %}
                                     <option value="{{ time.id }}">
@@ -27,8 +27,8 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Download</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans %}Download{% endtrans %}</button>
                 </div>
             </form>
         </div>
@@ -40,7 +40,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="categoryModalLabel">Choose category to download</h5>
+                <h5 class="modal-title" id="categoryModalLabel">{% trans %}Choose category to download{% endtrans %}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -51,7 +51,7 @@
                         {% for category in event.categories %}
                             {% if category.workshops is empty %}
                                 <option value="{{ category.id }}" disabled="disabled">
-                                    {{ category.title }} - Empty
+                                    {{ category.title }} - {% trans %}Empty{% endtrans %}
                                 </option>
                             {% else %}
                                 <option value="{{ category.id }}">
@@ -62,40 +62,40 @@
                     </select>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Download</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans %}Download{% endtrans %}</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<h4>Download registrations</h4>
+<h4>{% trans %}Download registrations{% endtrans %}</h4>
 {% if workshops is empty %}
     <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
-            title="No workshops">
-        Single Workshop
+            title="{% trans %}No workshops{% endtrans %}">
+        {% trans %}Single Workshop{% endtrans %}
     </button>
 {% else %}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#workshopModal">
-        Single Workshop
+        {% trans %}Single Workshop{% endtrans %}
     </button>
 {% endif %}
 {% if event.categories is empty %}
     <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
-            title="No categories">
-        Single Category
+            title="{% trans %}No categories{% endtrans %}">
+        {% trans %}Single Category{% endtrans %}
     </button>
 {% else %}
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoryModal">
-        Single Category
+        {% trans %}Single Category{% endtrans %}
     </button>
 {% endif %}
 {% if event.categories is empty or workshops is empty %}
     <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
-            title="Event is empty">
-        All
+            title="{% trans %}Event is empty{% endtrans %}">
+        {% trans %}All{% endtrans %}
     </button>
 {% else %}
-    <a class="btn btn-primary" href="{{ path('download_registrations_event', {'eventId': event.id}) }}">All</a>
+    <a class="btn btn-primary" href="{{ path('download_registrations_event', {'eventId': event.id}) }}">{% trans %}All{% endtrans %}</a>
 {% endif %}
