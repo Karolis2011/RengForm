@@ -13,13 +13,11 @@
                placeholder="Username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" class="form-control" name="_password" placeholder="Password" required>
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a class="btn btn-secondary btn-block" href="#">I forgot my password</a>
         <a class="btn btn-secondary btn-block" href="{{ path('register') }}">Register</a>
+        <a class="btn btn-secondary btn-block" href="#">I forgot my password</a>
     </form>
 {% endblock %}
