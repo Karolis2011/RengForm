@@ -63,6 +63,7 @@ class FormController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $formConfig->setConfig(json_decode($formConfig->getConfig(), true));
             $enricher->enrich($formConfig);
+            $formConfig->setOwner($this->getUser());
             $this->repository->save($formConfig);
 
             return $this->redirectToRoute(

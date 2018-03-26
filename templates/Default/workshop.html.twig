@@ -26,6 +26,14 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}" role="alert">
+                        {{ message|trans }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
             <h4 class="mb-3">{% trans %}Registration{% endtrans %}</h4>
             <form name="registration" method="post">
                 {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshopTime.workshop.formConfig.config })) }}

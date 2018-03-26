@@ -6,12 +6,14 @@ use App\Entity\WorkshopTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+/**
+ * @method WorkshopTime|null find($id, $lockMode = null, $lockVersion = null)
+ * @method WorkshopTime|null findOneBy(array $criteria, array $orderBy = null)
+ * @method WorkshopTime[]    findAll()
+ * @method WorkshopTime[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class WorkshopTimeRepository extends ServiceEntityRepository
 {
-    /**
-     * WorkshopRepository constructor.
-     * @param RegistryInterface $registry
-     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, WorkshopTime::class);
@@ -41,6 +43,10 @@ class WorkshopTimeRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param WorkshopTime $time
+     * @param bool         $flush
+     */
     public function remove(WorkshopTime $time, bool $flush = true): void
     {
         $this->_em->remove($time);

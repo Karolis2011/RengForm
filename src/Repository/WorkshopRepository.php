@@ -7,6 +7,12 @@ use App\Entity\WorkshopTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+/**
+ * @method Workshop|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Workshop|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Workshop[]    findAll()
+ * @method Workshop[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class WorkshopRepository extends ServiceEntityRepository
 {
     /**

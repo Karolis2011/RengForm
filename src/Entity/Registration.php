@@ -28,7 +28,6 @@ class Registration
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\WorkshopTime", inversedBy="registrations")
-     * @ORM\JoinColumn(name="workshopTimeId")
      */
     private $workshopTime;
 
@@ -49,42 +48,51 @@ class Registration
     }
 
     /**
-     * @param mixed $data
+     * @param $data
+     * @return Registration
      */
-    public function setData($data): void
+    public function setData($data): self
     {
         $this->data = $data;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
-    public function getCreated()
+    public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
     }
 
     /**
-     * @param mixed $created
+     * @param \DateTimeInterface $created
+     * @return Registration
      */
-    public function setCreated($created): void
+    public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return WorkshopTime|null
      */
-    public function getWorkshopTime()
+    public function getWorkshopTime(): ?WorkshopTime
     {
         return $this->workshopTime;
     }
 
     /**
-     * @param mixed $workshopTime
+     * @param WorkshopTime|null $workshopTime
+     * @return Registration
      */
-    public function setWorkshopTime($workshopTime): void
+    public function setWorkshopTime(?WorkshopTime $workshopTime): self
     {
         $this->workshopTime = $workshopTime;
+
+        return $this;
     }
 }

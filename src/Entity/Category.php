@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,26 +29,20 @@ class Category
     private $description;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetime")
      */
     private $created;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Workshop", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="App\Entity\Workshop", mappedBy="category", orphanRemoval=true)
      */
     private $workshops;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="categories")
-     * @ORM\JoinColumn(nullable=true, name="eventId")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $event;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category")
-     * @ORM\JoinColumn(name="categoryId")
-     */
-    private $category;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -71,57 +66,66 @@ class Category
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
+     * @return Category
      */
-    public function setTitle($title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
+     * @return Category
      */
-    public function setDescription($description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
-    public function getCreated()
+    public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
     }
 
     /**
-     * @param mixed $created
+     * @param \DateTimeInterface $created
+     * @return Category
      */
-    public function setCreated($created): void
+    public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Collection|Workshop[]
      */
-    public function getWorkshops()
+    public function getWorkshops(): Collection
     {
         return $this->workshops;
     }
@@ -136,41 +140,31 @@ class Category
 
     /**
      * @param Event|null $event
+     * @return Category
      */
-    public function setEvent(?Event $event): void
+    public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
+        return $this;
     }
 
     /**
-     * @return Category|null
+     * @return null|int
      */
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param Category|null $category
-     */
-    public function setCategory(?Category $category): void
-    {
-        $this->category = $category;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOrderNo(): int
+    public function getOrderNo(): ?int
     {
         return $this->orderNo;
     }
 
     /**
      * @param int $orderNo
+     * @return Category
      */
-    public function setOrderNo(int $orderNo)
+    public function setOrderNo(int $orderNo): self
     {
         $this->orderNo = $orderNo;
+
+        return $this;
     }
 }

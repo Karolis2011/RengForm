@@ -28,7 +28,7 @@ class WorkshopController extends Controller
 
     /**
      * WorkshopController constructor.
-     * @param WorkshopTimeRepository     $repository
+     * @param WorkshopTimeRepository $repository
      * @param RegistrationRepository $registrationRepository
      */
     public function __construct(WorkshopTimeRepository $repository, RegistrationRepository $registrationRepository)
@@ -56,17 +56,19 @@ class WorkshopController extends Controller
         $formData = $request->get('registration', null);
 
         if (!$workshopTime->isAvailable()) {
-            $this->addFlash('error', 'Workshop is full.');
-        } elseif (empty($formData) || !$this->valid($workshopTime, $formData)) {
-            $this->addFlash('error', 'Registration form is not filled correctly');
-        } else {
-            $registration = new Registration();
-            $registration->setData($formData);
-            $registration->setWorkshopTime($workshopTime);
-            $this->registrationRepository->save($registration);
-            $workshopTime->increaseEntries();
-            $this->repository->update($workshopTime);
-            $this->addFlash('success', 'Registration successful');
+            $this->addFlash('alert', 'Workshop is full.');
+        } elseif ($formData !== null) {
+            if (!$this->valid($workshopTime, $formData)) {
+                $this->addFlash('alert', 'Registration form is not filled correctly');
+            } else {
+                $registration = new Registration();
+                $registration->setData($formData);
+                $registration->setWorkshopTime($workshopTime);
+                $this->registrationRepository->save($registration);
+                $workshopTime->increaseEntries();
+                $this->repository->update($workshopTime);
+                $this->addFlash('success', 'Registration successful');
+            }
         }
 
         return $this->render(
@@ -86,7 +88,10 @@ class WorkshopController extends Controller
     {
         $valid = true;
 
-        //TODO: validation
+        if (empty($formData)) {
+            $valid = false;
+        }
+        //TODO: validate
 
         return $valid;
     }

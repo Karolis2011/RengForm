@@ -6,6 +6,12 @@ use App\Entity\FormConfig;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+/**
+ * @method FormConfig|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FormConfig|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FormConfig[]    findAll()
+ * @method FormConfig[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class FormConfigRepository extends ServiceEntityRepository
 {
     /**

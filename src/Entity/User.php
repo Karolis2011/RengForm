@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,21 +14,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 class User implements UserInterface, \Serializable
 {
     /**
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="UUID")
      * @ORM\Column(type="guid")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\NotBlank()
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank()
      */
     private $password;
 
@@ -45,16 +45,22 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Organisation", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="App\Entity\FormConfig", mappedBy="owner")
      */
-    private $organisations;
+    private $formConfigs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="owner")
+     */
+    private $events;
 
     /**
      * User constructor.
      */
     public function __construct()
     {
-        $this->organisations = new ArrayCollection();
+        $this->formConfigs = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -66,99 +72,87 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
     /**
-     * @param mixed $username
+     * @param string $username
+     * @return User
      */
-    public function setUsername($username): void
+    public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
+     * @return User
      */
-    public function setPassword($password): void
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getPlainPassword()
+    public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
     /**
-     * @param mixed $plainPassword
+     * @param string $plainPassword
+     * @return User
      */
-    public function setPlainPassword($plainPassword): void
+    public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
     /**
-     * @param mixed $email
+     * @param string $email
+     * @return User
      */
-    public function setEmail($email): void
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Collection|FormConfig[]
      */
-    public function getOrganisations()
+    public function getFormConfigs(): Collection
     {
-        return $this->organisations;
-    }
-
-    /**
-     * @param Organisation $organisation
-     */
-    public function addOrganisation(Organisation $organisation): void
-    {
-        if ($this->organisations->contains($organisation)) {
-            return;
-        }
-
-        $this->organisations[] = $organisation;
-        $organisation->addUser($this);
-    }
-
-    /**
-     * @param Organisation $organisation
-     */
-    public function removeOrganisation(Organisation $organisation): void
-    {
-        if ($this->organisations->contains($organisation)) {
-            $this->organisations->removeElement($organisation);
-            $organisation->removeUser($this);
-        }
+        return $this->formConfigs;
     }
 
     /**
@@ -210,5 +204,13 @@ class User implements UserInterface, \Serializable
     public function eraseCredentials()
     {
         $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
     }
 }

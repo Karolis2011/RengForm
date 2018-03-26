@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,7 +19,7 @@ class WorkshopTime
     private $id;
 
     /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetime")
      */
     private $startTime;
 
@@ -28,19 +29,19 @@ class WorkshopTime
     private $entries = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Workshop", inversedBy="times")
-     * @ORM\JoinColumn(name="workshopId")
-     * @var Workshop $workshop
-     */
-    private $workshop;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="workshopTime")
      */
     private $registrations;
 
     /**
-     * Workshop constructor.
+     * @ORM\ManyToOne(targetEntity="App\Entity\Workshop", inversedBy="times")
+     * @ORM\JoinColumn(nullable=false)
+     * @var Workshop
+     */
+    private $workshop;
+
+    /**
+     * WorkshopTime constructor.
      */
     public function __construct()
     {
@@ -56,67 +57,68 @@ class WorkshopTime
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
-    public function getStartTime()
+    public function getStartTime(): ?\DateTimeInterface
     {
         return $this->startTime;
     }
 
     /**
-     * @param mixed $startTime
+     * @param \DateTimeInterface $startTime
+     * @return WorkshopTime
      */
-    public function setStartTime($startTime): void
+    public function setStartTime(\DateTimeInterface $startTime): self
     {
         $this->startTime = $startTime;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getEntries()
+    public function getEntries(): ?int
     {
         return $this->entries;
     }
 
     /**
-     * @param mixed $entries
+     * @param int $entries
+     * @return WorkshopTime
      */
-    public function setEntries($entries): void
+    public function setEntries(int $entries): self
     {
         $this->entries = $entries;
+
+        return $this;
     }
 
     /**
-     * @param int $count
+     * @return Collection|Registration[]
      */
-    public function increaseEntries(int $count = 1)
+    public function getRegistrations(): Collection
     {
-        $this->entries += $count;
+        return $this->registrations;
     }
 
     /**
-     * @return Workshop
+     * @return Workshop|null
      */
-    public function getWorkshop()
+    public function getWorkshop(): ?Workshop
     {
         return $this->workshop;
     }
 
     /**
-     * @param Workshop $workshop
+     * @param Workshop|null $workshop
+     * @return WorkshopTime
      */
-    public function setWorkshop($workshop): void
+    public function setWorkshop(?Workshop $workshop): self
     {
         $this->workshop = $workshop;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getRegistrations()
-    {
-        return $this->registrations;
+        return $this;
     }
 
     /**
@@ -127,8 +129,19 @@ class WorkshopTime
         return $this->workshop->getCapacity() - $this->entries;
     }
 
+    /**
+     * @return bool
+     */
     public function isAvailable()
     {
         return $this->workshop->getCapacity() === null || $this->workshop->getCapacity() > $this->entries;
+    }
+
+    /**
+     * @param int $count
+     */
+    public function increaseEntries(int $count = 1)
+    {
+        $this->entries += $count;
     }
 }

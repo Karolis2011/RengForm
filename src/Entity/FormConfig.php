@@ -27,7 +27,7 @@ class FormConfig
     private $description;
 
     /**
-     * @ORM\Column(type="json_array", nullable=true)
+     * @ORM\Column(type="json_array")
      */
     private $config;
 
@@ -37,10 +37,10 @@ class FormConfig
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Organisation")
-     * @ORM\JoinColumn(name="organisationId")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="formConfigs")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $organisation;
+    private $owner;
 
     /**
      * @return mixed
@@ -51,35 +51,41 @@ class FormConfig
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
+     * @return FormConfig
      */
-    public function setTitle($title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
+     * @return FormConfig
      */
-    public function setDescription($description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -91,42 +97,51 @@ class FormConfig
     }
 
     /**
-     * @param mixed $config
+     * @param $config
+     * @return FormConfig
      */
-    public function setConfig($config): void
+    public function setConfig($config): self
     {
         $this->config = $config;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
-    public function getCreated()
+    public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
     }
 
     /**
-     * @param mixed $created
+     * @param \DateTimeInterface $created
+     * @return FormConfig
      */
-    public function setCreated($created): void
+    public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return User|null
      */
-    public function getOrganisation()
+    public function getOwner(): ?User
     {
-        return $this->organisation;
+        return $this->owner;
     }
 
     /**
-     * @param mixed $organisation
+     * @param User|null $owner
+     * @return FormConfig
      */
-    public function setOrganisation($organisation): void
+    public function setOwner(?User $owner): self
     {
-        $this->organisation = $organisation;
+        $this->owner = $owner;
+
+        return $this;
     }
 }

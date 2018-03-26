@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,37 +44,26 @@ class Workshop
     private $capacity;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $entries = 0;
-
-    /**
-     * @ORM\Column(type="datetimetz")
+     * @ORM\Column(type="datetime")
      */
     private $created;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="workshops")
-     * @ORM\JoinColumn(name="categoryId")
+     * @ORM\OneToMany(targetEntity="App\Entity\WorkshopTime", mappedBy="workshop", orphanRemoval=true, cascade={"persist"})
      */
-    private $category;
+    private $times;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FormConfig")
-     * @ORM\JoinColumn(name="formConfigId")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $formConfig;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Location")
-     * @ORM\JoinColumn(name="locationId")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="workshops")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $location;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\WorkshopTime", mappedBy="workshop", cascade={"persist"})
-     */
-    private $times;
+    private $category;
 
     /**
      * Workshop constructor.
@@ -92,190 +82,162 @@ class Workshop
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
+     * @return Workshop
      */
-    public function setTitle($title): void
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
-     * @param mixed $description
+     * @param string $description
+     * @return Workshop
      */
-    public function setDescription($description): void
+    public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return null|string
      */
-    public function getPlace()
+    public function getPlace(): ?string
     {
         return $this->place;
     }
 
     /**
-     * @param mixed $place
+     * @param string $place
+     * @return Workshop
      */
-    public function setPlace($place): void
+    public function setPlace(string $place): self
     {
         $this->place = $place;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
-    public function getDuration()
+    public function getDuration(): ?\DateTimeInterface
     {
         return $this->duration;
     }
 
     /**
-     * @param mixed $duration
+     * @param \DateTimeInterface $duration
+     * @return Workshop
      */
-    public function setDuration($duration): void
+    public function setDuration(\DateTimeInterface $duration): self
     {
         $this->duration = $duration;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
-    public function getCapacity()
+    public function getCapacity(): ?int
     {
         return $this->capacity;
     }
 
     /**
-     * @param mixed $capacity
+     * @param int|null $capacity
+     * @return Workshop
      */
-    public function setCapacity($capacity): void
+    public function setCapacity(?int $capacity): self
     {
         $this->capacity = $capacity;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return \DateTimeInterface|null
      */
-    public function getEntries()
-    {
-        return $this->entries;
-    }
-
-    /**
-     * @param mixed $entries
-     */
-    public function setEntries($entries): void
-    {
-        $this->entries = $entries;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCreated()
+    public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
     }
 
     /**
-     * @param mixed $created
+     * @param \DateTimeInterface $created
+     * @return Workshop
      */
-    public function setCreated($created): void
+    public function setCreated(\DateTimeInterface $created): self
     {
         $this->created = $created;
+
+        return $this;
     }
 
     /**
-     * @return Category
+     * @return Collection|WorkshopTime[]
      */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param Category $category
-     */
-    public function setCategory($category): void
-    {
-        $this->category = $category;
-    }
-
-    /**
-     * @return FormConfig
-     */
-    public function getFormConfig()
-    {
-        return $this->formConfig;
-    }
-
-    /**
-     * @param FormConfig $formConfig
-     */
-    public function setFormConfig($formConfig): void
-    {
-        $this->formConfig = $formConfig;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLocation()
-    {
-        return $this->location;
-    }
-
-    /**
-     * @param mixed $location
-     */
-    public function setLocation($location): void
-    {
-        $this->location = $location;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTimes()
+    public function getTimes(): Collection
     {
         return $this->times;
     }
 
     /**
-     * @param WorkshopTime $time
+     * @return FormConfig|null
      */
-    public function addTime($time)
+    public function getFormConfig(): ?FormConfig
     {
-        if (!$this->times->contains($time)) {
-            $this->times->add($time);
-        }
-        $time->setWorkshop($this);
+        return $this->formConfig;
     }
 
     /**
-     * @param WorkshopTime $time
+     * @param FormConfig|null $formConfig
+     * @return Workshop
      */
-    public function removeTime($time)
+    public function setFormConfig(?FormConfig $formConfig): self
     {
-        $this->times->remove($time);
-        $time->setWorkshop(null);
+        $this->formConfig = $formConfig;
+
+        return $this;
+    }
+
+    /**
+     * @return Category|null
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category|null $category
+     * @return Workshop
+     */
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

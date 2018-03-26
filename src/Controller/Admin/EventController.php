@@ -68,6 +68,7 @@ class EventController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $event->setOwner($this->getUser());
             $this->repository->save($event);
 
             return $this->redirectToRoute(

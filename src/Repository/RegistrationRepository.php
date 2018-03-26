@@ -6,6 +6,12 @@ use App\Entity\Registration;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+/**
+ * @method Registration|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Registration|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Registration[]    findAll()
+ * @method Registration[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class RegistrationRepository extends ServiceEntityRepository
 {
     /**
