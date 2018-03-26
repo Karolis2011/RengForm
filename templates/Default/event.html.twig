@@ -9,6 +9,7 @@
     <title>{{ event.title }}</title>
 
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
 </head>
 
@@ -68,6 +69,16 @@
             <li class="list-inline-item"><a href="#">{% trans %}Privacy{% endtrans %}</a></li>
             <li class="list-inline-item"><a href="#">{% trans %}Terms{% endtrans %}</a></li>
             <li class="list-inline-item"><a href="#">{% trans %}Support{% endtrans %}</a></li>
+            <li class="list-inline-item">
+                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
+                    <span class="flag-icon flag-icon-gb"></span>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
+                    <span class="flag-icon flag-icon-lt"></span>
+                </a>
+            </li>
         </ul>
     </footer>
 </div>

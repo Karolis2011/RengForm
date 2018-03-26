@@ -4,16 +4,24 @@
 logout:
     path: /admin/logout
 
-redirect_index:
-    path: /
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+redirect_admin_index:
+    path: /{_locale}/admin/
+    controller: FrameworkBundle:Redirect:redirect
     defaults:
-        path: /en/
-        permanent: true
+        route: event_index
 
 redirect_admin:
     path: /admin
-    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
-    defaults:
-        path: /en/admin
-        permanent: true
+    controller: App\Controller\RedirectController::redirectAction
+
+redirect_admin_with_params:
+    path: /admin/{path}
+    controller: App\Controller\RedirectController::redirectAction
+    requirements:
+        path: .*
+
+redirect_index:
+    path: /{path}
+    controller: App\Controller\RedirectController::redirectAction
+    requirements:
+        path: .*
