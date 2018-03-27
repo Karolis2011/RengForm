@@ -45,7 +45,7 @@ class EventType extends AbstractType
                 'times',
                 CollectionType::class,
                 [
-                    'entry_type'   => WorkshopTimeType::class,
+                    'entry_type'   => EventTimeType::class,
                     'allow_add'    => true,
                     'allow_delete' => true,
                     'required'     => true,
@@ -84,12 +84,8 @@ class EventType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
+        $resolver->setDefaults([
                 'data_class' => Event::class,
-            ])
-            ->setRequired([
-                'eventId',
             ]);
     }
 }

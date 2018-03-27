@@ -5,7 +5,7 @@ namespace App\Service\Export\Parser;
 use App\Entity\Workshop;
 
 /**
- * Class CategoryParser
+ * Class WorkshopParser
  */
 class WorkshopParser implements Parser
 {

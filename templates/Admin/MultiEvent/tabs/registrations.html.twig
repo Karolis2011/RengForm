@@ -97,5 +97,5 @@
         {% trans %}All{% endtrans %}
     </button>
 {% else %}
-    <a class="btn btn-primary" href="{{ path('download_registrations_event', {'eventId': event.id}) }}">{% trans %}All{% endtrans %}</a>
+    <a class="btn btn-primary" href="{{ path('download_registrations_event_multi', {'eventId': event.id}) }}">{% trans %}All{% endtrans %}</a>
 {% endif %}

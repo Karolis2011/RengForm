@@ -49,7 +49,7 @@ class Event
     private $created;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\EventTime", mappedBy="event", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\EventTime", mappedBy="event", orphanRemoval=true, cascade={"persist"})
      */
     private $times;
 

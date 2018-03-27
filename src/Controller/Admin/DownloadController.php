@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\MultiEvent;
 use App\Repository\CategoryRepository;
+use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopTimeRepository;
 use App\Service\Export\Exporter;
@@ -32,19 +32,36 @@ class DownloadController extends Controller
     }
 
     /**
-     * @Route("/download/event/{eventId}", name="download_registrations_event")
+     * @Route("/download/event_multi/{eventId}", name="download_registrations_event_multi")
      * @param                 $eventId
      * @param MultiEventRepository $repository
      * @return Response
      * @throws \Exception
      */
-    public function event($eventId, MultiEventRepository $repository)
+    public function multiEvent($eventId, MultiEventRepository $repository)
     {
-        /** @var MultiEvent $event */
         $event = $repository->find($eventId);
 
         if ($event === null) {
             throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
+        }
+
+        return $this->exporter->export($event);
+    }
+
+    /**
+     * @Route("/download/event/{eventId}", name="download_registrations_event")
+     * @param                 $eventId
+     * @param EventRepository $repository
+     * @return Response
+     * @throws \Exception
+     */
+    public function event($eventId, EventRepository $repository)
+    {
+        $event = $repository->find($eventId);
+
+        if ($event === null) {
+            throw new \Exception(sprintf('Event by id %s not found', $eventId));
         }
 
         return $this->exporter->export($event);

@@ -2,16 +2,16 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Category;
+use App\Entity\Event;
 use App\Entity\MultiEvent;
-use App\Form\MultiEventType;
+use App\Form\EventType;
+use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -22,7 +22,13 @@ class EventController extends Controller
     /**
      * @var MultiEventRepository
      */
+    private $multiEventRepository;
+
+    /**
+     * @var EventRepository
+     */
     private $repository;
+
     /**
      * @var WorkshopRepository
      */
@@ -30,11 +36,16 @@ class EventController extends Controller
 
     /**
      * EventController constructor.
-     * @param MultiEventRepository $repository
+     * @param MultiEventRepository $multiEventRepository
+     * @param EventRepository      $repository
      * @param WorkshopRepository   $workshopRepository
      */
-    public function __construct(MultiEventRepository $repository, WorkshopRepository $workshopRepository)
-    {
+    public function __construct(
+        MultiEventRepository $multiEventRepository,
+        EventRepository $repository,
+        WorkshopRepository $workshopRepository
+    ) {
+        $this->multiEventRepository = $multiEventRepository;
         $this->repository = $repository;
         $this->workshopRepository = $workshopRepository;
     }
@@ -45,13 +56,15 @@ class EventController extends Controller
      */
     public function index()
     {
-        /** @var MultiEvent[] $events */
-        $events = $this->repository->findAll();
+        $user = $this->getUser();
+        $multiEvents = $this->multiEventRepository->findBy(['owner' => $user]);
+        $events = $this->repository->findBy(['owner' => $user]);
 
         return $this->render(
-            'Admin/MultiEvent/index.html.twig',
+            'Admin/Event/index.html.twig',
             [
-                'events' => $events,
+                'multiEvents' => $multiEvents,
+                'events'      => $events,
             ]
         );
     }
@@ -63,8 +76,8 @@ class EventController extends Controller
      */
     public function create(Request $request)
     {
-        $event = new MultiEvent();
-        $form = $this->createForm(MultiEventType::class, $event);
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -80,35 +93,9 @@ class EventController extends Controller
         }
 
         return $this->render(
-            'Admin/MultiEvent/create.html.twig',
+            'Admin/Event/create.html.twig',
             [
                 'form' => $form->createView(),
-            ]
-        );
-    }
-
-    /**
-     * @Route("/event/{eventId}", name="event_show")
-     * @param $eventId
-     * @return Response
-     * @throws \Exception
-     */
-    public function show($eventId)
-    {
-        /** @var MultiEvent $event */
-        $event = $this->repository->find($eventId);
-
-        if ($event === null) {
-            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
-        }
-
-        $workshops = $this->workshopRepository->getByEventId($event->getId());
-
-        return $this->render(
-            'Admin/MultiEvent/show.html.twig',
-            [
-                'event'     => $event,
-                'workshops' => $workshops,
             ]
         );
     }
@@ -122,14 +109,13 @@ class EventController extends Controller
      */
     public function update(Request $request, $eventId)
     {
-        /** @var MultiEvent $event */
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
+            throw new \Exception(sprintf('Event by id %s not found', $eventId));
         }
 
-        $form = $this->createForm(MultiEventType::class, $event);
+        $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -144,7 +130,7 @@ class EventController extends Controller
         }
 
         return $this->render(
-            'Admin/MultiEvent/update.html.twig',
+            'Admin/Event/update.html.twig',
             [
                 'form'  => $form->createView(),
                 'event' => $event,
@@ -153,42 +139,39 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/event/{eventId}/save_order", name="event_save_category_order")
-     * @param Request $request
-     * @param         $eventId
-     * @return JsonResponse
+     * @Route("/event/{eventId}", name="event_show")
+     * @param $eventId
+     * @return Response
      * @throws \Exception
      */
-    public function saveCategoryOrder(Request $request, $eventId)
+    public function show($eventId)
     {
-        /** @var MultiEvent $event */
-        $event = $this->repository->find($eventId);
-        $response = new JsonResponse(null, 200);
+        $event = $this->multiEventRepository->find($eventId);
 
         if ($event !== null) {
-            $order = $request->get('order');
+            $workshops = $this->workshopRepository->getByEventId($event->getId());
 
-            if (!empty($order) && count($order) == count($event->getCategories())) {
-                $order = array_flip($order);
-
-                /** @var Category $category */
-                foreach ($event->getCategories() as $category) {
-                    $orderNo = $order[$category->getId()];
-                    $category->setOrderNo($orderNo);
-                }
-
-                $this->getDoctrine()->getManager()->flush();
-            } else {
-                $response->setData([
-                    'message' => 'Bad number of ordered categories',
-                ])->setStatusCode(400);
-            }
-        } else {
-            $response->setData([
-                'message' => sprintf('MultiEvent by id %s not found', $eventId),
-            ])->setStatusCode(400);
+            return $this->render(
+                'Admin/MultiEvent/show.html.twig',
+                [
+                    'event'     => $event,
+                    'workshops' => $workshops,
+                ]
+            );
         }
 
-        return $response;
+        /** @var  $event */
+        $event = $this->repository->find($eventId);
+
+        if ($event === null) {
+            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+        }
+
+        return $this->render(
+            'Admin/Event/show.html.twig',
+            [
+                'event' => $event,
+            ]
+        );
     }
 }

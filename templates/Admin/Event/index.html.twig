@@ -13,7 +13,8 @@
         <h1 class="h2">{% trans %}Events{% endtrans %}</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
-                <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_create') }}">{% trans %}Create{% endtrans %}</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_create') }}">{% trans %}Create Event{% endtrans %}</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_create_multi') }}">{% trans %}Create Multi Event{% endtrans %}</a>
             </div>
         </div>
     </div>
@@ -22,19 +23,23 @@
         <tr>
             <th>ID</th>{#TODO: remove column#}
             <th>{% trans %}Title{% endtrans %}</th>
-            <th>{% trans %}Date{% endtrans %}</th>
-            <th>{% trans %}End date{% endtrans %}</th>
             <th>{% trans %}Place{% endtrans %}</th>
             <th>{% trans %}Description{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
+        {% for event in multiEvents %}
+            <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
+                <td>{{ event.id }}</td>
+                <td>{{ event.title }}</td>
+                <td>{{ event.place }}</td>
+                <td>{{ event.description|length > 30 ? event.description|slice(0, 30) ~ '...' : event.description }}</td>
+            </tr>
+        {% endfor %}
         {% for event in events %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
                 <td>{{ event.id }}</td>
                 <td>{{ event.title }}</td>
-                <td>{{ event.date|date('Y-m-d H:i:s') }}</td>
-                <td>{% if event.endDate is not null %}{{ event.endDate|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{{ event.place }}</td>
                 <td>{{ event.description|length > 30 ? event.description|slice(0, 30) ~ '...' : event.description }}</td>
             </tr>

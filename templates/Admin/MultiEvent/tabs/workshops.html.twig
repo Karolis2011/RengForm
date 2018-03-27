@@ -17,7 +17,7 @@
                 <td>{{ workshop.title }}</td>
                 <td>{{ workshop.category.title }}</td>
                 <td>{{ workshop.duration|date('H:i') }}</td>
-                <td>{{ workshop.capacity }}</td>
+                <td>{% if workshop.capacity is null %}&#8734{% else %}{{ workshop.capacity }}{% endif %}</td>
             </tr>
             <tr>
                 <td class="p-0" colspan="5">

@@ -3,6 +3,8 @@
 namespace App\Service\Export;
 
 use App\Entity\Category;
+use App\Entity\Event;
+use App\Entity\EventTime;
 use App\Entity\MultiEvent;
 use App\Entity\Workshop;
 use App\Entity\WorkshopTime;
@@ -15,10 +17,12 @@ class Exporter
 {
     const FILE_NAME = 'export.csv';
     const PARSERS = [
-        MultiEvent::class   => Parser\EventParser::class,
+        MultiEvent::class   => Parser\MultiEventParser::class,
         Category::class     => Parser\CategoryParser::class,
         Workshop::class     => Parser\WorkshopParser::class,
         WorkshopTime::class => Parser\WorkshopTimeParser::class,
+        Event::class        => Parser\EventParser::class,
+        EventTime::class    => Parser\EventTimeParser::class,
     ];
 
     /**
