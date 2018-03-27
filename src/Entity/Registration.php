@@ -32,6 +32,11 @@ class Registration
     private $workshopTime;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\EventTime", inversedBy="registrations")
+     */
+    private $eventTime;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -92,6 +97,21 @@ class Registration
     public function setWorkshopTime(?WorkshopTime $workshopTime): self
     {
         $this->workshopTime = $workshopTime;
+
+        return $this;
+    }
+
+    /**
+     * @return EventTime|null
+     */
+    public function getEventTime(): ?EventTime
+    {
+        return $this->eventTime;
+    }
+
+    public function setEventTime(?EventTime $eventTime): self
+    {
+        $this->eventTime = $eventTime;
 
         return $this;
     }

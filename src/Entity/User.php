@@ -52,6 +52,11 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\OneToMany(targetEntity="MultiEvent", mappedBy="owner")
      */
+    private $multiEvents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="owner", orphanRemoval=true)
+     */
     private $events;
 
     /**
@@ -60,6 +65,7 @@ class User implements UserInterface, \Serializable
     public function __construct()
     {
         $this->formConfigs = new ArrayCollection();
+        $this->multiEvents = new ArrayCollection();
         $this->events = new ArrayCollection();
     }
 
@@ -208,6 +214,14 @@ class User implements UserInterface, \Serializable
 
     /**
      * @return Collection|MultiEvent[]
+     */
+    public function getMultiEvents(): Collection
+    {
+        return $this->multiEvents;
+    }
+
+    /**
+     * @return Collection|Event[]
      */
     public function getEvents(): Collection
     {
