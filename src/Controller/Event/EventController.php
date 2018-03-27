@@ -2,8 +2,8 @@
 
 namespace App\Controller\Event;
 
-use App\Entity\Event;
-use App\Repository\EventRepository;
+use App\Entity\MultiEvent;
+use App\Repository\MultiEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,15 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
 class EventController extends Controller
 {
     /**
-     * @var EventRepository
+     * @var MultiEventRepository
      */
     private $repository;
 
     /**
      * EventController constructor.
-     * @param EventRepository $repository
+     * @param MultiEventRepository $repository
      */
-    public function __construct(EventRepository $repository)
+    public function __construct(MultiEventRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -35,11 +35,11 @@ class EventController extends Controller
      */
     public function index($eventId)
     {
-        /** @var Event $event */
+        /** @var MultiEvent $event */
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
         }
 
         return $this->render(

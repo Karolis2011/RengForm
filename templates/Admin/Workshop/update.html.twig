@@ -72,7 +72,8 @@
                         </div>
                     {% endfor %}
                 </div>
-                <button type="button" class="btn btn-primary" id="addTime" data-list="#timesList">{% trans %}Add Time{% endtrans %}</button>
+                <button type="button" class="btn btn-primary" id="addTime"
+                        data-list="#timesList">{% trans %}Add Time{% endtrans %}</button>
             </div>
             <div class="form-group">
                 {{ form_label(form.capacity) }}
@@ -100,7 +101,9 @@
         $(document).ready(function () {
             $(".datetimepicker").datetimepicker({
                 'format': 'YYYY-MM-DD HH:mm',
-                'showClose': true
+                'showClose': true,
+                'minDate': '{{ event.date|date('Y-m-d H:i') }}',
+                'maxDate': '{{ event.date|date('Y-m-d H:i') }}'
             });
 
             $(".timepicker").datetimepicker({
@@ -129,7 +132,9 @@
                 newElem.appendTo(list);
                 newElem.datetimepicker({
                     'format': 'YYYY-MM-DD HH:mm',
-                    'showClose': true
+                    'showClose': true,
+                    'minDate': '{{ event.date|date('Y-m-d H:i') }}',
+                    'maxDate': '{{ event.endDate|date('Y-m-d H:i') }}'
                 });
             });
 

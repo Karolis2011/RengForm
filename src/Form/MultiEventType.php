@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Event;
+use App\Entity\MultiEvent;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -11,9 +11,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class EventType
+ * Class MultiEventType
  */
-class EventType extends AbstractType
+class MultiEventType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -62,7 +62,7 @@ class EventType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Event::class,
+            'data_class' => MultiEvent::class,
         ]);
     }
 }

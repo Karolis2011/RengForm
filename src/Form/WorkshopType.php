@@ -47,10 +47,10 @@ class WorkshopType extends AbstractType
                 'times',
                 CollectionType::class,
                 [
-                    'entry_type'    => WorkshopTimeType::class,
-                    'allow_add'     => true,
-                    'allow_delete'  => true,
-                    'required'      => true,
+                    'entry_type'   => WorkshopTimeType::class,
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'required'     => true,
                 ]
             )
             ->add(
@@ -60,6 +60,7 @@ class WorkshopType extends AbstractType
                     'widget'   => 'single_text',
                     'html5'    => false,
                     'required' => true,
+                    'data'     => new \DateTime('01:00'),
                 ]
             )
             ->add(

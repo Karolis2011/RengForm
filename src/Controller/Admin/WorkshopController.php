@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Workshop;
 use App\Form\WorkshopType;
 use App\Repository\CategoryRepository;
+use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use App\Repository\WorkshopTimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -36,8 +37,8 @@ class WorkshopController extends Controller
 
     /**
      * WorkshopController constructor.
-     * @param WorkshopRepository $repository
-     * @param CategoryRepository $categoryRepository
+     * @param WorkshopRepository     $repository
+     * @param CategoryRepository     $categoryRepository
      * @param WorkshopTimeRepository $workshopTimeRepository
      */
     public function __construct(
@@ -52,12 +53,20 @@ class WorkshopController extends Controller
 
     /**
      * @Route("/event/{eventId}/workshop/create", name="workshop_create")
-     * @param         $eventId
-     * @param Request $request
+     * @param                      $eventId
+     * @param Request              $request
+     * @param MultiEventRepository $eventRepository
      * @return RedirectResponse|Response
+     * @throws \Exception
      */
-    public function create($eventId, Request $request)
+    public function create($eventId, Request $request, MultiEventRepository $eventRepository)
     {
+        $event = $eventRepository->find($eventId);
+
+        if ($event === null) {
+            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
+        }
+
         $workshop = new Workshop();
         $form = $this->createForm(
             WorkshopType::class,
@@ -74,7 +83,7 @@ class WorkshopController extends Controller
             return $this->redirectToRoute(
                 'event_show',
                 [
-                    'eventId' => $workshop->getCategory()->getEvent()->getId(),
+                    'eventId' => $eventId,
                 ]
             );
         }
@@ -83,6 +92,7 @@ class WorkshopController extends Controller
             'Admin/Workshop/create.html.twig',
             [
                 'form'   => $form->createView(),
+                'event'  => $event,
                 'errors' => $form->getErrors(true),
             ]
         );
@@ -141,6 +151,7 @@ class WorkshopController extends Controller
             [
                 'form'     => $form->createView(),
                 'workshop' => $workshop,
+                'event'    => $workshop->getCategory()->getEvent(),
                 'errors'   => $form->getErrors(),
             ]
         );

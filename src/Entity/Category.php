@@ -39,7 +39,7 @@ class Category
     private $workshops;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Event", inversedBy="categories")
+     * @ORM\ManyToOne(targetEntity="MultiEvent", inversedBy="categories")
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
@@ -131,18 +131,18 @@ class Category
     }
 
     /**
-     * @return Event|null
+     * @return MultiEvent|null
      */
-    public function getEvent(): ?Event
+    public function getEvent(): ?MultiEvent
     {
         return $this->event;
     }
 
     /**
-     * @param Event|null $event
+     * @param MultiEvent|null $event
      * @return Category
      */
-    public function setEvent(?Event $event): self
+    public function setEvent(?MultiEvent $event): self
     {
         $this->event = $event;
 

@@ -3,9 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
-use App\Entity\Event;
-use App\Form\EventType;
-use App\Repository\EventRepository;
+use App\Entity\MultiEvent;
+use App\Form\MultiEventType;
+use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EventController extends Controller
 {
     /**
-     * @var EventRepository
+     * @var MultiEventRepository
      */
     private $repository;
     /**
@@ -30,10 +30,10 @@ class EventController extends Controller
 
     /**
      * EventController constructor.
-     * @param EventRepository    $repository
-     * @param WorkshopRepository $workshopRepository
+     * @param MultiEventRepository $repository
+     * @param WorkshopRepository   $workshopRepository
      */
-    public function __construct(EventRepository $repository, WorkshopRepository $workshopRepository)
+    public function __construct(MultiEventRepository $repository, WorkshopRepository $workshopRepository)
     {
         $this->repository = $repository;
         $this->workshopRepository = $workshopRepository;
@@ -45,11 +45,11 @@ class EventController extends Controller
      */
     public function index()
     {
-        /** @var Event[] $events */
+        /** @var MultiEvent[] $events */
         $events = $this->repository->findAll();
 
         return $this->render(
-            'Admin/Event/index.html.twig',
+            'Admin/MultiEvent/index.html.twig',
             [
                 'events' => $events,
             ]
@@ -63,8 +63,8 @@ class EventController extends Controller
      */
     public function create(Request $request)
     {
-        $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
+        $event = new MultiEvent();
+        $form = $this->createForm(MultiEventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -80,7 +80,7 @@ class EventController extends Controller
         }
 
         return $this->render(
-            'Admin/Event/create.html.twig',
+            'Admin/MultiEvent/create.html.twig',
             [
                 'form' => $form->createView(),
             ]
@@ -95,17 +95,17 @@ class EventController extends Controller
      */
     public function show($eventId)
     {
-        /** @var Event $event */
+        /** @var MultiEvent $event */
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
         }
 
         $workshops = $this->workshopRepository->getByEventId($event->getId());
 
         return $this->render(
-            'Admin/Event/show.html.twig',
+            'Admin/MultiEvent/show.html.twig',
             [
                 'event'     => $event,
                 'workshops' => $workshops,
@@ -122,14 +122,14 @@ class EventController extends Controller
      */
     public function update(Request $request, $eventId)
     {
-        /** @var Event $event */
+        /** @var MultiEvent $event */
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
         }
 
-        $form = $this->createForm(EventType::class, $event);
+        $form = $this->createForm(MultiEventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -144,7 +144,7 @@ class EventController extends Controller
         }
 
         return $this->render(
-            'Admin/Event/update.html.twig',
+            'Admin/MultiEvent/update.html.twig',
             [
                 'form'  => $form->createView(),
                 'event' => $event,
@@ -161,7 +161,7 @@ class EventController extends Controller
      */
     public function saveCategoryOrder(Request $request, $eventId)
     {
-        /** @var Event $event */
+        /** @var MultiEvent $event */
         $event = $this->repository->find($eventId);
         $response = new JsonResponse(null, 200);
 
@@ -185,7 +185,7 @@ class EventController extends Controller
             }
         } else {
             $response->setData([
-                'message' => sprintf('Event by id %s not found', $eventId),
+                'message' => sprintf('MultiEvent by id %s not found', $eventId),
             ])->setStatusCode(400);
         }
 

@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MultiEventRepository")
  */
-class Event
+class MultiEvent
 {
     /**
      * @ORM\Id
@@ -60,7 +60,7 @@ class Event
     private $owner;
 
     /**
-     * Event constructor.
+     * MultiEvent constructor.
      */
     public function __construct()
     {
@@ -85,7 +85,7 @@ class Event
 
     /**
      * @param string $title
-     * @return Event
+     * @return MultiEvent
      */
     public function setTitle(string $title): self
     {
@@ -104,7 +104,7 @@ class Event
 
     /**
      * @param string $description
-     * @return Event
+     * @return MultiEvent
      */
     public function setDescription(string $description): self
     {
@@ -123,7 +123,7 @@ class Event
 
     /**
      * @param \DateTimeInterface $date
-     * @return Event
+     * @return MultiEvent
      */
     public function setDate(\DateTimeInterface $date): self
     {
@@ -142,7 +142,7 @@ class Event
 
     /**
      * @param \DateTimeInterface|null $endDate
-     * @return Event
+     * @return MultiEvent
      */
     public function setEndDate(?\DateTimeInterface $endDate): self
     {
@@ -161,7 +161,7 @@ class Event
 
     /**
      * @param string $place
-     * @return Event
+     * @return MultiEvent
      */
     public function setPlace(string $place): self
     {
@@ -180,7 +180,7 @@ class Event
 
     /**
      * @param \DateTimeInterface $created
-     * @return Event
+     * @return MultiEvent
      */
     public function setCreated(\DateTimeInterface $created): self
     {
@@ -207,7 +207,7 @@ class Event
 
     /**
      * @param User|null $owner
-     * @return Event
+     * @return MultiEvent
      */
     public function setOwner(?User $owner): self
     {

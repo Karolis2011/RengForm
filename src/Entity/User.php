@@ -50,7 +50,7 @@ class User implements UserInterface, \Serializable
     private $formConfigs;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="MultiEvent", mappedBy="owner")
      */
     private $events;
 
@@ -207,7 +207,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @return Collection|Event[]
+     * @return Collection|MultiEvent[]
      */
     public function getEvents(): Collection
     {

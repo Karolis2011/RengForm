@@ -2,9 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Event;
+use App\Entity\MultiEvent;
 use App\Repository\CategoryRepository;
-use App\Repository\EventRepository;
+use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopTimeRepository;
 use App\Service\Export\Exporter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -34,17 +34,17 @@ class DownloadController extends Controller
     /**
      * @Route("/download/event/{eventId}", name="download_registrations_event")
      * @param                 $eventId
-     * @param EventRepository $repository
+     * @param MultiEventRepository $repository
      * @return Response
      * @throws \Exception
      */
-    public function event($eventId, EventRepository $repository)
+    public function event($eventId, MultiEventRepository $repository)
     {
-        /** @var Event $event */
+        /** @var MultiEvent $event */
         $event = $repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
         }
 
         return $this->exporter->export($event);

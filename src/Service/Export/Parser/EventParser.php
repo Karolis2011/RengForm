@@ -2,7 +2,7 @@
 
 namespace App\Service\Export\Parser;
 
-use App\Entity\Event;
+use App\Entity\MultiEvent;
 
 /**
  * Class EventParser
@@ -10,19 +10,19 @@ use App\Entity\Event;
 class EventParser implements Parser
 {
     /**
-     * @param Event $object
+     * @param MultiEvent $object
      * @return array
      * @throws \Exception
      */
     public static function parse($object): array
     {
-        if (!($object instanceof Event)) {
-            throw new \Exception(sprintf('Event expected, got %s', get_class($object)));
+        if (!($object instanceof MultiEvent)) {
+            throw new \Exception(sprintf('MultiEvent expected, got %s', get_class($object)));
         }
 
         $data = [
             [
-                'Event',
+                'MultiEvent',
                 $object->getTitle(),
             ],
         ];

@@ -3,10 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
-use App\Entity\Event;
+use App\Entity\MultiEvent;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use App\Repository\EventRepository;
+use App\Repository\MultiEventRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,16 +24,16 @@ class CategoryController extends Controller
     private $repository;
 
     /**
-     * @var EventRepository
+     * @var MultiEventRepository
      */
     private $eventRepository;
 
     /**
      * CategoryController constructor.
-     * @param CategoryRepository $repository
-     * @param EventRepository    $eventRepository
+     * @param CategoryRepository   $repository
+     * @param MultiEventRepository $eventRepository
      */
-    public function __construct(CategoryRepository $repository, EventRepository $eventRepository)
+    public function __construct(CategoryRepository $repository, MultiEventRepository $eventRepository)
     {
         $this->repository = $repository;
         $this->eventRepository = $eventRepository;
@@ -48,11 +48,11 @@ class CategoryController extends Controller
      */
     public function create(Request $request, $eventId)
     {
-        /** @var Event $event */
+        /** @var MultiEvent $event */
         $event = $this->eventRepository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
         }
 
         $category = new Category();
