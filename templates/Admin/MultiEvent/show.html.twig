@@ -36,6 +36,8 @@
                         {% endif %}
                         <dt class="col-md-4">{% trans %}Place{% endtrans %}</dt>
                         <dd class="col-md-8">{{ event.place }}</dd>
+                        <dt class="col-md-4">{% trans %}Public link{% endtrans %}</dt>
+                        <dd class="col-md-8"><a href="{{ path('event', {'eventId': event.id}) }}">{{ event.title }}</a></dd>
                         <dt class="col-md-4">{% trans %}Description{% endtrans %}</dt>
                         <dd class="col-md-8">{{ event.description }}</dd>
                     </dl>
