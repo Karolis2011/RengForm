@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
+use App\Entity\MultiEvent;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
@@ -143,24 +144,41 @@ class EventController extends Controller
         $event = $this->multiEventRepository->find($eventId);
 
         if ($event !== null) {
-            $workshops = $this->workshopRepository->getByEventId($event->getId());
-
-            return $this->render(
-                'Admin/MultiEvent/show.html.twig',
-                [
-                    'event'     => $event,
-                    'workshops' => $workshops,
-                ]
-            );
+            return $this->showMultiEvent($event);
         }
 
-        /** @var  $event */
         $event = $this->repository->find($eventId);
 
-        if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+        if ($event !== null) {
+            return $this->showEvent($event);
         }
 
+        throw new \Exception(sprintf('Event by id %s not found', $eventId));
+    }
+
+    /**
+     * @param MultiEvent $event
+     * @return Response
+     */
+    private function showMultiEvent(MultiEvent $event): Response
+    {
+        $workshops = $this->workshopRepository->getByEventId($event->getId());
+
+        return $this->render(
+            'Admin/MultiEvent/show.html.twig',
+            [
+                'event'     => $event,
+                'workshops' => $workshops,
+            ]
+        );
+    }
+
+    /**
+     * @param Event $event
+     * @return Response
+     */
+    private function showEvent(Event $event): Response
+    {
         return $this->render(
             'Admin/Event/show.html.twig',
             [

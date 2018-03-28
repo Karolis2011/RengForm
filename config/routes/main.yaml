@@ -8,7 +8,7 @@ event:
 
 registration:
     path: /register/{timeId}
-    controller: App\Controller\Event\WorkshopController::register
+    controller: App\Controller\Event\RegistrationController::register
 
 admin:
     prefix: /admin

@@ -77,7 +77,6 @@ class MultiEventController extends Controller
      */
     public function update(Request $request, $eventId)
     {
-        /** @var MultiEvent $event */
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
@@ -115,7 +114,6 @@ class MultiEventController extends Controller
      */
     public function saveCategoryOrder(Request $request, $eventId)
     {
-        /** @var MultiEvent $event */
         $event = $this->repository->find($eventId);
         $response = new JsonResponse(null, 200);
 

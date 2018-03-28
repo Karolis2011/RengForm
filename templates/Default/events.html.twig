@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ event.title }}</title>
+
+    <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
+</head>
+
+<body class="bg-light">
+<div class="container">
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">{{ event.title }}</h1>
+        <p class="lead">{{ event.description }}</p>
+    </div>
+    {% if event.times is not empty %}
+        <div class="card mt-2">
+            <div class="card-body">
+                <table class="table table-sm table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>{% trans %}Start Time{% endtrans %}</th>
+                        <th>{% trans %}Duration{% endtrans %}</th>
+                        <th>{% trans %}Places left{% endtrans %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for time in event.times %}
+                        <tr class="clickable-row"
+                            data-href="{{ path('registration', {'timeId': time.id}) }}">
+                            <td>{{ time.startTime|date('Y-m-d H:i:s') }}</td>
+                            <td>{{ event.duration|date('H:i') }}</td>
+                            <td>
+                                {% if event.capacity is not null %}
+                                    <span class="badge badge-pill {% if time.available %}badge-primary{% else %}badge-secondary{% endif %}">{{ time.entriesLeft }}</span>
+                                {% else %}
+                                    {% trans %}Unlimited{% endtrans %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2018 RengForm</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">{% trans %}Privacy{% endtrans %}</a></li>
+            <li class="list-inline-item"><a href="#">{% trans %}Terms{% endtrans %}</a></li>
+            <li class="list-inline-item"><a href="#">{% trans %}Support{% endtrans %}</a></li>
+            <li class="list-inline-item">
+                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
+                    <span class="flag-icon flag-icon-gb"></span>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
+                    <span class="flag-icon flag-icon-lt"></span>
+                </a>
+            </li>
+        </ul>
+    </footer>
+</div>
+
+<script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+    });
+</script>
+</body>
+</html>

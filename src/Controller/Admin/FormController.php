@@ -35,8 +35,8 @@ class FormController extends Controller
      */
     public function index()
     {
-        /** @var FormConfig[] $formConfigs */
-        $formConfigs = $this->repository->findAll();
+        $user = $this->getUser();
+        $formConfigs = $this->repository->findBy(['owner' => $user]);
 
         return $this->render(
             'Admin/Form/index.html.twig',
@@ -86,7 +86,6 @@ class FormController extends Controller
      */
     public function show($formId)
     {
-        /** @var FormConfig $formConfig */
         $formConfig = $this->repository->find($formId);
 
         if ($formConfig === null) {
@@ -110,7 +109,6 @@ class FormController extends Controller
      */
     public function edit(Request $request, ConfigEnricher $enricher, $formId)
     {
-        /** @var FormConfig $formConfig */
         $formConfig = $this->repository->find($formId);
 
         if ($formConfig === null) {

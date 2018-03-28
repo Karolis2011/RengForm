@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,6 @@ class UserController extends Controller
      */
     public function profile()
     {
-        /** @var User $user */
         $user = $this->getUser();
 
         return $this->render(
@@ -35,7 +33,6 @@ class UserController extends Controller
      */
     public function changeEmail(Request $request)
     {
-        /** @var User $user */
         $user = $this->getUser();
 
         if (empty($request->get('email'))) {

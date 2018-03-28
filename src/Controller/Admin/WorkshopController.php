@@ -104,7 +104,6 @@ class WorkshopController extends Controller
      */
     public function edit(Request $request, $workshopId)
     {
-        /** @var Workshop $workshop */
         $workshop = $this->repository->find($workshopId);
 
         if ($workshop === null) {

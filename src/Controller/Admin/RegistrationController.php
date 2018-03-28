@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Workshop;
 use App\Repository\WorkshopRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +32,6 @@ class RegistrationController extends Controller
      */
     public function index($workshopId)
     {
-        /** @var Workshop $workshop */
         $workshop = $this->workshopRepository->find($workshopId);
 
         if ($workshop === null) {

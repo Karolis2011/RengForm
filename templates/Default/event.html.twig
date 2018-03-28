@@ -6,62 +6,41 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ event.title }}</title>
+    <title>{{ eventTime.event.title }} | {{ eventTime.startTime|date('Y-m-d H:i:s') }}</title>
 
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/select2/select2-bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
 </head>
 
 <body class="bg-light">
 <div class="container">
-    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-        <h1 class="display-4">{{ event.title }}</h1>
-        <p class="lead">{{ event.description }}</p>
+    <div class="py-5 text-center">
+        <h2>{{ eventTime.event.title }}</h2>
+        <h5>{{ eventTime.startTime|date('Y-m-d H:i:s') }}</h5>
+        <p class="lead">{{ eventTime.event.description }}</p>
     </div>
-    {% for category in event.categories if not event.empty %}
-        {% if category.workshops is not empty %}
-            <div class="card mt-2">
-                <div class="card-header">
-                    <h5 class="card-title">{{ category.title }}</h5>
-                </div>
-                <div class="card-body">
-                    <p>{{ category.description }}</p>
-                    <table class="table table-sm table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th>{% trans %}Workshop{% endtrans %}</th>
-                            <th>{% trans %}Start Time{% endtrans %}</th>
-                            <th>{% trans %}Duration{% endtrans %}</th>
-                            <th>{% trans %}Places left{% endtrans %}</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for workshop in category.workshops %}
-                            {% for time in workshop.times %}
-                                <tr class="clickable-row"
-                                    data-href="{{ path('registration', {'timeId': time.id}) }}">
-                                    <td>{{ workshop.title }}</td>
-                                    <td>{{ time.startTime|date('Y-m-d H:i:s') }}</td>
-                                    <td>{{ workshop.duration|date('H:i') }}</td>
-                                    <td>
-                                        {% if workshop.capacity is not null %}
-                                            <span class="badge badge-pill {% if time.available %}badge-primary{% else %}badge-secondary{% endif %}">{{ time.entriesLeft }}</span>
-                                        {% else %}
-                                            {% trans %}Unlimited{% endtrans %}
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        {% endif %}
-    {% else %}
-        <p>{% trans %}Event is empty{% endtrans %}.</p>
-    {% endfor %}
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }}" role="alert">
+                        {{ message|trans }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <h4 class="mb-3">{% trans %}Registration{% endtrans %}</h4>
+            <form name="registration" method="post">
+                {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.formConfig.config })) }}
+                <button class="btn btn-primary btn-lg btn-block" type="submit">{% trans %}Register{% endtrans %}</button>
+            </form>
+        </div>
+    </div>
 
     <footer class="my-5 pt-5 text-muted text-center text-small">
         <p class="mb-1">&copy; 2018 RengForm</p>
@@ -83,12 +62,25 @@
     </footer>
 </div>
 
+
 <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('js/popper/popper.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+<script src="{{ asset('js/moment/moment.min.js') }}"></script>
+<script src="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+<script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".clickable-row").click(function () {
-            window.location = $(this).data("href");
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $(".datetimepicker").datetimepicker({
+            'format': 'YYYY-MM-DD',
+            'showClose': true
+        });
+
+        $(".formSelect").select2({
+            theme: "bootstrap4"
         });
     });
 </script>

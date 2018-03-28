@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
-use App\Entity\MultiEvent;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\MultiEventRepository;
@@ -46,7 +45,6 @@ class CategoryController extends Controller
      */
     public function create(Request $request, $eventId)
     {
-        /** @var MultiEvent $event */
         $event = $this->eventRepository->find($eventId);
 
         if ($event === null) {
@@ -85,7 +83,6 @@ class CategoryController extends Controller
      */
     public function edit(Request $request, $categoryId)
     {
-        /** @var Category $category */
         $category = $this->repository->find($categoryId);
 
         if ($category === null) {

@@ -88,7 +88,6 @@ class SecurityController extends Controller
         } elseif ($request->get('new-password') == $request->get('old-password')) {
             $this->addFlash('danger', 'New password is same as old one!');
         } else {
-            /** @var User $user */
             $user = $this->getUser();
             $user->setPassword($passwordEncoder->encodePassword($user, $request->get('new-password')));
             $manager = $this->getDoctrine()->getManager();
