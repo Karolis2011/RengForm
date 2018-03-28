@@ -59,7 +59,7 @@ class Event
     private $formConfig;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="singleEvents")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;

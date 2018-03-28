@@ -3,12 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
-use App\Entity\MultiEvent;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,7 +49,6 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/event", name="event_index")
      * @return Response
      */
     public function index()
@@ -70,7 +67,6 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/event/create", name="event_create")
      * @param Request $request
      * @return RedirectResponse|Response
      */
@@ -101,7 +97,6 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/event/{eventId}/update", name="event_update")
      * @param Request $request
      * @param         $eventId
      * @return RedirectResponse|Response
@@ -139,7 +134,6 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/event/{eventId}", name="event_show")
      * @param $eventId
      * @return Response
      * @throws \Exception

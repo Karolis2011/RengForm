@@ -7,7 +7,6 @@ use App\Entity\MultiEvent;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\MultiEventRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +39,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/event/{eventId}/category/create", name="category_create")
      * @param Request $request
      * @param         $eventId
      * @return RedirectResponse|Response
@@ -80,7 +78,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/category/{categoryId}/update", name="category_update")
      * @param Request $request
      * @param         $categoryId
      * @return RedirectResponse|Response

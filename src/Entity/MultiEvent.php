@@ -54,7 +54,7 @@ class MultiEvent
     private $categories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="multiEvents")
      * @ORM\JoinColumn(nullable=false)
      */
     private $owner;

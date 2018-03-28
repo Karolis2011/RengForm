@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\UserType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +17,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/register", name="register")
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return RedirectResponse|Response
@@ -53,7 +51,6 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/login", name="login")
      * @param AuthenticationUtils $authUtils
      * @return Response
      */
@@ -76,7 +73,6 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/change_password", name="change_password")
      * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return RedirectResponse

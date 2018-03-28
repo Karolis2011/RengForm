@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\Workshop;
 use App\Repository\WorkshopRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +27,6 @@ class RegistrationController extends Controller
     }
 
     /**
-     * @Route("/workshop/{workshopId}/registrations", name="workshop_registrations")
      * @param $workshopId
      * @return Response
      * @throws \Exception

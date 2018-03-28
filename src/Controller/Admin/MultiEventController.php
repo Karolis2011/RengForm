@@ -7,7 +7,6 @@ use App\Entity\MultiEvent;
 use App\Form\MultiEventType;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +40,6 @@ class MultiEventController extends Controller
     }
 
     /**
-     * @Route("/event/create_multi", name="event_create_multi")
      * @param Request $request
      * @return RedirectResponse|Response
      */
@@ -72,7 +70,6 @@ class MultiEventController extends Controller
     }
 
     /**
-     * @Route("/event/{eventId}/update_multi", name="event_update_multi")
      * @param Request $request
      * @param         $eventId
      * @return RedirectResponse|Response
@@ -111,7 +108,6 @@ class MultiEventController extends Controller
     }
 
     /**
-     * @Route("/event/{eventId}/save_order", name="event_save_category_order")
      * @param Request $request
      * @param         $eventId
      * @return JsonResponse

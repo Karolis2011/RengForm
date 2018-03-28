@@ -1,0 +1,15 @@
+form_index:
+    path: /
+    controller: App\Controller\Admin\FormController::index
+
+form_create:
+    path: /create
+    controller: App\Controller\Admin\FormController::create
+
+form_show:
+    path: /{formId}
+    controller: App\Controller\Admin\FormController::show
+
+form_update:
+    path: /{formId}/update
+    controller: App\Controller\Admin\FormController::edit

@@ -50,7 +50,7 @@ class User implements UserInterface, \Serializable
     private $formConfigs;
 
     /**
-     * @ORM\OneToMany(targetEntity="MultiEvent", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="App\Entity\MultiEvent", mappedBy="owner")
      */
     private $multiEvents;
 

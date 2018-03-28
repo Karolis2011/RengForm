@@ -6,7 +6,6 @@ use App\Entity\FormConfig;
 use App\Form\FormConfigType;
 use App\Repository\FormConfigRepository;
 use App\Service\Form\ConfigEnricher;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,7 +31,6 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/form", name="form_index")
      * @return Response
      */
     public function index()
@@ -49,7 +47,6 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/form/create", name="form_create")
      * @param Request        $request
      * @param ConfigEnricher $enricher
      * @return Response
@@ -84,7 +81,6 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/form/{formId}", name="form_show")
      * @param $formId
      * @return Response
      */
@@ -106,7 +102,6 @@ class FormController extends Controller
     }
 
     /**
-     * @Route("/form/{formId}/update", name="form_update")
      * @param Request        $request
      * @param ConfigEnricher $enricher
      * @param                $formId

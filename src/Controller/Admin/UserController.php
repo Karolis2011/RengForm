@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     /**
-     * @Route("/profile", name="user_profile")
      * @return Response
      */
     public function profile()
@@ -32,7 +30,6 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/change_email", name="change_email")
      * @param Request $request
      * @return RedirectResponse
      */

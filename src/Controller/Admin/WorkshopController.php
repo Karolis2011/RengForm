@@ -9,7 +9,6 @@ use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use App\Repository\WorkshopTimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,7 +51,6 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @Route("/event/{eventId}/workshop/create", name="workshop_create")
      * @param                      $eventId
      * @param Request              $request
      * @param MultiEventRepository $eventRepository
@@ -99,7 +97,6 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @Route("/workshop/{workshopId}/update", name="workshop_update")
      * @param Request $request
      * @param         $workshopId
      * @return RedirectResponse|Response

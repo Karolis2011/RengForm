@@ -6,7 +6,6 @@ use App\Entity\Registration;
 use App\Entity\WorkshopTime;
 use App\Repository\RegistrationRepository;
 use App\Repository\WorkshopTimeRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +37,6 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @Route("/register/{timeId}", name="registration")
      * @param Request $request
      * @param         $timeId
      * @return Response

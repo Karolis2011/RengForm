@@ -1,15 +1,14 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+main:
+    prefix: /{_locale}
+    resource: 'routes/main.yaml'
+    requirements:
+        _locale: en|lt
+
 logout:
     path: /admin/logout
 
-redirect_admin_index:
-    path: /{_locale}/admin/
-    controller: FrameworkBundle:Redirect:redirect
-    defaults:
-        route: event_index
-
+# These redirect paths must be last and in this order!
+# All routes redirect form /foo/bar to /en/foo/bar
 redirect_admin:
     path: /admin
     controller: App\Controller\RedirectController::redirectAction

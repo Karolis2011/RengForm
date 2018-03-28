@@ -1,0 +1,15 @@
+index:
+    path: /
+    controller: App\Controller\Event\IndexController::index
+
+event:
+    path: /event/{eventId}
+    controller: App\Controller\Event\EventController::index
+
+registration:
+    path: /register/{timeId}
+    controller: App\Controller\Event\WorkshopController::register
+
+admin:
+    prefix: /admin
+    resource: 'admin.yaml'

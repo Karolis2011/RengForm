@@ -1,0 +1,15 @@
+download_registrations_workshop:
+    path: /workshop
+    controller: App\Controller\Admin\DownloadController::workshop
+
+download_registrations_category:
+    path: /category
+    controller: App\Controller\Admin\DownloadController::category
+
+download_registrations_event:
+    path: /event/{eventId}
+    controller: App\Controller\Admin\DownloadController::event
+
+download_registrations_event_multi:
+    path: /event_multi/{eventId}
+    controller: App\Controller\Admin\DownloadController::multiEvent

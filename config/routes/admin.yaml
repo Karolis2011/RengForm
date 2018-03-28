@@ -1,0 +1,49 @@
+redirect_admin_index:
+    path: /
+    controller: FrameworkBundle:Redirect:redirect
+    defaults:
+        route: login
+
+download:
+    prefix: /download
+    resource: 'download.yaml'
+
+event:
+    prefix: /event
+    resource: 'event.yaml'
+
+form:
+    prefix: /form
+    resource: 'form.yaml'
+
+login:
+    path: /login
+    controller: App\Controller\Admin\SecurityController::login
+
+user_profile:
+    path: /profile
+    controller: App\Controller\Admin\UserController::profile
+
+register:
+    path: /register
+    controller: App\Controller\Admin\SecurityController::register
+
+change_email:
+    path: /change_email
+    controller: App\Controller\Admin\UserController::changeEmail
+
+change_password:
+    path: /change_password
+    controller: App\Controller\Admin\SecurityController::changePassword
+
+category_update:
+    path: /category/{categoryId}/update
+    controller: App\Controller\Admin\CategoryController::edit
+
+workshop_update:
+    path: /workshop/{workshopId}/update
+    controller: App\Controller\Admin\WorkshopController::edit
+
+workshop_registrations:
+    path: /workshop/{workshopId}/registrations
+    controller: App\Controller\Admin\RegistrationController::index

@@ -1,0 +1,35 @@
+event_index:
+    path: /
+    controller: App\Controller\Admin\EventController::index
+
+event_create:
+    path: /create
+    controller: App\Controller\Admin\EventController::create
+
+event_create_multi:
+    path: /create_multi
+    controller: App\Controller\Admin\MultiEventController::create
+
+event_show:
+    path: /{eventId}
+    controller: App\Controller\Admin\EventController::show
+
+event_update:
+    path: /{eventId}/update
+    controller: App\Controller\Admin\EventController::update
+
+event_update_multi:
+    path: /{eventId}/update_multi
+    controller: App\Controller\Admin\MultiEventController::update
+
+event_save_category_order:
+    path: /{eventId}/save_order
+    controller: App\Controller\Admin\MultiEventController::saveCategoryOrder
+
+category_create:
+    path: /{eventId}/category/create
+    controller: App\Controller\Admin\CategoryController::create
+
+workshop_create:
+    path: /{eventId}/workshop/create
+    controller: App\Controller\Admin\WorkshopController::create

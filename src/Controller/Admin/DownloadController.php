@@ -7,7 +7,6 @@ use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopTimeRepository;
 use App\Service\Export\Exporter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,8 +31,7 @@ class DownloadController extends Controller
     }
 
     /**
-     * @Route("/download/event_multi/{eventId}", name="download_registrations_event_multi")
-     * @param                 $eventId
+     * @param                      $eventId
      * @param MultiEventRepository $repository
      * @return Response
      * @throws \Exception
@@ -50,7 +48,6 @@ class DownloadController extends Controller
     }
 
     /**
-     * @Route("/download/event/{eventId}", name="download_registrations_event")
      * @param                 $eventId
      * @param EventRepository $repository
      * @return Response
@@ -68,8 +65,7 @@ class DownloadController extends Controller
     }
 
     /**
-     * @Route("/download/workshop", name="download_registrations_workshop")
-     * @param Request            $request
+     * @param Request                $request
      * @param WorkshopTimeRepository $repository
      * @return Response
      * @throws \Exception
@@ -87,7 +83,6 @@ class DownloadController extends Controller
     }
 
     /**
-     * @Route("/download/category", name="download_registrations_category")
      * @param Request            $request
      * @param CategoryRepository $repository
      * @return Response
