@@ -12,6 +12,8 @@ class FormValidator
 {
     const VALIDATORS = [
         Validator\TextField::TYPE          => Validator\TextField::class,
+        Validator\DateField::TYPE          => Validator\DateField::class,
+        Validator\SelectField::TYPE        => Validator\SelectField::class,
         Validator\NumberField::TYPE        => Validator\NumberField::class,
         Validator\TextAreaField::TYPE      => Validator\TextAreaField::class,
         Validator\RadioGroupField::TYPE    => Validator\RadioGroupField::class,
