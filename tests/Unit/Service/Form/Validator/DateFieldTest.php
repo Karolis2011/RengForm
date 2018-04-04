@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\Functional\Service\Form\Validator;
+namespace App\Tests\Unit\Service\Form\Validator;
 
 use App\Service\Form\FormField;
-use App\Service\Form\Validator\NumberField;
+use App\Service\Form\Validator\DateField;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class NumberFieldTest
+ * Class DateFieldTest
  */
-class NumberFieldTest extends TestCase
+class DateFieldTest extends TestCase
 {
     /**
      * @return array
@@ -21,13 +21,13 @@ class NumberFieldTest extends TestCase
         //case #0
         $cases[] = [
             new FormField([
-                'type'     => 'number',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
             ]),
             [
-                'txt' => '1',
+                'txt' => '2018-01-01',
             ],
             [],
         ];
@@ -35,7 +35,7 @@ class NumberFieldTest extends TestCase
         //case #1
         $cases[] = [
             new FormField([
-                'type'     => 'number',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -51,7 +51,7 @@ class NumberFieldTest extends TestCase
         //case #2
         $cases[] = [
             new FormField([
-                'type'     => 'number',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -65,9 +65,9 @@ class NumberFieldTest extends TestCase
         //case #3
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
             [],
             [],
@@ -76,25 +76,25 @@ class NumberFieldTest extends TestCase
         //case #4
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
-                'min'   => '10',
-                'max'   => '20',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
-            [],
+            [
+                'txt' => '',
+            ],
             [],
         ];
 
         //case #5
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
             [
-                'txt' => '',
+                'txt' => '2018-01-01',
             ],
             [],
         ];
@@ -102,79 +102,75 @@ class NumberFieldTest extends TestCase
         //case #6
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
-                'min'   => '10',
-                'max'   => '20',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
             [
-                'txt' => '',
+                'txt' => '2018-1-01',
             ],
-            [],
+            [
+                'Test format is not valid, must be YYYY-MM-DD'
+            ],
         ];
 
         //case #7
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
-                'min'   => '10',
-                'max'   => '20',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
             [
-                'txt' => 10
+                'txt' => '2018',
             ],
-            [],
+            [
+                'Test format is not valid, must be YYYY-MM-DD'
+            ],
         ];
 
         //case #8
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
-                'min'   => '10',
-                'max'   => '20',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
             [
-                'txt' => 20
+                'txt' => '2018 Match 18th',
             ],
-            [],
+            [
+                'Test format is not valid, must be YYYY-MM-DD'
+            ],
         ];
 
         //case #9
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
-                'min'   => '10',
-                'max'   => '20',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
             [
-                'txt' => 9
+                'txt' => '20180101',
             ],
             [
-                'Test can not be lower than 10'
+                'Test format is not valid, must be YYYY-MM-DD'
             ],
         ];
 
         //case #10
         $cases[] = [
             new FormField([
-                'type'  => 'number',
-                'name'  => 'txt',
-                'label' => 'Test',
-                'min'   => '10',
-                'max'   => '20',
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
             ]),
             [
-                'txt' => 21
+                'txt' => '01-01-2018',
             ],
             [
-                'Test can not be higher than 20'
+                'Test format is not valid, must be YYYY-MM-DD'
             ],
         ];
 
@@ -189,7 +185,7 @@ class NumberFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = NumberField::validate($field, $formData);
+        $errors = DateField::validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }

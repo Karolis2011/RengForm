@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\Functional\Service\Form\Validator;
+namespace App\Tests\Unit\Service\Form\Validator;
 
 use App\Service\Form\FormField;
-use App\Service\Form\Validator\TextAreaField;
+use App\Service\Form\Validator\TextField;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class TextAreaFieldTest
+ * Class TextFieldTest
  */
-class TextAreaFieldTest extends TestCase
+class TextFieldTest extends TestCase
 {
     /**
      * @return array
@@ -21,7 +21,7 @@ class TextAreaFieldTest extends TestCase
         //case #0
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'text',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -35,7 +35,7 @@ class TextAreaFieldTest extends TestCase
         //case #1
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'text',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -51,7 +51,7 @@ class TextAreaFieldTest extends TestCase
         //case #2
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'text',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -65,7 +65,7 @@ class TextAreaFieldTest extends TestCase
         //case #3
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'text',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'maxlength' => 5,
@@ -77,7 +77,7 @@ class TextAreaFieldTest extends TestCase
         //case #4
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'text',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'maxlength' => 5,
@@ -91,7 +91,7 @@ class TextAreaFieldTest extends TestCase
         //case #5
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'text',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'maxlength' => 5,
@@ -105,7 +105,7 @@ class TextAreaFieldTest extends TestCase
         //case #6
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'text',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'maxlength' => 5,
@@ -129,7 +129,7 @@ class TextAreaFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = TextAreaField::validate($field, $formData);
+        $errors = TextField::validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }
