@@ -11,7 +11,9 @@ use App\Entity\WorkshopTime;
 class FormValidator
 {
     const VALIDATORS = [
-        Validator\TextField::TYPE => Validator\TextField::class,
+        Validator\TextField::TYPE     => Validator\TextField::class,
+        Validator\NumberField::TYPE   => Validator\NumberField::class,
+        Validator\TextAreaField::TYPE => Validator\TextAreaField::class,
     ];
 
     /**
