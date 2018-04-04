@@ -11,9 +11,11 @@ use App\Entity\WorkshopTime;
 class FormValidator
 {
     const VALIDATORS = [
-        Validator\TextField::TYPE     => Validator\TextField::class,
-        Validator\NumberField::TYPE   => Validator\NumberField::class,
-        Validator\TextAreaField::TYPE => Validator\TextAreaField::class,
+        Validator\TextField::TYPE          => Validator\TextField::class,
+        Validator\NumberField::TYPE        => Validator\NumberField::class,
+        Validator\TextAreaField::TYPE      => Validator\TextAreaField::class,
+        Validator\RadioGroupField::TYPE    => Validator\RadioGroupField::class,
+        Validator\CheckboxGroupField::TYPE => Validator\CheckboxGroupField::class,
     ];
 
     /**
