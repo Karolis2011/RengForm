@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\Service\Form\Validator;
+namespace App\Tests\Functional\Service\Form\Validator;
 
 use App\Service\Form\FormField;
-use App\Service\Form\Validator\CheckboxGroupField;
+use App\Service\Form\Validator\RadioGroupField;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class CheckboxGroupFieldTest
+ * Class RadioGroupFieldTest
  */
-class CheckboxGroupFieldTest extends TestCase
+class RadioGroupFieldTest extends TestCase
 {
     /**
      * @return array
@@ -21,7 +21,7 @@ class CheckboxGroupFieldTest extends TestCase
         //case #0
         $cases[] = [
             new FormField([
-                'type'     => 'checkbox-group',
+                'type'     => 'radio-group',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -45,7 +45,7 @@ class CheckboxGroupFieldTest extends TestCase
         //case #1
         $cases[] = [
             new FormField([
-                'type'     => 'checkbox-group',
+                'type'     => 'radio-group',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -71,7 +71,7 @@ class CheckboxGroupFieldTest extends TestCase
         //case #2
         $cases[] = [
             new FormField([
-                'type'     => 'checkbox-group',
+                'type'     => 'radio-group',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -95,7 +95,7 @@ class CheckboxGroupFieldTest extends TestCase
         //case #3
         $cases[] = [
             new FormField([
-                'type'     => 'checkbox-group',
+                'type'     => 'radio-group',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'values'   => [
@@ -116,7 +116,7 @@ class CheckboxGroupFieldTest extends TestCase
         //case #4
         $cases[] = [
             new FormField([
-                'type'     => 'checkbox-group',
+                'type'     => 'radio-group',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'values'   => [
@@ -139,7 +139,30 @@ class CheckboxGroupFieldTest extends TestCase
         //case #5
         $cases[] = [
             new FormField([
-                'type'     => 'checkbox-group',
+                'type'     => 'radio-group',
+                'name'     => 'txt',
+                'label'    => 'Test',
+                'values'   => [
+                    [
+                        'label' => 'A',
+                        'value' => 'a',
+                    ],
+                    [
+                        'label' => 'B',
+                        'value' => 'b',
+                    ],
+                ],
+            ]),
+            [
+                'txt' => ['a']
+            ],
+            [],
+        ];
+
+        //case #6
+        $cases[] = [
+            new FormField([
+                'type'     => 'radio-group',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'values'   => [
@@ -156,13 +179,15 @@ class CheckboxGroupFieldTest extends TestCase
             [
                 'txt' => ['a', 'b']
             ],
-            [],
+            [
+                'Only 1 option can be selected for Test'
+            ],
         ];
 
-        //case #6
+        //case #7
         $cases[] = [
             new FormField([
-                'type'     => 'checkbox-group',
+                'type'     => 'radio-group',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'values'   => [
@@ -177,10 +202,35 @@ class CheckboxGroupFieldTest extends TestCase
                 ],
             ]),
             [
-                'txt' => ['a', 'b', 'c']
+                'txt' => ['c']
             ],
             [
                 "'c' is not valid selection for Test"
+            ],
+        ];
+
+        //case #8
+        $cases[] = [
+            new FormField([
+                'type'     => 'radio-group',
+                'name'     => 'txt',
+                'label'    => 'Test',
+                'values'   => [
+                    [
+                        'label' => 'A',
+                        'value' => 'a',
+                    ],
+                    [
+                        'label' => 'B',
+                        'value' => 'b',
+                    ],
+                ],
+            ]),
+            [
+                'txt' => ['a', 'c']
+            ],
+            [
+                'Only 1 option can be selected for Test'
             ],
         ];
 
@@ -195,7 +245,7 @@ class CheckboxGroupFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = CheckboxGroupField::validate($field, $formData);
+        $errors = RadioGroupField::validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }

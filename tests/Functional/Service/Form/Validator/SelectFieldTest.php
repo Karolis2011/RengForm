@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Service\Form\Validator;
+namespace App\Tests\Functional\Service\Form\Validator;
 
 use App\Service\Form\FormField;
 use App\Service\Form\Validator\SelectField;

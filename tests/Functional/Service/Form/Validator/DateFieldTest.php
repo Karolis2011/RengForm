@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Tests\Service\Form\Validator;
+namespace App\Tests\Functional\Service\Form\Validator;
 
 use App\Service\Form\FormField;
-use App\Service\Form\Validator\TextAreaField;
+use App\Service\Form\Validator\DateField;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class TextAreaFieldTest
+ * Class DateFieldTest
  */
-class TextAreaFieldTest extends TestCase
+class DateFieldTest extends TestCase
 {
     /**
      * @return array
@@ -21,13 +21,13 @@ class TextAreaFieldTest extends TestCase
         //case #0
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
             ]),
             [
-                'txt' => 'a',
+                'txt' => '2018-01-01',
             ],
             [],
         ];
@@ -35,7 +35,7 @@ class TextAreaFieldTest extends TestCase
         //case #1
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -51,7 +51,7 @@ class TextAreaFieldTest extends TestCase
         //case #2
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
                 'required' => true,
@@ -65,10 +65,9 @@ class TextAreaFieldTest extends TestCase
         //case #3
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
-                'maxlength' => 5,
             ]),
             [],
             [],
@@ -77,13 +76,12 @@ class TextAreaFieldTest extends TestCase
         //case #4
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
-                'maxlength' => 5,
             ]),
             [
-                'txt' => '123'
+                'txt' => '',
             ],
             [],
         ];
@@ -91,13 +89,12 @@ class TextAreaFieldTest extends TestCase
         //case #5
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
-                'maxlength' => 5,
             ]),
             [
-                'txt' => '12345'
+                'txt' => '2018-01-01',
             ],
             [],
         ];
@@ -105,16 +102,75 @@ class TextAreaFieldTest extends TestCase
         //case #6
         $cases[] = [
             new FormField([
-                'type'     => 'textarea',
+                'type'     => 'date',
                 'name'     => 'txt',
                 'label'    => 'Test',
-                'maxlength' => 5,
             ]),
             [
-                'txt' => '123456'
+                'txt' => '2018-1-01',
             ],
             [
-                'Test can not be longer than 5 characters'
+                'Test format is not valid, must be YYYY-MM-DD'
+            ],
+        ];
+
+        //case #7
+        $cases[] = [
+            new FormField([
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
+            ]),
+            [
+                'txt' => '2018',
+            ],
+            [
+                'Test format is not valid, must be YYYY-MM-DD'
+            ],
+        ];
+
+        //case #8
+        $cases[] = [
+            new FormField([
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
+            ]),
+            [
+                'txt' => '2018 Match 18th',
+            ],
+            [
+                'Test format is not valid, must be YYYY-MM-DD'
+            ],
+        ];
+
+        //case #9
+        $cases[] = [
+            new FormField([
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
+            ]),
+            [
+                'txt' => '20180101',
+            ],
+            [
+                'Test format is not valid, must be YYYY-MM-DD'
+            ],
+        ];
+
+        //case #10
+        $cases[] = [
+            new FormField([
+                'type'     => 'date',
+                'name'     => 'txt',
+                'label'    => 'Test',
+            ]),
+            [
+                'txt' => '01-01-2018',
+            ],
+            [
+                'Test format is not valid, must be YYYY-MM-DD'
             ],
         ];
 
@@ -129,7 +185,7 @@ class TextAreaFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = TextAreaField::validate($field, $formData);
+        $errors = DateField::validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }
