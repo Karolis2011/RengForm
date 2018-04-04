@@ -24,7 +24,7 @@ class Form
     }
 
     /**
-     * @return array
+     * @return FormField[]
      */
     public function getFields(): array
     {

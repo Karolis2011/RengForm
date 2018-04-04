@@ -2,12 +2,12 @@
 
 namespace App\Service\Export\Parser;
 
-use App\Entity\Workshop;
+use App\Entity\Event;
 
 /**
- * Class WorkshopParser
+ * Class EventParser
  */
-class WorkshopParser implements Parser
+class EventParserInterface implements ParserInterface
 {
     /**
      * @param $object
@@ -16,8 +16,8 @@ class WorkshopParser implements Parser
      */
     public static function parse($object): array
     {
-        if (!($object instanceof Workshop)) {
-            throw new \Exception(sprintf('Workshop expected, got %s', get_class($object)));
+        if (!($object instanceof Event)) {
+            throw new \Exception(sprintf('Event expected, got %s', get_class($object)));
         }
 
         $data = [];
@@ -25,10 +25,10 @@ class WorkshopParser implements Parser
         if (is_iterable($object->getTimes()) && count($object->getTimes()) > 0) {
             foreach ($object->getTimes() as $workshopTime) {
                 $data[] = [];
-                $data = array_merge($data, WorkshopTimeParser::parse($workshopTime));
+                $data = array_merge($data, EventTimeParserInterface::parse($workshopTime));
             }
         } else {
-            $data[] = ['No times set for workshop'];
+            $data[] = ['No times set for event'];
         }
 
         return $data;

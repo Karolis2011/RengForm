@@ -5,7 +5,7 @@ namespace App\Service\Export\Parser;
 /**
  * Interface Parser
  */
-interface Parser
+interface ParserInterface
 {
     /**
      * @param $object

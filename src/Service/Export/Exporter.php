@@ -17,12 +17,12 @@ class Exporter
 {
     const FILE_NAME = 'export.csv';
     const PARSERS = [
-        MultiEvent::class   => Parser\MultiEventParser::class,
-        Category::class     => Parser\CategoryParser::class,
-        Workshop::class     => Parser\WorkshopParser::class,
-        WorkshopTime::class => Parser\WorkshopTimeParser::class,
-        Event::class        => Parser\EventParser::class,
-        EventTime::class    => Parser\EventTimeParser::class,
+        MultiEvent::class   => Parser\MultiEventParserInterface::class,
+        Category::class     => Parser\CategoryParserInterface::class,
+        Workshop::class     => Parser\WorkshopParserInterface::class,
+        WorkshopTime::class => Parser\WorkshopTimeParserInterface::class,
+        Event::class        => Parser\EventParserInterface::class,
+        EventTime::class    => Parser\EventTimeParserInterface::class,
     ];
 
     /**
@@ -78,10 +78,10 @@ class Exporter
 
     /**
      * @param $item
-     * @return Parser\Parser
+     * @return Parser\ParserInterface
      * @throws \Exception
      */
-    private function getParser($item): Parser\Parser
+    private function getParser($item): Parser\ParserInterface
     {
         $class = get_class($item);
 

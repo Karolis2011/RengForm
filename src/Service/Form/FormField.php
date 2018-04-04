@@ -23,7 +23,7 @@ class FormField
     private $name;
 
     /**
-     * @var array
+     * @var FieldValue[]
      */
     private $values;
 
@@ -118,7 +118,7 @@ class FormField
     }
 
     /**
-     * @return array
+     * @return FieldValue[]
      */
     public function getValues(): array
     {
@@ -199,7 +199,7 @@ class FormField
 
     /**
      * @param array $values
-     * @return array
+     * @return FieldValue[]
      */
     private function parseValues(array $values)
     {

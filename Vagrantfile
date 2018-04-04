@@ -14,6 +14,7 @@ end
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 22, host: 2223, is: 'ssh'
   config.vm.synced_folder "./", "/srv", :nfs => true, :mount_options => ['actimeo=2']
   config.bindfs.bind_folder "/srv", "/srv"
   config.vm.network :private_network, ip: "11.15.10.23"

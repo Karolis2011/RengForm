@@ -7,7 +7,7 @@ use App\Entity\MultiEvent;
 /**
  * Class EventParser
  */
-class MultiEventParser implements Parser
+class MultiEventParserInterface implements ParserInterface
 {
     /**
      * @param MultiEvent $object
@@ -29,7 +29,7 @@ class MultiEventParser implements Parser
 
         foreach ($object->getCategories() as $category) {
             $data[] = [];
-            $data = array_merge($data, CategoryParser::parse($category));
+            $data = array_merge($data, CategoryParserInterface::parse($category));
         }
 
         return $data;

@@ -10,20 +10,71 @@ use App\Entity\WorkshopTime;
  */
 class FormValidator
 {
+    const VALIDATORS = [
+        Validator\TextField::TYPE => Validator\TextField::class,
+    ];
+
     /**
      * @param EventTime|WorkshopTime $time
      * @param array                  $formData
      * @return bool
+     * @throws \Exception
      */
     public function validate($time, array $formData): bool
     {
-        $valid = true;
-
         if (empty($formData)) {
-            $valid = false;
+            return false;
         }
-        //TODO: validate
 
-        return $valid;
+        $form = $this->getFormConfig($time);
+        $errors = [];
+
+        foreach ($form->getFields() as $field) {
+            $validator = $this->getValidator($field->getType());
+            $errors = array_merge($errors, $validator->validate($field, $formData));
+        }
+
+        return empty($errors);
+    }
+
+    /**
+     * @param string $type
+     * @return Validator\ValidatorInterface
+     * @throws \Exception
+     */
+    private function getValidator(string $type): Validator\ValidatorInterface
+    {
+        if (!isset(self::VALIDATORS[$type])) {
+            throw new \Exception(sprintf('Validator for type %s not found', $type));
+        }
+
+        $validator = self::VALIDATORS[$type];
+        $validator = new $validator();
+
+        return $validator;
+    }
+
+    /**
+     * @param EventTime|WorkshopTime $time
+     * @return Form
+     * @throws \Exception
+     */
+    private function getFormConfig($time): Form
+    {
+        switch (get_class($time)) {
+            case EventTime::class:
+                $formConfig = $time->getEvent()->getFormConfig();
+                break;
+            case WorkshopTime::class:
+                $formConfig = $time->getWorkshop()->getFormConfig();
+                break;
+            default:
+                throw new \Exception(sprintf('Unsuported class %s', get_class($time)));
+                break;
+        }
+
+        $form = new Form($formConfig->getConfig());
+
+        return $form;
     }
 }

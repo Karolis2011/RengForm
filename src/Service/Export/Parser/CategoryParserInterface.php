@@ -7,7 +7,7 @@ use App\Entity\Category;
 /**
  * Class CategoryParser
  */
-class CategoryParser implements Parser
+class CategoryParserInterface implements ParserInterface
 {
     /**
      * @param $object
@@ -29,7 +29,7 @@ class CategoryParser implements Parser
 
         if (is_iterable($object->getWorkshops()) && count($object->getWorkshops()) > 0) {
             foreach ($object->getWorkshops() as $workshop) {
-                $data = array_merge($data, WorkshopParser::parse($workshop));
+                $data = array_merge($data, WorkshopParserInterface::parse($workshop));
             }
         } else {
             $data[] = ['No workshops in category'];
