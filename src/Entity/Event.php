@@ -57,7 +57,9 @@ class Event
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\EventTime", mappedBy="event", orphanRemoval=true, cascade={"persist"})
      * @Assert\NotBlank()
-     * @Assert\Valid()
+     * @Assert\All({
+     *     @Assert\Valid()
+     * })
      */
     private $times;
 

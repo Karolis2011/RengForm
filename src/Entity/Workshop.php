@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WorkshopRepository")
@@ -56,7 +57,9 @@ class Workshop
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\WorkshopTime", mappedBy="workshop", orphanRemoval=true, cascade={"persist"})
      * @Assert\NotBlank()
-     * @Assert\Valid()
+     * @Assert\All({
+     *     @Assert\Valid()
+     * })
      */
     private $times;
 
