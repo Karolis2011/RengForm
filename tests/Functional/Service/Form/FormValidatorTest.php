@@ -27,12 +27,12 @@ class FormValidatorTest extends WebTestCase
                     'name'     => 'txt',
                     'label'    => 'Test',
                     'required' => true,
-                ]
+                ],
             ],
             [
-                'txt' => 'a'
+                'txt' => 'a',
             ],
-            true
+            true,
         ];
 
         //case #1
@@ -43,13 +43,186 @@ class FormValidatorTest extends WebTestCase
                     'name'     => 'txt',
                     'label'    => 'Test',
                     'required' => true,
-                ]
+                ],
             ],
             [],
-            false
+            false,
         ];
 
-        //TODO: add full form test case
+        //case #2
+        $cases[] = [
+            [
+                [
+                    'type'     => 'text',
+                    'name'     => 'txt',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+                [
+                    'type'     => 'date',
+                    'name'     => 'dt',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+                [
+                    'type'     => 'checkbox-group',
+                    'name'     => 'cbg',
+                    'label'    => 'Test',
+                    'required' => true,
+                    'values'   => [
+                        [
+                            'label' => 'A',
+                            'value' => 'a',
+                        ],
+                        [
+                            'label' => 'B',
+                            'value' => 'b',
+                        ],
+                    ],
+                ],
+                [
+                    'type'     => 'number',
+                    'name'     => 'nm',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+                [
+                    'type'     => 'radio-group',
+                    'name'     => 'rdg',
+                    'label'    => 'Test',
+                    'required' => true,
+                    'values'   => [
+                        [
+                            'label' => 'A',
+                            'value' => 'a',
+                        ],
+                        [
+                            'label' => 'B',
+                            'value' => 'b',
+                        ],
+                    ],
+                ],
+                [
+                    'type'     => 'select',
+                    'name'     => 'sl',
+                    'label'    => 'Test',
+                    'required' => true,
+                    'values'   => [
+                        [
+                            'label' => 'A',
+                            'value' => 'a',
+                        ],
+                        [
+                            'label' => 'B',
+                            'value' => 'b',
+                        ],
+                    ],
+                ],
+                [
+                    'type'     => 'textarea',
+                    'name'     => 'txta',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+            ],
+            [
+                'txt'  => 'a',
+                'dt'   => '2018-01-01',
+                'cbg'  => ['a'],
+                'nm'   => '1',
+                'rdg'  => ['a'],
+                'sl'   => 'a',
+                'txta' => 'a',
+            ],
+            true,
+        ];
+
+        //case #3
+        $cases[] = [
+            [
+                [
+                    'type'     => 'text',
+                    'name'     => 'txt',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+                [
+                    'type'     => 'date',
+                    'name'     => 'dt',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+                [
+                    'type'     => 'checkbox-group',
+                    'name'     => 'cbg',
+                    'label'    => 'Test',
+                    'required' => true,
+                    'values'   => [
+                        [
+                            'label' => 'A',
+                            'value' => 'a',
+                        ],
+                        [
+                            'label' => 'B',
+                            'value' => 'b',
+                        ],
+                    ],
+                ],
+                [
+                    'type'     => 'number',
+                    'name'     => 'nm',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+                [
+                    'type'     => 'radio-group',
+                    'name'     => 'rdg',
+                    'label'    => 'Test',
+                    'required' => true,
+                    'values'   => [
+                        [
+                            'label' => 'A',
+                            'value' => 'a',
+                        ],
+                        [
+                            'label' => 'B',
+                            'value' => 'b',
+                        ],
+                    ],
+                ],
+                [
+                    'type'     => 'select',
+                    'name'     => 'sl',
+                    'label'    => 'Test',
+                    'required' => true,
+                    'values'   => [
+                        [
+                            'label' => 'A',
+                            'value' => 'a',
+                        ],
+                        [
+                            'label' => 'B',
+                            'value' => 'b',
+                        ],
+                    ],
+                ],
+                [
+                    'type'     => 'textarea',
+                    'name'     => 'txta',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+            ],
+            [
+                'txt'  => 'a',
+                'dt'   => '2018-01-01',
+                'nm'   => '1',
+                'rdg'  => ['a'],
+                'sl'   => 'a',
+                'txta' => 'a',
+            ],
+            false,
+        ];
 
         return $cases;
     }
