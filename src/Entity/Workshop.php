@@ -20,21 +20,26 @@ class Workshop
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $place;
 
     /**
      * @ORM\Column(type="time")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $duration;
 
@@ -50,18 +55,21 @@ class Workshop
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\WorkshopTime", mappedBy="workshop", orphanRemoval=true, cascade={"persist"})
+     * @Assert\NotBlank()
+     * @Assert\Valid()
      */
     private $times;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FormConfig")
-     * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $formConfig;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="workshops")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
      */
     private $category;
 

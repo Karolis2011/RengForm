@@ -20,6 +20,8 @@ class WorkshopTime
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $startTime;
 
