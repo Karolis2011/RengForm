@@ -57,9 +57,7 @@ class Workshop
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\WorkshopTime", mappedBy="workshop", orphanRemoval=true, cascade={"persist"})
      * @Assert\NotBlank()
-     * @Assert\All({
-     *     @Assert\Valid()
-     * })
+     * @Assert\Valid()
      */
     private $times;
 
