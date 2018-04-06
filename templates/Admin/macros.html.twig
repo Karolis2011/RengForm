@@ -1,18 +1,12 @@
 {% macro display_form_errors(form) %}
-    {% for fieldName, child in form if child.vars.valid is defined and not child.vars.valid %}
-        {% if child.vars.compound and not child.vars.valid %}
-            {{ forms.display_form_field_error(child) }}
-        {% else %}
-            {% for error in child.vars.errors %}
-                <div class="alert alert-danger">
-                    {% if child.vars.label is defined and child.vars.label is not null %}
-                        {{ child.vars.label|trans|capitalize }}
-                    {% else %}
-                        {{ child.vars.name|trans|capitalize }}
-                    {% endif %}
-                    - {{ error.message|capitalize }}
-                </div>
-            {% endfor %}
-        {% endif %}
+    {% for error in form.vars.errors %}
+        <div class="alert alert-danger">
+            {% if error.origin.config.label is defined and error.origin.config.label is not null %}
+                {{ error.origin.config.label|trans|capitalize }}
+            {% else %}
+                {{ error.origin.config.name|trans|capitalize }}
+            {% endif %}
+            - {{ error.message|trans|capitalize }}
+        </div>
     {% endfor %}
 {% endmacro %}

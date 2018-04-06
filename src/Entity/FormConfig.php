@@ -31,6 +31,7 @@ class FormConfig
     /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
+     * @Assert\NotEqualTo("[]")
      */
     private $config = '';
 
