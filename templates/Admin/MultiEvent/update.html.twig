@@ -1,4 +1,5 @@
 {% extends 'Admin/base.html.twig' %}
+{% import 'Admin/macros.html.twig' as macros %}
 
 {% block title %}{% trans %}Events{% endtrans %} | {{ event.title }} | {% trans %}Update{% endtrans %}{% endblock %}
 
@@ -12,6 +13,7 @@
     <h2 class="border-bottom">
         {% block header %}{% trans %}Edit Event{% endtrans %}{% endblock %}
     </h2>
+    {{ macros.display_form_errors(form) }}
     <div class="row">
         <div class="col-lg-6">
             {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}

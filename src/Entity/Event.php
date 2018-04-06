@@ -55,7 +55,7 @@ class Event
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\EventTime", mappedBy="event", orphanRemoval=true, cascade={"persist"})
-     * @Assert\NotBlank()
+     * @Assert\Count(min="1", minMessage="At least 1 time has to be added")
      * @Assert\Valid()
      */
     private $times;

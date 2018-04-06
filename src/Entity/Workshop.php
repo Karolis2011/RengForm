@@ -55,7 +55,7 @@ class Workshop
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\WorkshopTime", mappedBy="workshop", orphanRemoval=true, cascade={"persist"})
-     * @Assert\NotBlank()
+     * @Assert\Count(min="1", minMessage="At least 1 time has to be added")
      * @Assert\Valid()
      */
     private $times;
@@ -69,7 +69,6 @@ class Workshop
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="workshops")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
      */
     private $category;
 

@@ -43,7 +43,6 @@ class Category
     /**
      * @ORM\ManyToOne(targetEntity="MultiEvent", inversedBy="categories")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\NotBlank()
      */
     private $event;
 

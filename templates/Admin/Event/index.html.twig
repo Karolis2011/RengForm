@@ -22,6 +22,7 @@
         <thead>
         <tr>
             <th>ID</th>{#TODO: remove column#}
+            <th>{% trans %}Type{% endtrans %}</th>
             <th>{% trans %}Title{% endtrans %}</th>
             <th>{% trans %}Place{% endtrans %}</th>
             <th>{% trans %}Description{% endtrans %}</th>
@@ -31,6 +32,7 @@
         {% for event in multiEvents %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
                 <td>{{ event.id }}</td>
+                <td>Multi</td>
                 <td>{{ event.title }}</td>
                 <td>{{ event.place }}</td>
                 <td>{{ event.description|length > 30 ? event.description|slice(0, 30) ~ '...' : event.description }}</td>
@@ -39,6 +41,7 @@
         {% for event in events %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
                 <td>{{ event.id }}</td>
+                <td>Single</td>
                 <td>{{ event.title }}</td>
                 <td>{{ event.place }}</td>
                 <td>{{ event.description|length > 30 ? event.description|slice(0, 30) ~ '...' : event.description }}</td>

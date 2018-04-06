@@ -1,4 +1,5 @@
 {% extends 'Admin/base.html.twig' %}
+{% import 'Admin/macros.html.twig' as macros %}
 
 {% form_theme form _self %}
 
@@ -22,11 +23,7 @@
     <h2 class="border-bottom">
         {% block header %}{% trans %}Edit Workshop{% endtrans %}{% endblock %}
     </h2>
-    {% if errors is not empty %}
-        <div class="alert alert-danger" role="alert">
-            {{ errors }}
-        </div>
-    {% endif %}
+    {{ macros.display_form_errors(form) }}
     <div class="row">
         <div class="col-md-6">
             {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
@@ -138,7 +135,7 @@
                 });
             });
 
-            $(".removeTime").click(function () {
+            $("#timesList").on('click', '.removeTime', function () {
                 var item = $(this).parent().parent();
                 item.remove();
             });

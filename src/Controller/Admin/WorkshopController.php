@@ -91,7 +91,6 @@ class WorkshopController extends Controller
             [
                 'form'   => $form->createView(),
                 'event'  => $event,
-                'errors' => $form->getErrors(true),
             ]
         );
     }
@@ -148,7 +147,6 @@ class WorkshopController extends Controller
                 'form'     => $form->createView(),
                 'workshop' => $workshop,
                 'event'    => $workshop->getCategory()->getEvent(),
-                'errors'   => $form->getErrors(),
             ]
         );
     }
