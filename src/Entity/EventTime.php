@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventTimeRepository")
@@ -177,5 +178,22 @@ class EventTime
     public function increaseEntries(int $count = 1)
     {
         $this->entries += $count;
+    }
+
+    /**
+     * @Assert\Callback
+     * @param ExecutionContextInterface $context
+     * @param                           $payload
+     */
+    public function validate(ExecutionContextInterface $context, $payload)
+    {
+        $time = new \DateTime("now");
+        $time->setTime($time->format('H'), $time->format('i'), 0);
+
+        if ($this->startTime < $time) {
+            $context->buildViolation('Time must be in future')
+                ->atPath('startTime')
+                ->addViolation();
+        }
     }
 }
