@@ -30,8 +30,8 @@ class FormConfig
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
-     * @Assert\NotEqualTo("[]")
+     * @Assert\NotBlank(message="Form is empty")
+     * @Assert\NotEqualTo(value="[]", message="Form is empty")
      */
     private $config = '';
 
