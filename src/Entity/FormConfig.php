@@ -25,15 +25,14 @@ class FormConfig
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      */
-    private $description;
+    private $description = '';
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="text")
      * @Assert\NotBlank()
      */
-    private $config;
+    private $config = '';
 
     /**
      * @ORM\Column(type="datetime")
@@ -82,18 +81,21 @@ class FormConfig
     }
 
     /**
-     * @param string $description
+     * @param null|string $description
      * @return FormConfig
      */
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
-        $this->description = $description;
+        $this->description = '';
+        if ($description !== null) {
+            $this->description = $description;
+        }
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getConfig()
     {
@@ -101,12 +103,28 @@ class FormConfig
     }
 
     /**
-     * @param $config
+     * @return array
+     */
+    public function getConfigParsed()
+    {
+        $parsed = json_decode($this->config, true);
+        if ($parsed === null) {
+            $parsed = [];
+        }
+
+        return $parsed;
+    }
+
+    /**
+     * @param null|string $config
      * @return FormConfig
      */
-    public function setConfig($config): self
+    public function setConfig(?string $config): self
     {
-        $this->config = $config;
+        $this->config = '';
+        if ($config !== null) {
+            $this->config = $config;
+        }
 
         return $this;
     }

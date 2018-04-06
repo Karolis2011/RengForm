@@ -90,10 +90,10 @@ class RegistrationController extends Controller
     private function processEvent(EventTime $eventTime, $formData): Response
     {
         if (!$eventTime->isAvailable()) {
-            $this->addFlash('alert', 'Event is full.');
+            $this->addFlash('danger', 'Event is full.');
         } elseif ($formData !== null) {
             if (!$this->formValidator->validate($eventTime, $formData)) {
-                $this->addFlash('alert', 'Registration form is not filled correctly');
+                $this->addFlash('danger', 'Registration form is not filled correctly');
             } else {
                 $registration = new Registration();
                 $registration->setData($formData);
@@ -121,10 +121,10 @@ class RegistrationController extends Controller
     private function processWorkshop(WorkshopTime $workshopTime, $formData): Response
     {
         if (!$workshopTime->isAvailable()) {
-            $this->addFlash('alert', 'Workshop is full.');
+            $this->addFlash('danger', 'Workshop is full.');
         } elseif ($formData !== null) {
             if (!$this->formValidator->validate($workshopTime, $formData)) {
-                $this->addFlash('alert', 'Registration form is not filled correctly');
+                $this->addFlash('danger', 'Registration form is not filled correctly');
             } else {
                 $registration = new Registration();
                 $registration->setData($formData);

@@ -27,9 +27,8 @@ class Event
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank()
      */
-    private $description;
+    private $description = '';
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -117,12 +116,15 @@ class Event
     }
 
     /**
-     * @param string $description
+     * @param null|string $description
      * @return Event
      */
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
-        $this->description = $description;
+        $this->description = '';
+        if ($description !== null) {
+            $this->description = $description;
+        }
 
         return $this;
     }

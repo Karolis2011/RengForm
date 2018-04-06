@@ -32,7 +32,7 @@ class WorkshopTimeParserInterface implements ParserInterface
         if (is_iterable($object->getRegistrations()) && count($object->getRegistrations()) > 0) {
             $fieldList = [];
 
-            foreach ($object->getWorkshop()->getFormConfig()->getConfig() as $field) {
+            foreach ($object->getWorkshop()->getFormConfig()->getConfigParsed() as $field) {
                 if ($field['type'] != 'paragraph') {
                     $fieldList[$field['name']] = $field['label'];
                 }

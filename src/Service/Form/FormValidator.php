@@ -4,6 +4,7 @@ namespace App\Service\Form;
 
 use App\Entity\EventTime;
 use App\Entity\WorkshopTime;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class FormValidator
@@ -21,23 +22,41 @@ class FormValidator
     ];
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * FormValidator constructor.
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    /**
      * @param EventTime|WorkshopTime $time
      * @param array                  $formData
      * @return bool
-     * @throws \Exception
      */
     public function validate($time, array $formData): bool
     {
         if (empty($formData)) {
             return false;
         }
-
-        $form = $this->getFormConfig($time);
         $errors = [];
 
-        foreach ($form->getFields() as $field) {
-            $validator = $this->getValidator($field->getType());
-            $errors = array_merge($errors, $validator->validate($field, $formData));
+        try {
+            $form = $this->getFormConfig($time);
+
+            foreach ($form->getFields() as $field) {
+                $validator = $this->getValidator($field->getType());
+                $errors = array_merge($errors, $validator->validate($field, $formData));
+            }
+        } catch (\Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            $errors[] = 'Unknown validation error occurred, please try again';
         }
 
         return empty($errors);
@@ -75,11 +94,11 @@ class FormValidator
                 $formConfig = $time->getWorkshop()->getFormConfig();
                 break;
             default:
-                throw new \Exception(sprintf('Unsuported class %s', get_class($time)));
+                throw new \Exception(sprintf('Unsupported class %s', get_class($time)));
                 break;
         }
 
-        $form = new Form($formConfig->getConfig());
+        $form = new Form($formConfig->getConfigParsed());
 
         return $form;
     }

@@ -32,7 +32,7 @@ class EventTimeParserInterface implements ParserInterface
         if (is_iterable($object->getRegistrations()) && count($object->getRegistrations()) > 0) {
             $fieldList = [];
 
-            foreach ($object->getEvent()->getFormConfig()->getConfig() as $field) {
+            foreach ($object->getEvent()->getFormConfig()->getConfigParsed() as $field) {
                 if ($field['type'] != 'paragraph') {
                     $fieldList[$field['name']] = $field['label'];
                 }

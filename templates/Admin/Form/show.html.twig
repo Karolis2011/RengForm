@@ -39,10 +39,10 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab_2" role="tabpanel" aria-labelledby="tab_2" style="pointer-events: none;">
-                    {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': formConfig.config })) }}
+                    {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': formConfig.configParsed })) }}
                 </div>
                 <div class="tab-pane fade" id="tab_1" role="tabpanel" aria-labelledby="tab_1">{#TODO: remove#}
-                    {{ formConfig.config|json_encode(constant('JSON_PRETTY_PRINT')) }}
+                    {{ formConfig.config }}
                 </div>
             </div>
         </div>

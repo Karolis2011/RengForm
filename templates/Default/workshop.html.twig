@@ -36,7 +36,7 @@
 
             <h4 class="mb-3">{% trans %}Registration{% endtrans %}</h4>
             <form name="registration" method="post">
-                {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshopTime.workshop.formConfig.config })) }}
+                {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': workshopTime.workshop.formConfig.configParsed })) }}
                 <button class="btn btn-primary btn-lg btn-block" type="submit">{% trans %}Register{% endtrans %}</button>
             </form>
         </div>

@@ -1,4 +1,5 @@
 {% extends 'Admin/base.html.twig' %}
+{% import 'Admin/macros.html.twig' as macros %}
 
 {% block title %}{% trans %}Forms{% endtrans %} | {{ formConfig.title }} | {% trans %}Update{% endtrans %}{% endblock %}
 
@@ -6,6 +7,7 @@
     <h2 class="border-bottom">
         {% block header %}{% trans %}Edit Form{% endtrans %}{% endblock %}
     </h2>
+    {{ macros.display_form_errors(form) }}
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link active" data-toggle="tab" href="#tab_1" role="tab" aria-controls="tab_1"
@@ -83,7 +85,7 @@
                         'toggle'
                     ],
                     disabledActionButtons: ['data', 'save'],
-                    formData: {{ formConfig.config|json_encode|raw }}
+                    formData: {{ formConfig.config|raw }}
                 });
             });
 

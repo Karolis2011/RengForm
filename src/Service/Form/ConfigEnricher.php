@@ -22,7 +22,7 @@ class ConfigEnricher
      */
     public function enrich(FormConfig $formConfig): FormConfig
     {
-        $config = $formConfig->getConfig();
+        $config = $formConfig->getConfigParsed();
         $names = [];
 
         foreach ($config as $key => $field) {
@@ -52,7 +52,7 @@ class ConfigEnricher
             $config[$key][self::NAME] = $name;
         }
 
-        $formConfig->setConfig($config);
+        $formConfig->setConfig(json_encode($config));
 
         return $formConfig;
     }

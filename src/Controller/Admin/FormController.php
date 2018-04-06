@@ -47,40 +47,6 @@ class FormController extends Controller
     }
 
     /**
-     * @param Request        $request
-     * @param ConfigEnricher $enricher
-     * @return Response
-     */
-    public function create(Request $request, ConfigEnricher $enricher)
-    {
-        $formConfig = new FormConfig();
-        $form = $this->createForm(FormConfigType::class, $formConfig);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formConfig->setConfig(json_decode($formConfig->getConfig(), true));
-            $enricher->enrich($formConfig);
-            $formConfig->setOwner($this->getUser());
-            $this->repository->save($formConfig);
-
-            return $this->redirectToRoute(
-                'form_show',
-                [
-                    'formId' => $formConfig->getId(),
-                ]
-            );
-        }
-
-        return $this->render(
-            'Admin/Form/create.html.twig',
-            [
-                'form'       => $form->createView(),
-                'formConfig' => $formConfig,
-            ]
-        );
-    }
-
-    /**
      * @param $formId
      * @return Response
      */
@@ -103,6 +69,39 @@ class FormController extends Controller
     /**
      * @param Request        $request
      * @param ConfigEnricher $enricher
+     * @return Response
+     */
+    public function create(Request $request, ConfigEnricher $enricher)
+    {
+        $formConfig = new FormConfig();
+        $form = $this->createForm(FormConfigType::class, $formConfig);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $enricher->enrich($formConfig);
+            $formConfig->setOwner($this->getUser());
+            $this->repository->save($formConfig);
+
+            return $this->redirectToRoute(
+                'form_show',
+                [
+                    'formId' => $formConfig->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Form/create.html.twig',
+            [
+                'form'       => $form->createView(),
+                'formConfig' => $formConfig,
+            ]
+        );
+    }
+
+    /**
+     * @param Request        $request
+     * @param ConfigEnricher $enricher
      * @param                $formId
      * @return Response
      * @throws \Exception
@@ -115,13 +114,10 @@ class FormController extends Controller
             throw new \Exception(sprintf('Form by id %s not found', $formId));
         }
 
-        $formConfig->setConfig(json_encode($formConfig->getConfig()));
-
         $form = $this->createForm(FormConfigType::class, $formConfig);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $formConfig->setConfig(json_decode($formConfig->getConfig(), true));
             $enricher->enrich($formConfig);
             $this->repository->update($formConfig);
 
