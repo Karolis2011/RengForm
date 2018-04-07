@@ -99,8 +99,8 @@
             $(".datetimepicker").datetimepicker({
                 'format': 'YYYY-MM-DD HH:mm',
                 'showClose': true,
-                'minDate': '{{ event.date|date('Y-m-d H:i') }}',
-                'maxDate': '{{ event.date|date('Y-m-d H:i') }}'
+                {% if event.endDate is not null %}'maxDate': '{{ event.endDate|date('Y-m-d H:i') }}',{% endif %}
+                'minDate': '{{ event.date|date('Y-m-d H:i') }}'
             });
 
             $(".timepicker").datetimepicker({
@@ -130,8 +130,8 @@
                 newElem.datetimepicker({
                     'format': 'YYYY-MM-DD HH:mm',
                     'showClose': true,
-                    'minDate': '{{ event.date|date('Y-m-d H:i') }}',
-                    'maxDate': '{{ event.endDate|date('Y-m-d H:i') }}'
+                    {% if event.endDate is not null %}'maxDate': '{{ event.endDate|date('Y-m-d H:i') }}',{% endif %}
+                    'minDate': '{{ event.date|date('Y-m-d H:i') }}'
                 });
             });
 

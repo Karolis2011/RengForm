@@ -156,11 +156,11 @@ class WorkshopTime
      */
     public function validate(ExecutionContextInterface $context, $payload)
     {
-        $time = new \DateTime("now");
-        $time->setTime($time->format('H'), $time->format('i'), 0);
+        $startTime = $this->workshop->getCategory()->getEvent()->getDate();
+        $endTime = $this->workshop->getCategory()->getEvent()->getEndDate();
 
-        if ($this->startTime < $time) {
-            $context->buildViolation('Time must be in future')
+        if ($this->startTime < $startTime || ($endTime !== null && $this->startTime > $endTime)) {
+            $context->buildViolation('Time must be in event range')
                 ->atPath('startTime')
                 ->addViolation();
         }

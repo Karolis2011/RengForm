@@ -6,8 +6,10 @@ use App\Entity\Event;
 use App\Entity\MultiEvent;
 use App\Form\EventType;
 use App\Repository\EventRepository;
+use App\Repository\EventTimeRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,19 +36,27 @@ class EventController extends Controller
     private $workshopRepository;
 
     /**
+     * @var EventTimeRepository
+     */
+    private $eventTimeRepository;
+
+    /**
      * EventController constructor.
      * @param MultiEventRepository $multiEventRepository
      * @param EventRepository      $repository
      * @param WorkshopRepository   $workshopRepository
+     * @param EventTimeRepository  $eventTimeRepository
      */
     public function __construct(
         MultiEventRepository $multiEventRepository,
         EventRepository $repository,
-        WorkshopRepository $workshopRepository
+        WorkshopRepository $workshopRepository,
+        EventTimeRepository $eventTimeRepository
     ) {
         $this->multiEventRepository = $multiEventRepository;
         $this->repository = $repository;
         $this->workshopRepository = $workshopRepository;
+        $this->eventTimeRepository = $eventTimeRepository;
     }
 
     /**
@@ -111,10 +121,20 @@ class EventController extends Controller
             throw new \Exception(sprintf('Event by id %s not found', $eventId));
         }
 
+        $originalTimes = new ArrayCollection();
+        foreach ($event->getTimes() as $time) {
+            $originalTimes->add($time);
+        }
+
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($originalTimes as $time) {
+                if (false === $event->getTimes()->contains($time)) {
+                    $this->eventTimeRepository->remove($time);
+                }
+            }
             $this->repository->update($event);
 
             return $this->redirectToRoute(
