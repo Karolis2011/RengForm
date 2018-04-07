@@ -3,6 +3,7 @@
 namespace App\Form\Model;
 
 use App\Entity\EventTime;
+use App\Entity\WorkshopTime;
 
 /**
  * Class EventTimeModel
@@ -21,13 +22,13 @@ class EventTimeModel
 
     /**
      * EventTimeModel constructor.
-     * @param EventTime|null $eventTime
+     * @param EventTime|WorkshopTime|null $time
      */
-    public function __construct(?EventTime $eventTime = null)
+    public function __construct($time = null)
     {
-        if ($eventTime !== null) {
-            $this->id = $eventTime->getId();
-            $this->startTime = $eventTime->getStartTime();
+        if ($time !== null) {
+            $this->id = $time->getId();
+            $this->startTime = $time->getStartTime();
         }
     }
 
