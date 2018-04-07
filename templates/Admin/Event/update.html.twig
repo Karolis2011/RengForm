@@ -1,14 +1,6 @@
 {% extends 'Admin/base.html.twig' %}
 {% import 'Admin/macros.html.twig' as macros %}
 
-{% form_theme form _self %}
-
-{% block event_time_widget %}
-    {% spaceless %}
-        {{ form_widget(form.startTime, {'attr': {'class': 'form-control'}}) }}
-    {% endspaceless %}
-{% endblock %}
-
 {% block title %}{% trans %}Events{% endtrans %} | {{ event.title }} | {% trans %}Update{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
@@ -50,28 +42,8 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                {{ form_label(form.times) }}
-                <div id="timesList"
-                     data-prototype="{{ form_widget(form.times.vars.prototype)|e }}"
-                     data-widget-tags="{{ '<div class="input-group date">__widget__<div class="input-group-append"><span class="input-group-text input-group-addon"><span class="fa fa-calendar"></span></span><span class="input-group-text removeTime"><span class="fa fa-times"></span></span></div></div>'|e }}">
-                    {% for time in form.times %}
-                        <div class="input-group date datetimepicker">
-                            {{ form_widget(time) }}
-                            <div class="input-group-append">
-                                <span class="input-group-addon input-group-text">
-                                    <span class="fa fa-calendar"></span>
-                                </span>
-                                <span class="input-group-text removeTime">
-                                    <span class="fa fa-times"></span>
-                                </span>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <button type="button" class="btn btn-primary" id="addTime"
-                        data-list="#timesList">{% trans %}Add Time{% endtrans %}</button>
-            </div>
+            {% block event_times %}
+            {% endblock %}
             <div class="form-group">
                 {{ form_label(form.capacity) }}
                 {{ form_widget(form.capacity, {'attr': {'class': 'form-control', 'placeholder': 'Unlimited'}}) }}
@@ -92,12 +64,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".datetimepicker").datetimepicker({
-                'format': 'YYYY-MM-DD HH:mm',
-                'showClose': true,
-                'minDate': '{{ "now"|date('Y-m-d H:i') }}'
-            });
-
             $(".timepicker").datetimepicker({
                 'format': 'HH:mm',
                 'showClose': true
@@ -106,27 +72,6 @@
             $(".formSelectRegistration").select2({
                 'placeholder': '{% trans %}Select registration form{% endtrans %}',
                 theme: "bootstrap4"
-            });
-
-            $('#addTime').click(function (e) {
-                e.preventDefault();
-
-                var list = $($(this).attr('data-list'));
-                var newWidget = list.attr('data-prototype');
-                newWidget = $(newWidget.replace(/__name__/g, '')).addClass('form-control');
-                var newElem = $(list.attr('data-widget-tags').replace(/__widget__/g, newWidget[0].outerHTML));
-
-                newElem.appendTo(list);
-                newElem.datetimepicker({
-                    'format': 'YYYY-MM-DD HH:mm',
-                    'showClose': true,
-                    'minDate': '{{ "now"|date('Y-m-d H:i') }}'
-                });
-            });
-
-            $("#timesList").on('click', '.removeTime', function () {
-                var item = $(this).parent().parent();
-                item.remove();
             });
         });
     </script>

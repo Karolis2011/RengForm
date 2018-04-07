@@ -13,6 +13,7 @@
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
                 <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_update', { 'eventId': event.id }) }}">{% trans %}Edit{% endtrans %}</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_times_update', { 'eventId': event.id }) }}">{% trans %}Edit times{% endtrans %}</a>
             </div>
         </div>
     </div>

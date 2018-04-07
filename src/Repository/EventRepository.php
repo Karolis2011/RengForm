@@ -48,11 +48,6 @@ class EventRepository extends ServiceEntityRepository
      */
     public function update(Event $event, bool $flush = true): void
     {
-        /** @var EventTime $time */
-        foreach ($event->getTimes() as $time) {
-            $time->setEvent($event);
-        }
-
         $this->_em->merge($event);
         if ($flush) {
             $this->_em->flush($event);

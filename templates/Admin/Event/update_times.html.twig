@@ -1,0 +1,113 @@
+{% extends 'Admin/base.html.twig' %}
+{% import 'Admin/macros.html.twig' as macros %}
+
+{% block title %}{% trans %}Events{% endtrans %} | {{ event.title }} | {% trans %}Update Time{% endtrans %}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
+
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h2>{% trans %}Title{% endtrans %}</h2>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a class="btn btn-sm btn-outline-secondary" href="#">{% trans %}Button{% endtrans %}</a>
+            </div>
+        </div>
+    </div>
+    {{ macros.display_form_errors(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+            <div class="form-group">
+                {{ form_label(form.times) }}{#TODO: display old and new in different collors, show warning on old remove#}
+                <div id="timesList"
+                     data-prototype-date="{{ form_widget(form.times.vars.prototype.startTime)|e }}"
+                     data-prototype-id="{{ form_widget(form.times.vars.prototype.id)|e }}"
+                     data-widget-tags="{{ '<div class="input-group date">__widget-date__<div class="input-group-append"><span class="input-group-text input-group-addon"><span class="fa fa-calendar"></span></span><span class="input-group-text removeTime"><span class="fa fa-times"></span></span></div></div>__widget-id__'|e }}">
+                    {% for time in form.times %}
+                        <div class="input-group date datetimepicker">
+                            {{ form_widget(time.startTime, {'attr': {'class': 'form-control'}}) }}
+                            <div class="input-group-append">
+                                <span class="input-group-addon input-group-text">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                                <span class="input-group-text removeTime">
+                                    <span class="fa fa-times"></span>
+                                </span>
+                            </div>
+                        </div>
+                        {{ form_widget(time.id) }}
+                    {% endfor %}
+                </div>
+                <button type="button" class="btn btn-primary" id="addTime"
+                        data-list="#timesList">{% trans %}Add Time{% endtrans %}</button>
+            </div>
+            <button type="submit" class="btn btn-primary">{% trans %}Save{% endtrans %}</button>
+            {{ form_row(form._token) }}
+            {{ form_end(form, {'render_rest': false}) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript_inline %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".datetimepicker").datetimepicker({
+                'format': 'YYYY-MM-DD HH:mm',
+                'showClose': true,
+                'minDate': '{{ "now"|date('Y-m-d H:i') }}'
+            });
+
+            $('#addTime').click(function (e) {
+                e.preventDefault();
+
+                var list = $($(this).attr('data-list'));
+
+                var ct = $(this).attr('data-list-count');
+                if (ct === undefined || ct === null) {
+                    ct = list.find("input[type='hidden']").length;
+                }
+
+                var newDateWidget = list.attr('data-prototype-date');
+                newDateWidget = $(newDateWidget.replace(/__name__/g, ct)).addClass('form-control');
+                var newIdWidget = list.attr('data-prototype-id');
+                newIdWidget = $(newIdWidget.replace(/__name__/g, ct)).addClass('form-control');
+                var newElem = $(
+                    list.attr('data-widget-tags')
+                        .replace(/__widget-date__/g, newDateWidget[0].outerHTML)
+                        .replace(/__widget-id__/g, newIdWidget[0].outerHTML)
+                );
+
+                newElem.appendTo(list);
+                newElem.datetimepicker({
+                    'format': 'YYYY-MM-DD HH:mm',
+                    'showClose': true,
+                    'minDate': '{{ "now"|date('Y-m-d H:i') }}'
+                });
+
+                ct++;
+                $(this).attr('data-list-count', ct);
+            });
+
+            $("#timesList").on('click', '.removeTime', function () {
+                var item = $(this).parent().parent();
+                var id = item.find('input').attr('id').replace(/startTime/g, 'id');
+                item.remove();
+                $("#" + id).remove();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+{% endblock %}

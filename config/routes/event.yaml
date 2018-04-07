@@ -26,6 +26,10 @@ event_save_category_order:
     path: /{eventId}/save_order
     controller: App\Controller\Admin\MultiEventController::saveCategoryOrder
 
+event_times_update:
+    path: /{eventId}/times/update
+    controller: App\Controller\Admin\EventController::updateTimes
+
 category_create:
     path: /{eventId}/category/create
     controller: App\Controller\Admin\CategoryController::create

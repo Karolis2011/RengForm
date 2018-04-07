@@ -3,14 +3,18 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
+use App\Entity\EventTime;
 use App\Entity\MultiEvent;
-use App\Form\EventType;
+use App\Form\EventCreateType;
+use App\Form\EventTimeModelType;
+use App\Form\EventUpdateType;
+use App\Form\Model\EventTimeModel;
 use App\Repository\EventRepository;
 use App\Repository\EventTimeRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,7 +88,7 @@ class EventController extends Controller
     public function create(Request $request)
     {
         $event = new Event();
-        $form = $this->createForm(EventType::class, $event);
+        $form = $this->createForm(EventCreateType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -121,20 +125,10 @@ class EventController extends Controller
             throw new \Exception(sprintf('Event by id %s not found', $eventId));
         }
 
-        $originalTimes = new ArrayCollection();
-        foreach ($event->getTimes() as $time) {
-            $originalTimes->add($time);
-        }
-
-        $form = $this->createForm(EventType::class, $event);
+        $form = $this->createForm(EventUpdateType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($originalTimes as $time) {
-                if (false === $event->getTimes()->contains($time)) {
-                    $this->eventTimeRepository->remove($time);
-                }
-            }
             $this->repository->update($event);
 
             return $this->redirectToRoute(
@@ -150,6 +144,86 @@ class EventController extends Controller
             [
                 'form'  => $form->createView(),
                 'event' => $event,
+            ]
+        );
+    }
+
+    /**
+     * @param Request $request
+     * @param         $eventId
+     * @return RedirectResponse|Response
+     * @throws \Exception
+     */
+    public function updateTimes(Request $request, $eventId)
+    {
+        $event = $this->repository->find($eventId);
+
+        if ($event === null) {
+            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+        }
+
+        $times = [];
+        foreach ($event->getTimes() as $time) {
+            $times[] = new EventTimeModel($time);
+        }
+
+        $form = $this->createFormBuilder(['times' => $times])
+            ->add(
+                'times',
+                CollectionType::class,
+                [
+                    'entry_type'   => EventTimeModelType::class,
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'required'     => true,
+                ]
+            )
+            ->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $oldTimes = [];
+            $newTimes = [];
+            /** @var EventTimeModel $time */
+            foreach ($form->getData()['times'] as $time) {
+                if ($time->getId() === null) {
+                    $newTimes[] = $time;
+                } else {
+                    $oldTimes[$time->getId()] = $time;
+                }
+            }
+
+            foreach ($event->getTimes() as $time) {
+                if (isset($oldTimes[$time->getId()])) {
+                    $time->setStartTime($oldTimes[$time->getId()]->getStartTime());
+                    $this->eventTimeRepository->update($time);
+                } else {
+                    $event->getTimes()->removeElement($time);
+                    $this->eventTimeRepository->remove($time);
+                }
+            }
+
+            foreach ($newTimes as $time) {
+                $eventTime = new EventTime();
+                $eventTime->setStartTime($time->getStartTime());
+                $eventTime->setEvent($event);
+                $event->getTimes()->add($eventTime);
+                $this->eventTimeRepository->save($eventTime);
+            }
+
+            return $this->redirectToRoute(
+                'event_show',
+                [
+                    'eventId' => $event->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Event/update_times.html.twig',
+            [
+                'event' => $event,
+                'form'  => $form->createView(),
             ]
         );
     }
