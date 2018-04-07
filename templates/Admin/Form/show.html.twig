@@ -3,18 +3,20 @@
 {% block title %}{% trans %}Forms{% endtrans %} | {{ formConfig.title }}{% endblock %}
 
 {% block body %}
-    <h2 class="border-bottom">{{ formConfig.title }}</h2>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h2>{{ formConfig.title }}</h2>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('form_update', { 'formId': formConfig.id }) }}">{% trans %}Edit{% endtrans %}</a>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title">
                         {% trans %}Form details{% endtrans %}
-                        <span class="pull-right">
-                            <a href="{{ path('form_update', { 'formId': formConfig.id }) }}">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        </span>
                     </h5>
                 </div>
                 <div class="card-body p-0">
