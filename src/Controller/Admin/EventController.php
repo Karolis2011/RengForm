@@ -3,18 +3,16 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Event;
-use App\Entity\EventTime;
 use App\Entity\MultiEvent;
 use App\Form\EventCreateType;
-use App\Form\EventTimeModelType;
+use App\Form\EventTimeModelCollectionType;
 use App\Form\EventUpdateType;
 use App\Form\Model\EventTimeModel;
 use App\Repository\EventRepository;
-use App\Repository\EventTimeRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
+use App\Service\Event\EventTimeUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,27 +38,19 @@ class EventController extends Controller
     private $workshopRepository;
 
     /**
-     * @var EventTimeRepository
-     */
-    private $eventTimeRepository;
-
-    /**
      * EventController constructor.
      * @param MultiEventRepository $multiEventRepository
      * @param EventRepository      $repository
      * @param WorkshopRepository   $workshopRepository
-     * @param EventTimeRepository  $eventTimeRepository
      */
     public function __construct(
         MultiEventRepository $multiEventRepository,
         EventRepository $repository,
-        WorkshopRepository $workshopRepository,
-        EventTimeRepository $eventTimeRepository
+        WorkshopRepository $workshopRepository
     ) {
         $this->multiEventRepository = $multiEventRepository;
         $this->repository = $repository;
         $this->workshopRepository = $workshopRepository;
-        $this->eventTimeRepository = $eventTimeRepository;
     }
 
     /**
@@ -149,12 +139,13 @@ class EventController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param         $eventId
+     * @param Request          $request
+     * @param EventTimeUpdater $updater
+     * @param                  $eventId
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function updateTimes(Request $request, $eventId)
+    public function updateTimes(Request $request, EventTimeUpdater $updater, $eventId)
     {
         $event = $this->repository->find($eventId);
 
@@ -167,49 +158,12 @@ class EventController extends Controller
             $times[] = new EventTimeModel($time);
         }
 
-        $form = $this->createFormBuilder(['times' => $times])
-            ->add(
-                'times',
-                CollectionType::class,
-                [
-                    'entry_type'   => EventTimeModelType::class,
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'required'     => true,
-                ]
-            )
-            ->getForm();
+        $form = $this->createForm(EventTimeModelCollectionType::class, ['times' => $times]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $oldTimes = [];
-            $newTimes = [];
-            /** @var EventTimeModel $time */
-            foreach ($form->getData()['times'] as $time) {
-                if ($time->getId() === null) {
-                    $newTimes[] = $time;
-                } else {
-                    $oldTimes[$time->getId()] = $time;
-                }
-            }
-
-            foreach ($event->getTimes() as $time) {
-                if (isset($oldTimes[$time->getId()])) {
-                    $time->setStartTime($oldTimes[$time->getId()]->getStartTime());
-                    $this->eventTimeRepository->update($time);
-                } else {
-                    $event->getTimes()->removeElement($time);
-                    $this->eventTimeRepository->remove($time);
-                }
-            }
-
-            foreach ($newTimes as $time) {
-                $eventTime = new EventTime();
-                $eventTime->setStartTime($time->getStartTime());
-                $eventTime->setEvent($event);
-                $event->getTimes()->add($eventTime);
-                $this->eventTimeRepository->save($eventTime);
-            }
+            $formTimes = $form->getData()['times'] ?? [];
+            $updater->update($formTimes, $event);
 
             return $this->redirectToRoute(
                 'event_show',
