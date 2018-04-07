@@ -1,5 +1,5 @@
 {% macro display_form_errors(form) %}
-    {% for error in form.vars.errors %}
+    {% for error in form.vars.errors.form.getErrors(true) %}
         <div class="alert alert-danger">
             {% if error.origin.config.label is defined and error.origin.config.label is not null %}
                 {{ error.origin.config.label|trans|capitalize }}
