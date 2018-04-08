@@ -40,6 +40,10 @@ category_update:
     path: /category/{categoryId}/update
     controller: App\Controller\Admin\CategoryController::edit
 
+category_delete:
+    path: /category/{categoryId}/delete
+    controller: App\Controller\Admin\CategoryController::delete
+
 workshop_update:
     path: /workshop/{workshopId}/update
     controller: App\Controller\Admin\WorkshopController::edit

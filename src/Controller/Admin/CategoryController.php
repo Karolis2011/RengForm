@@ -111,4 +111,25 @@ class CategoryController extends Controller
             ]
         );
     }
+
+    /**
+     * @param $categoryId
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($categoryId)
+    {
+        $category = $this->repository->find($categoryId);
+
+        if ($category === null) {
+            throw new \Exception(sprintf('Category by id %s not found', $categoryId));
+        }
+
+        $eventId = $category->getEvent()->getId();
+
+        $this->repository->remove($category);
+        $this->addFlash('success', "Category successfully deleted");
+
+        return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
+    }
 }

@@ -9,6 +9,7 @@
             <th>{% trans %}Description{% endtrans %}</th>
             <th>{% trans %}Workshops{% endtrans %}</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody id="categoriesList">
@@ -24,6 +25,13 @@
                        class="text-muted"
                        data-toggle="tooltip" title="Edit">
                         <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('category_delete', {'categoryId': category.id }) }}"
+                       class="text-muted"
+                       data-toggle="tooltip" title="Delete">
+                        <i class="fa fa-trash"></i>
                     </a>
                 </td>
             </tr>
