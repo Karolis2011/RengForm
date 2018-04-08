@@ -53,4 +53,16 @@ class EventRepository extends ServiceEntityRepository
             $this->_em->flush($event);
         }
     }
+
+    /**
+     * @param Event $event
+     * @param bool  $flush
+     */
+    public function remove(Event $event, bool $flush = true): void
+    {
+        $this->_em->remove($event);
+        if ($flush) {
+            $this->_em->flush($event);
+        }
+    }
 }

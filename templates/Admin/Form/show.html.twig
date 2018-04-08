@@ -8,6 +8,7 @@
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
                 <a class="btn btn-sm btn-outline-secondary" href="{{ path('form_update', { 'formId': formConfig.id }) }}">{% trans %}Edit{% endtrans %}</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{{ path('form_delete', { 'formId': formConfig.id }) }}">{% trans %}Delete{% endtrans %}</a>
             </div>
         </div>
     </div>

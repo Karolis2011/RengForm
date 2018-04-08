@@ -89,4 +89,16 @@ class CategoryRepository extends ServiceEntityRepository
 
         return $categoriesCount;
     }
+
+    /**
+     * @param Category $category
+     * @param bool     $flush
+     */
+    public function remove(Category $category, bool $flush = true): void
+    {
+        $this->_em->remove($category);
+        if ($flush) {
+            $this->_em->flush($category);
+        }
+    }
 }

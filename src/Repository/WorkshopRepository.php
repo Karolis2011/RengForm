@@ -72,4 +72,16 @@ class WorkshopRepository extends ServiceEntityRepository
 
         return $workshops;
     }
+
+    /**
+     * @param Workshop $workshop
+     * @param bool     $flush
+     */
+    public function remove(Workshop $workshop, bool $flush = true): void
+    {
+        $this->_em->remove($workshop);
+        if ($flush) {
+            $this->_em->flush($workshop);
+        }
+    }
 }

@@ -2,11 +2,14 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Event;
 use App\Entity\FormConfig;
+use App\Entity\Workshop;
 use App\Form\FormConfigType;
 use App\Repository\FormConfigRepository;
 use App\Service\Form\ConfigEnricher;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -136,5 +139,41 @@ class FormController extends Controller
                 'formConfig' => $formConfig,
             ]
         );
+    }
+
+    /**
+     * @param $formId
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($formId)
+    {
+        $formConfig = $this->repository->find($formId);
+
+        if ($formConfig === null) {
+            throw new \Exception(sprintf('Form by id %s not found', $formId));
+        }
+
+        $usesCount = count(
+            $this->getDoctrine()
+                ->getRepository(Workshop::class)
+                ->findBy(['formConfig' => $formConfig])
+        );
+        $usesCount += count(
+            $this->getDoctrine()
+                ->getRepository(Event::class)
+                ->findBy(['formConfig' => $formConfig])
+        );
+
+        if ($usesCount > 0) {
+            $this->addFlash('danger', "Form is used somewhere and can't be deleted");
+
+            return $this->redirectToRoute('form_show', ['formId' => $formId]);
+        } else {
+            $this->repository->remove($formConfig);
+            $this->addFlash('success', "Form successfully deleted");
+
+            return $this->redirectToRoute('form_index');
+        }
     }
 }

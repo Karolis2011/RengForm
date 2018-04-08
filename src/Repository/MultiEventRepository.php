@@ -48,4 +48,16 @@ class MultiEventRepository extends ServiceEntityRepository
             $this->_em->flush($event);
         }
     }
+
+    /**
+     * @param MultiEvent $event
+     * @param bool       $flush
+     */
+    public function remove(MultiEvent $event, bool $flush = true): void
+    {
+        $this->_em->remove($event);
+        if ($flush) {
+            $this->_em->flush($event);
+        }
+    }
 }

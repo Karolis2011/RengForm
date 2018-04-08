@@ -13,3 +13,7 @@ form_show:
 form_update:
     path: /{formId}/update
     controller: App\Controller\Admin\FormController::edit
+
+form_delete:
+    path: /{formId}/delete
+    controller: App\Controller\Admin\FormController::delete

@@ -48,4 +48,16 @@ class FormConfigRepository extends ServiceEntityRepository
             $this->_em->flush($formConfig);
         }
     }
+
+    /**
+     * @param FormConfig $formConfig
+     * @param bool       $flush
+     */
+    public function remove(FormConfig $formConfig, bool $flush = true): void
+    {
+        $this->_em->remove($formConfig);
+        if ($flush) {
+            $this->_em->flush($formConfig);
+        }
+    }
 }
