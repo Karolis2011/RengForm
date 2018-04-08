@@ -19,6 +19,13 @@
         <h1 class="display-4">{{ event.title }}</h1>
         <p class="lead">{{ event.description }}</p>
     </div>
+
+    <div>
+        <iframe class="w-100" frameborder="0" style="border:0" allowfullscreen
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBipZdzMFb0iFrTE_5FEFwgmoEXd4--BoM&q={{ event.place|url_encode }}">
+        </iframe>
+    </div>
+
     {% if event.times is not empty %}
         <div class="card mt-2">
             <div class="card-body">
@@ -34,7 +41,7 @@
                     {% for time in event.times %}
                         <tr class="clickable-row"
                             data-href="{{ path('registration', {'timeId': time.id}) }}">
-                            <td>{{ time.startTime|date('Y-m-d H:i:s') }}</td>
+                            <td>{{ time.startTime|date('Y-m-d H:i') }}</td>
                             <td>{{ event.duration|date('H:i') }}</td>
                             <td>
                                 {% if event.capacity is not null %}

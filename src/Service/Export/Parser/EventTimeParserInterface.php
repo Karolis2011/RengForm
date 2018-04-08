@@ -25,7 +25,7 @@ class EventTimeParserInterface implements ParserInterface
             [
                 'Event',
                 $object->getEvent()->getTitle(),
-                $object->getStartTime()->format('Y-m-d H:i:s')
+                $object->getStartTime()->format('Y-m-d H:i')
             ],
         ];
 
@@ -43,7 +43,7 @@ class EventTimeParserInterface implements ParserInterface
             /** @var Registration $registration */
             foreach ($object->getRegistrations() as $registration) {
                 $row = [
-                    $registration->getCreated()->format('Y-m-d H:i:s'),
+                    $registration->getCreated()->format('Y-m-d H:i'),
                 ];
 
                 $rawData = $registration->getData();

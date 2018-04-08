@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ eventTime.event.title }} | {{ eventTime.startTime|date('Y-m-d H:i:s') }}</title>
+    <title>{{ eventTime.event.title }} | {{ eventTime.startTime|date('Y-m-d H:i') }}</title>
 
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
@@ -20,7 +20,7 @@
 <div class="container">
     <div class="py-5 text-center">
         <h2>{{ eventTime.event.title }}</h2>
-        <h5>{{ eventTime.startTime|date('Y-m-d H:i:s') }}</h5>
+        <h6>{{ eventTime.startTime|date('Y-m-d H:i') }}</h6>
         <p class="lead">{{ eventTime.event.description }}</p>
     </div>
 

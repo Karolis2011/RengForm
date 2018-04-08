@@ -17,9 +17,10 @@
 <div class="container">
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">{{ event.title }}</h1>
-        <p class="lead">{{ event.date|date('Y-m-d H:i') }} - {{ event.endDate|date('Y-m-d H:i') }}</p>
+        <h6>{{ event.date|date('Y-m-d H:i') }} - {{ event.endDate|date('Y-m-d H:i') }}</h6>
         <p class="lead">{{ event.description }}</p>
     </div>
+
     {% for category in event.categories if not event.empty %}
         {% if category.workshops is not empty %}
             <div class="card mt-2">
@@ -43,7 +44,7 @@
                                 <tr class="clickable-row"
                                     data-href="{{ path('registration', {'timeId': time.id}) }}">
                                     <td>{{ workshop.title }}</td>
-                                    <td>{{ time.startTime|date('Y-m-d H:i:s') }}</td>
+                                    <td>{{ time.startTime|date('Y-m-d H:i') }}</td>
                                     <td>{{ workshop.duration|date('H:i') }}</td>
                                     <td>
                                         {% if workshop.capacity is not null %}

@@ -39,7 +39,7 @@
                         <dt class="col-md-4">{% trans %}Times{% endtrans %}</dt>
                         <dd class="col-md-8">
                             {% for time in event.times %}
-                                <span class="badge badge-primary">{{ time.startTime|date('Y-m-d H:i:s') }}, {{ time.entries }}</span>
+                                <span class="badge badge-primary">{{ time.startTime|date('Y-m-d H:i') }}, {{ time.entries }}</span>
                             {% endfor %}
                         </dd>
                         <dt class="col-md-4">{% trans %}Public link{% endtrans %}</dt>

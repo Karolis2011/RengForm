@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ workshopTime.workshop.category.event.title }} | {{ workshopTime.workshop.title }} | {{ workshopTime.startTime|date('Y-m-d H:i:s') }}</title>
+    <title>{{ workshopTime.workshop.category.event.title }} | {{ workshopTime.workshop.title }} | {{ workshopTime.startTime|date('Y-m-d H:i') }}</title>
 
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
@@ -20,8 +20,14 @@
 <div class="container">
     <div class="py-5 text-center">
         <h2>{{ workshopTime.workshop.title }}</h2>
-        <h5>{{ workshopTime.startTime|date('Y-m-d H:i:s') }}</h5>
+        <h6>{{ workshopTime.startTime|date('Y-m-d H:i') }}</h6>
         <p class="lead">{{ workshopTime.workshop.description }}</p>
+    </div>
+
+    <div>
+        <iframe class="w-100" frameborder="0" style="border:0" allowfullscreen
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBipZdzMFb0iFrTE_5FEFwgmoEXd4--BoM&q={{ workshopTime.workshop.place|url_encode }}">
+        </iframe>
     </div>
 
     <div class="row justify-content-center">

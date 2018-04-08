@@ -32,9 +32,9 @@
                 <div class="card-body p-0">
                     <dl class="row px-2">
                         <dt class="col-md-4">{% trans %}Date{% endtrans %}</dt>
-                        <dd class="col-md-8">{{ event.date|date('Y-m-d H:i:s') }}</dd>
+                        <dd class="col-md-8">{{ event.date|date('Y-m-d H:i') }}</dd>
                         <dt class="col-md-4">{% trans %}End date{% endtrans %}</dt>
-                        <dd class="col-md-8">{{ event.endDate|date('Y-m-d H:i:s') }}</dd>
+                        <dd class="col-md-8">{{ event.endDate|date('Y-m-d H:i') }}</dd>
                         <dt class="col-md-4">{% trans %}Public link{% endtrans %}</dt>
                         <dd class="col-md-8"><a href="{{ path('event', {'eventId': event.id}) }}">{{ event.title }}</a></dd>
                         <dt class="col-md-4">{% trans %}Description{% endtrans %}</dt>

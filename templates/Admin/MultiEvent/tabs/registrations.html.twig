@@ -15,11 +15,11 @@
                             {% for time in workshop.times %}
                                 {% if time.registrations is empty %}
                                     <option value="{{ time.id }}" disabled="disabled">
-                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i:s') }}) - {% trans %}Empty{% endtrans %}
+                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i') }}) - {% trans %}Empty{% endtrans %}
                                     </option>
                                 {% else %}
                                     <option value="{{ time.id }}">
-                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i:s') }})
+                                        {{ workshop.title }} ({{ time.startTime|date('Y-m-d H:i') }})
                                     </option>
                                 {% endif %}
                             {% endfor %}
