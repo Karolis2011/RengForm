@@ -17,6 +17,7 @@
 <div class="container">
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">{{ event.title }}</h1>
+        <p class="lead">{{ event.date|date('Y-m-d H:i') }} - {{ event.endDate|date('Y-m-d H:i') }}</p>
         <p class="lead">{{ event.description }}</p>
     </div>
     {% for category in event.categories if not event.empty %}

@@ -39,16 +39,11 @@ class MultiEvent
     private $date;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
      * @Assert\DateTime()
      */
     private $endDate;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $place;
 
     /**
      * @ORM\Column(type="datetime")
@@ -157,25 +152,6 @@ class MultiEvent
     public function setEndDate(?\DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getPlace(): ?string
-    {
-        return $this->place;
-    }
-
-    /**
-     * @param string $place
-     * @return MultiEvent
-     */
-    public function setPlace(string $place): self
-    {
-        $this->place = $place;
 
         return $this;
     }

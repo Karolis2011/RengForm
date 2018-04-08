@@ -42,14 +42,9 @@ class MultiEventType extends AbstractType
                 ]
             )
             ->add(
-                'place',
-                TextType::class
-            )
-            ->add(
                 'endDate',
                 DateTimeType::class,
                 [
-                    'required' => false,
                     'widget'   => 'single_text',
                     'html5'    => false,
                 ]

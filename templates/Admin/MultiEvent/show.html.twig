@@ -33,12 +33,8 @@
                     <dl class="row px-2">
                         <dt class="col-md-4">{% trans %}Date{% endtrans %}</dt>
                         <dd class="col-md-8">{{ event.date|date('Y-m-d H:i:s') }}</dd>
-                        {% if event.endDate is not null %}
-                            <dt class="col-md-4">{% trans %}End date{% endtrans %}</dt>
-                            <dd class="col-md-8">{{ event.endDate|date('Y-m-d H:i:s') }}</dd>
-                        {% endif %}
-                        <dt class="col-md-4">{% trans %}Place{% endtrans %}</dt>
-                        <dd class="col-md-8">{{ event.place }}</dd>
+                        <dt class="col-md-4">{% trans %}End date{% endtrans %}</dt>
+                        <dd class="col-md-8">{{ event.endDate|date('Y-m-d H:i:s') }}</dd>
                         <dt class="col-md-4">{% trans %}Public link{% endtrans %}</dt>
                         <dd class="col-md-8"><a href="{{ path('event', {'eventId': event.id}) }}">{{ event.title }}</a></dd>
                         <dt class="col-md-4">{% trans %}Description{% endtrans %}</dt>
