@@ -32,7 +32,7 @@ class WorkshopTime
     private $entries = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="workshopTime")
+     * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="workshopTime", orphanRemoval=true)
      */
     private $registrations;
 

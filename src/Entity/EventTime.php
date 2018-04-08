@@ -32,7 +32,7 @@ class EventTime
     private $entries = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="eventTime")
+     * @ORM\OneToMany(targetEntity="App\Entity\Registration", mappedBy="eventTime", orphanRemoval=true)
      */
     private $registrations;
 

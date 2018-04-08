@@ -205,6 +205,34 @@ class EventController extends Controller
     }
 
     /**
+     * @param $eventId
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($eventId)
+    {
+        $event = $this->multiEventRepository->find($eventId);
+
+        if ($event !== null) {
+            $this->multiEventRepository->remove($event);
+            $this->addFlash('success', "Event successfully deleted");
+
+            return $this->redirectToRoute('event_index');
+        }
+
+        $event = $this->repository->find($eventId);
+
+        if ($event !== null) {
+            $this->repository->remove($event);
+            $this->addFlash('success', "Event successfully deleted");
+
+            return $this->redirectToRoute('event_index');
+        }
+
+        throw new \Exception(sprintf('Event by id %s not found', $eventId));
+    }
+
+    /**
      * @param MultiEvent $event
      * @return Response
      */

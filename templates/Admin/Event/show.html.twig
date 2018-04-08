@@ -14,6 +14,7 @@
             <div class="btn-group mr-2">
                 <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_update', { 'eventId': event.id }) }}">{% trans %}Edit{% endtrans %}</a>
                 <a class="btn btn-sm btn-outline-secondary" href="{{ path('event_times_update', { 'eventId': event.id }) }}">{% trans %}Edit times{% endtrans %}</a>
+                <a class="btn btn-sm btn-outline-danger" href="{{ path('event_delete', { 'eventId': event.id }) }}">{% trans %}Delete{% endtrans %}</a>
             </div>
         </div>
     </div>

@@ -18,6 +18,10 @@ event_update:
     path: /{eventId}/update
     controller: App\Controller\Admin\EventController::update
 
+event_delete:
+    path: /{eventId}/delete
+    controller: App\Controller\Admin\EventController::delete
+
 event_update_multi:
     path: /{eventId}/update_multi
     controller: App\Controller\Admin\MultiEventController::update
