@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WorkshopTimeRepository")
@@ -147,22 +146,5 @@ class WorkshopTime
     public function increaseEntries(int $count = 1)
     {
         $this->entries += $count;
-    }
-
-    /**
-     * @Assert\Callback
-     * @param ExecutionContextInterface $context
-     * @param                           $payload
-     */
-    public function validate(ExecutionContextInterface $context, $payload)
-    {
-        $startTime = $this->workshop->getCategory()->getEvent()->getDate();
-        $endTime = $this->workshop->getCategory()->getEvent()->getEndDate();
-
-        if ($this->startTime < $startTime || ($endTime !== null && $this->startTime > $endTime)) {
-            $context->buildViolation('Time must be in event range')
-                ->atPath('startTime')
-                ->addViolation();
-        }
     }
 }

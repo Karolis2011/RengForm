@@ -8,7 +8,6 @@ use App\Entity\Workshop;
 use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,9 +16,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class WorkshopType
+ * Class WorkshopUpdateType
  */
-class WorkshopType extends AbstractType
+class WorkshopUpdateType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -42,16 +41,6 @@ class WorkshopType extends AbstractType
             ->add(
                 'place',
                 TextType::class
-            )
-            ->add(
-                'times',
-                CollectionType::class,
-                [
-                    'entry_type'   => WorkshopTimeType::class,
-                    'allow_add'    => true,
-                    'allow_delete' => true,
-                    'required'     => true,
-                ]
             )
             ->add(
                 'duration',

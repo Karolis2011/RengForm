@@ -48,11 +48,6 @@ class WorkshopRepository extends ServiceEntityRepository
      */
     public function update(Workshop $workshop, bool $flush = true): void
     {
-        /** @var WorkshopTime $time */
-        foreach ($workshop->getTimes() as $time) {
-            $time->setWorkshop($workshop);
-        }
-
         $this->_em->merge($workshop);
         if ($flush) {
             $this->_em->flush($workshop);

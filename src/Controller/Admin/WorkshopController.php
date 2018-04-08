@@ -3,12 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Workshop;
-use App\Form\WorkshopType;
+use App\Form\EventTimeModelCollectionType;
+use App\Form\Model\EventTimeModel;
+use App\Form\WorkshopCreateType;
+use App\Form\WorkshopUpdateType;
 use App\Repository\CategoryRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use App\Repository\WorkshopTimeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Service\Event\EventTimeUpdater;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,7 +70,7 @@ class WorkshopController extends Controller
 
         $workshop = new Workshop();
         $form = $this->createForm(
-            WorkshopType::class,
+            WorkshopCreateType::class,
             $workshop,
             [
                 'eventId' => $eventId,
@@ -89,8 +92,8 @@ class WorkshopController extends Controller
         return $this->render(
             'Admin/Workshop/create.html.twig',
             [
-                'form'   => $form->createView(),
-                'event'  => $event,
+                'form'  => $form->createView(),
+                'event' => $event,
             ]
         );
     }
@@ -110,27 +113,16 @@ class WorkshopController extends Controller
         }
 
         $form = $this->createForm(
-            WorkshopType::class,
+            WorkshopUpdateType::class,
             $workshop,
             [
                 'eventId' => $workshop->getCategory()->getEvent()->getId(),
             ]
         );
 
-        $originalTimes = new ArrayCollection();
-        foreach ($workshop->getTimes() as $time) {
-            $originalTimes->add($time);
-        }
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($originalTimes as $time) {
-                if (false === $workshop->getTimes()->contains($time)) {
-                    $this->workshopTimeRepository->remove($time);
-                }
-            }
-
             $this->repository->update($workshop);
 
             return $this->redirectToRoute(
@@ -147,6 +139,51 @@ class WorkshopController extends Controller
                 'form'     => $form->createView(),
                 'workshop' => $workshop,
                 'event'    => $workshop->getCategory()->getEvent(),
+            ]
+        );
+    }
+
+    /**
+     * @param Request          $request
+     * @param EventTimeUpdater $updater
+     * @param                  $workshopId
+     * @return RedirectResponse|Response
+     * @throws \Exception
+     */
+    public function updateTimes(Request $request, EventTimeUpdater $updater, $workshopId)
+    {
+        $workshop = $this->repository->find($workshopId);
+
+        if ($workshop === null) {
+            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+        }
+
+        $times = [];
+        foreach ($workshop->getTimes() as $time) {
+            $times[] = new EventTimeModel($time);
+        }
+
+        $form = $this->createForm(EventTimeModelCollectionType::class, ['times' => $times]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formTimes = $form->getData()['times'] ?? [];
+            $updater->update($formTimes, $workshop);
+
+            return $this->redirectToRoute(
+                'event_show',
+                [
+                    'eventId' => $workshop->getCategory()->getEvent()->getId(),
+                ]
+            );
+        }
+
+        return $this->render(
+            'Admin/Workshop/update_times.html.twig',
+            [
+                'workshop' => $workshop,
+                'event'    => $workshop->getCategory()->getEvent(),
+                'form'     => $form->createView(),
             ]
         );
     }

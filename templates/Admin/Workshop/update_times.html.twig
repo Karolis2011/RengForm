@@ -1,7 +1,7 @@
 {% extends 'Admin/base.html.twig' %}
 {% import 'Admin/macros.html.twig' as macros %}
 
-{% block title %}{% trans %}Events{% endtrans %} | {{ event.title }} | {% trans %}Update Time{% endtrans %}{% endblock %}
+{% block title %}{% trans %}Workshops{% endtrans %} | {{ workshop.title }} | {% trans %}Update Time{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
@@ -11,7 +11,7 @@
 
 {% block body %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h2>{% trans %}Update Event Times{% endtrans %}</h2>
+        <h2>{% trans %}Update Workshop Times{% endtrans %}</h2>
     </div>
     {{ macros.display_form_errors(form) }}
     <div class="row">
@@ -56,7 +56,8 @@
             $(".datetimepicker").datetimepicker({
                 'format': 'YYYY-MM-DD HH:mm',
                 'showClose': true,
-                'minDate': '{{ "now"|date('Y-m-d H:i') }}'
+                {% if event.endDate is not null %}'maxDate': '{{ event.endDate|date('Y-m-d H:i') }}',{% endif %}
+                'minDate': '{{ event.date|date('Y-m-d H:i') }}'
             });
 
             $('#addTime').click(function (e) {
@@ -83,7 +84,8 @@
                 newElem.datetimepicker({
                     'format': 'YYYY-MM-DD HH:mm',
                     'showClose': true,
-                    'minDate': '{{ "now"|date('Y-m-d H:i') }}'
+                    {% if event.endDate is not null %}'maxDate': '{{ event.endDate|date('Y-m-d H:i') }}',{% endif %}
+                    'minDate': '{{ event.date|date('Y-m-d H:i') }}'
                 });
 
                 ct++;

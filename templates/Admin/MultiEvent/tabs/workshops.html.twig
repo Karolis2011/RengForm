@@ -42,6 +42,10 @@
                                 {% trans %}Edit{% endtrans %}
                             </a>
                             <a class="btn btn-primary"
+                               href="{{ path('workshop_update_times', {'workshopId': workshop.id }) }}">
+                                {% trans %}Edit Times{% endtrans %}
+                            </a>
+                            <a class="btn btn-primary"
                                href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
                                 {% trans %}View registrations{% endtrans %}
                             </a>
