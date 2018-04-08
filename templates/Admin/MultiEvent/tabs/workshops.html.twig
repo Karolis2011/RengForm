@@ -49,6 +49,10 @@
                                href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
                                 {% trans %}View registrations{% endtrans %}
                             </a>
+                            <a class="btn btn-danger"
+                               href="{{ path('workshop_delete', {'workshopId': workshop.id }) }}">
+                                {% trans %}Delete{% endtrans %}
+                            </a>
                         </div>
                     </div>
                 </td>

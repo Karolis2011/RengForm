@@ -187,4 +187,24 @@ class WorkshopController extends Controller
             ]
         );
     }
+
+    /**
+     * @param $workshopId
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function delete($workshopId)
+    {
+        $workshop = $this->repository->find($workshopId);
+
+        if ($workshop === null) {
+            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+        }
+
+        $eventId = $workshop->getCategory()->getEvent()->getId();
+        $this->repository->remove($workshop);
+        $this->addFlash('success', "Workshop successfully deleted");
+
+        return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
+    }
 }

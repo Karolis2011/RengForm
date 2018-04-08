@@ -48,6 +48,10 @@ workshop_update:
     path: /workshop/{workshopId}/update
     controller: App\Controller\Admin\WorkshopController::edit
 
+workshop_delete:
+    path: /workshop/{workshopId}/delete
+    controller: App\Controller\Admin\WorkshopController::delete
+
 workshop_registrations:
     path: /workshop/{workshopId}/registrations
     controller: App\Controller\Admin\RegistrationController::index
