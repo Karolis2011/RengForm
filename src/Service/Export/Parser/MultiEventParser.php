@@ -5,9 +5,9 @@ namespace App\Service\Export\Parser;
 use App\Entity\MultiEvent;
 
 /**
- * Class EventParser
+ * Class MultiEventParser
  */
-class MultiEventParserInterface implements ParserInterface
+class MultiEventParser implements ParserInterface
 {
     /**
      * @param MultiEvent $object
@@ -29,7 +29,7 @@ class MultiEventParserInterface implements ParserInterface
 
         foreach ($object->getCategories() as $category) {
             $data[] = [];
-            $data = array_merge($data, CategoryParserInterface::parse($category));
+            $data = array_merge($data, CategoryParser::parse($category));
         }
 
         return $data;

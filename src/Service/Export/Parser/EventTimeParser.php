@@ -2,13 +2,13 @@
 
 namespace App\Service\Export\Parser;
 
+use App\Entity\EventTime;
 use App\Entity\Registration;
-use App\Entity\WorkshopTime;
 
 /**
- * Class WorkshopTimeParser
+ * Class EventTimeParser
  */
-class WorkshopTimeParserInterface implements ParserInterface
+class EventTimeParser implements ParserInterface
 {
     /**
      * @param $object
@@ -17,14 +17,14 @@ class WorkshopTimeParserInterface implements ParserInterface
      */
     public static function parse($object): array
     {
-        if (!($object instanceof WorkshopTime)) {
-            throw new \Exception(sprintf('WorkshopTime expected, got %s', get_class($object)));
+        if (!($object instanceof EventTime)) {
+            throw new \Exception(sprintf('EventTime expected, got %s', get_class($object)));
         }
 
         $data = [
             [
-                'Workshop',
-                $object->getWorkshop()->getTitle(),
+                'Event',
+                $object->getEvent()->getTitle(),
                 $object->getStartTime()->format('Y-m-d H:i')
             ],
         ];
@@ -32,7 +32,7 @@ class WorkshopTimeParserInterface implements ParserInterface
         if (is_iterable($object->getRegistrations()) && count($object->getRegistrations()) > 0) {
             $fieldList = [];
 
-            foreach ($object->getWorkshop()->getFormConfig()->getConfigParsed() as $field) {
+            foreach ($object->getEvent()->getFormConfig()->getConfigParsed() as $field) {
                 if ($field['type'] != 'paragraph') {
                     $fieldList[$field['name']] = $field['label'];
                 }
@@ -58,7 +58,7 @@ class WorkshopTimeParserInterface implements ParserInterface
                 $data[] = $row;
             }
         } else {
-            $data[] = ['No registrations in workshop'];
+            $data[] = ['No registrations in event'];
         }
 
         return $data;
