@@ -249,7 +249,7 @@ class FormValidatorTest extends WebTestCase
     private function getEvent(array $formConfig): EventTime
     {
         $form = new FormConfig();
-        $form->setConfig($formConfig);
+        $form->setConfig(json_encode($formConfig));
 
         $event = new Event();
         $event->setFormConfig($form);
