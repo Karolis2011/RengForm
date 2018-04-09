@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Repository\WorkshopRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class RegistrationController
@@ -28,14 +29,14 @@ class RegistrationController extends Controller
     /**
      * @param $workshopId
      * @return Response
-     * @throws \Exception
      */
     public function index($workshopId)
     {
         $workshop = $this->workshopRepository->find($workshopId);
 
         if ($workshop === null) {
-            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+            throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
+            //TODO: Log
         }
 
         return $this->render(

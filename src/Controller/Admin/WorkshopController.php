@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class WorkshopController
@@ -54,18 +55,18 @@ class WorkshopController extends Controller
     }
 
     /**
-     * @param                      $eventId
      * @param Request              $request
      * @param MultiEventRepository $eventRepository
+     * @param                      $eventId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
-    public function create($eventId, Request $request, MultiEventRepository $eventRepository)
+    public function create(Request $request, MultiEventRepository $eventRepository, $eventId)
     {
         $event = $eventRepository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
+            throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+            //TODO: Log
         }
 
         $workshop = new Workshop();
@@ -102,14 +103,14 @@ class WorkshopController extends Controller
      * @param Request $request
      * @param         $workshopId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
     public function edit(Request $request, $workshopId)
     {
         $workshop = $this->repository->find($workshopId);
 
         if ($workshop === null) {
-            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+            throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
+            //TODO: Log
         }
 
         $form = $this->createForm(
@@ -148,14 +149,14 @@ class WorkshopController extends Controller
      * @param EventTimeUpdater $updater
      * @param                  $workshopId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
     public function updateTimes(Request $request, EventTimeUpdater $updater, $workshopId)
     {
         $workshop = $this->repository->find($workshopId);
 
         if ($workshop === null) {
-            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+            throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
+            //TODO: Log
         }
 
         $times = [];
@@ -168,7 +169,13 @@ class WorkshopController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formTimes = $form->getData()['times'] ?? [];
-            $updater->update($formTimes, $workshop);
+            try {
+                $updater->update($formTimes, $workshop);
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Update error');
+                //TODO: Log
+                return $this->redirectToRoute('event_index');
+            }
 
             return $this->redirectToRoute(
                 'event_show',
@@ -191,14 +198,14 @@ class WorkshopController extends Controller
     /**
      * @param $workshopId
      * @return RedirectResponse
-     * @throws \Exception
      */
     public function delete($workshopId)
     {
         $workshop = $this->repository->find($workshopId);
 
         if ($workshop === null) {
-            throw new \Exception(sprintf('Workshop by id %s not found', $workshopId));
+            throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
+            //TODO: Log
         }
 
         $eventId = $workshop->getCategory()->getEvent()->getId();

@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class CategoryController
@@ -41,14 +42,14 @@ class CategoryController extends Controller
      * @param Request $request
      * @param         $eventId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
     public function create(Request $request, $eventId)
     {
         $event = $this->eventRepository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
+            throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+            //TODO: Log
         }
 
         $category = new Category();
@@ -79,14 +80,14 @@ class CategoryController extends Controller
      * @param Request $request
      * @param         $categoryId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
     public function edit(Request $request, $categoryId)
     {
         $category = $this->repository->find($categoryId);
 
         if ($category === null) {
-            throw new \Exception(sprintf('Category by id %s not found', $categoryId));
+            throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
+            //TODO: Log
         }
 
         $form = $this->createForm(CategoryType::class, $category);
@@ -115,14 +116,14 @@ class CategoryController extends Controller
     /**
      * @param $categoryId
      * @return RedirectResponse
-     * @throws \Exception
      */
     public function delete($categoryId)
     {
         $category = $this->repository->find($categoryId);
 
         if ($category === null) {
-            throw new \Exception(sprintf('Category by id %s not found', $categoryId));
+            throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
+            //TODO: Log
         }
 
         $eventId = $category->getEvent()->getId();

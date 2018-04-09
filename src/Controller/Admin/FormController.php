@@ -59,6 +59,7 @@ class FormController extends Controller
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
+            //TODO: Log
         }
 
         return $this->render(
@@ -72,7 +73,7 @@ class FormController extends Controller
     /**
      * @param Request        $request
      * @param ConfigEnricher $enricher
-     * @return Response
+     * @return RedirectResponse|Response
      */
     public function create(Request $request, ConfigEnricher $enricher)
     {
@@ -106,15 +107,15 @@ class FormController extends Controller
      * @param Request        $request
      * @param ConfigEnricher $enricher
      * @param                $formId
-     * @return Response
-     * @throws \Exception
+     * @return RedirectResponse|Response
      */
     public function edit(Request $request, ConfigEnricher $enricher, $formId)
     {
         $formConfig = $this->repository->find($formId);
 
         if ($formConfig === null) {
-            throw new \Exception(sprintf('Form by id %s not found', $formId));
+            throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
+            //TODO: Log
         }
 
         $form = $this->createForm(FormConfigType::class, $formConfig);
@@ -144,14 +145,14 @@ class FormController extends Controller
     /**
      * @param $formId
      * @return RedirectResponse
-     * @throws \Exception
      */
     public function delete($formId)
     {
         $formConfig = $this->repository->find($formId);
 
         if ($formConfig === null) {
-            throw new \Exception(sprintf('Form by id %s not found', $formId));
+            throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
+            //TODO: Log
         }
 
         $usesCount = count(

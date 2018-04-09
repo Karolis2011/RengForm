@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class MultiEventController
@@ -73,14 +74,14 @@ class MultiEventController extends Controller
      * @param Request $request
      * @param         $eventId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
     public function update(Request $request, $eventId)
     {
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('MultiEvent by id %s not found', $eventId));
+            throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+            //TODO: Log
         }
 
         $form = $this->createForm(MultiEventType::class, $event);
@@ -110,7 +111,6 @@ class MultiEventController extends Controller
      * @param Request $request
      * @param         $eventId
      * @return JsonResponse
-     * @throws \Exception
      */
     public function saveCategoryOrder(Request $request, $eventId)
     {
@@ -139,7 +139,7 @@ class MultiEventController extends Controller
             $response->setData([
                 'message' => sprintf('MultiEvent by id %s not found', $eventId),
             ])->setStatusCode(400);
-        }
+        }//TODO: show error on FE
 
         return $response;
     }

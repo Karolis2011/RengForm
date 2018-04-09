@@ -10,6 +10,7 @@ use App\Repository\MultiEventRepository;
 use App\Repository\RegistrationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class EventController
@@ -58,7 +59,6 @@ class EventController extends Controller
     /**
      * @param $eventId
      * @return Response
-     * @throws \Exception
      */
     public function index($eventId)
     {
@@ -74,7 +74,8 @@ class EventController extends Controller
             return $this->showEvent($event);
         }
 
-        throw new \Exception(sprintf('Event by id %s not found', $eventId));
+        throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+        //TODO: Log
     }
 
     /**

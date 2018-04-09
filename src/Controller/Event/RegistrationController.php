@@ -12,6 +12,7 @@ use App\Service\Form\FormValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class RegistrationController
@@ -61,7 +62,6 @@ class RegistrationController extends Controller
      * @param Request       $request
      * @param               $timeId
      * @return Response
-     * @throws \Exception
      */
     public function register(Request $request, $timeId)
     {
@@ -78,8 +78,8 @@ class RegistrationController extends Controller
             return $this->processEvent($time, $formData);
         }
 
-
-        throw new \Exception(sprintf('Workshop or Event by id %s not found', $timeId));
+        throw new NotFoundHttpException(sprintf('Workshop or Event by id %s not found', $timeId));
+        //TODO: Log
     }
 
     /**

@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class EventController
@@ -105,14 +106,14 @@ class EventController extends Controller
      * @param Request $request
      * @param         $eventId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
     public function update(Request $request, $eventId)
     {
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+            throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+            //TODO: Log
         }
 
         $form = $this->createForm(EventUpdateType::class, $event);
@@ -143,14 +144,14 @@ class EventController extends Controller
      * @param EventTimeUpdater $updater
      * @param                  $eventId
      * @return RedirectResponse|Response
-     * @throws \Exception
      */
     public function updateTimes(Request $request, EventTimeUpdater $updater, $eventId)
     {
         $event = $this->repository->find($eventId);
 
         if ($event === null) {
-            throw new \Exception(sprintf('Event by id %s not found', $eventId));
+            throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+            //TODO: Log
         }
 
         $times = [];
@@ -163,7 +164,13 @@ class EventController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formTimes = $form->getData()['times'] ?? [];
-            $updater->update($formTimes, $event);
+            try {
+                $updater->update($formTimes, $event);
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Update error');
+                //TODO: Log
+                return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
+            }
 
             return $this->redirectToRoute(
                 'event_show',
@@ -185,7 +192,6 @@ class EventController extends Controller
     /**
      * @param $eventId
      * @return Response
-     * @throws \Exception
      */
     public function show($eventId)
     {
@@ -201,13 +207,13 @@ class EventController extends Controller
             return $this->showEvent($event);
         }
 
-        throw new \Exception(sprintf('Event by id %s not found', $eventId));
+        throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+        //TODO: Log
     }
 
     /**
      * @param $eventId
      * @return RedirectResponse
-     * @throws \Exception
      */
     public function delete($eventId)
     {
@@ -229,7 +235,8 @@ class EventController extends Controller
             return $this->redirectToRoute('event_index');
         }
 
-        throw new \Exception(sprintf('Event by id %s not found', $eventId));
+        throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+        //TODO: Log
     }
 
     /**
