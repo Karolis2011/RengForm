@@ -7,6 +7,7 @@ use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopTimeRepository;
 use App\Service\Export\Exporter;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,12 +25,19 @@ class DownloadController extends Controller
     private $exporter;
 
     /**
-     * DownloadController constructor.
-     * @param Exporter $exporter
+     * @var LoggerInterface
      */
-    public function __construct(Exporter $exporter)
+    private $logger;
+
+    /**
+     * DownloadController constructor.
+     * @param Exporter        $exporter
+     * @param LoggerInterface $logger
+     */
+    public function __construct(Exporter $exporter, LoggerInterface $logger)
     {
         $this->exporter = $exporter;
+        $this->logger = $logger;
     }
 
     /**
@@ -43,15 +51,14 @@ class DownloadController extends Controller
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-            //TODO: Log
         }
 
         try {
             return $this->exporter->export($event);
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Export error');
+            $this->log($eventId, 'multiEvent');
 
-            //TODO: Log
             return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
         }
     }
@@ -67,15 +74,14 @@ class DownloadController extends Controller
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-            //TODO: Log
         }
 
         try {
             return $this->exporter->export($event);
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Export error');
+            $this->log($eventId, 'event');
 
-            //TODO: Log
             return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
         }
     }
@@ -92,15 +98,14 @@ class DownloadController extends Controller
 
         if ($workshopTime === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopTimeId));
-            //TODO: Log
         }
 
         try {
             return $this->exporter->export($workshopTime);
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Export error');
+            $this->log($workshopTimeId, 'workshopTime');
 
-            //TODO: Log
             return $this->redirectToRoute(
                 'event_show',
                 [
@@ -122,15 +127,14 @@ class DownloadController extends Controller
 
         if ($category === null) {
             throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
-            //TODO: Log
         }
 
         try {
             return $this->exporter->export($category);
         } catch (\Exception $e) {
             $this->addFlash('danger', 'Export error');
+            $this->log($categoryId, 'category');
 
-            //TODO: Log
             return $this->redirectToRoute(
                 'event_show',
                 [
@@ -138,5 +142,20 @@ class DownloadController extends Controller
                 ]
             );
         }
+    }
+
+    /**
+     * @param string $objectId
+     * @param string $type
+     */
+    private function log(string $objectId, string $type): void
+    {
+        $this->logger->error(
+            'Export error',
+            [
+                'id'   => $objectId,
+                'type' => $type,
+            ]
+        );
     }
 }

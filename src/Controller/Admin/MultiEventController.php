@@ -81,7 +81,6 @@ class MultiEventController extends Controller
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-            //TODO: Log
         }
 
         $form = $this->createForm(MultiEventType::class, $event);

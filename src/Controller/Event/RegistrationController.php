@@ -79,7 +79,6 @@ class RegistrationController extends Controller
         }
 
         throw new NotFoundHttpException(sprintf('Workshop or Event by id %s not found', $timeId));
-        //TODO: Log
     }
 
     /**

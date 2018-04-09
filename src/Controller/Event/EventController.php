@@ -75,7 +75,6 @@ class EventController extends Controller
         }
 
         throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-        //TODO: Log
     }
 
     /**

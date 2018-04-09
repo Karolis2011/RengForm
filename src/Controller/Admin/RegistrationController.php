@@ -36,7 +36,6 @@ class RegistrationController extends Controller
 
         if ($workshop === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
-            //TODO: Log
         }
 
         return $this->render(

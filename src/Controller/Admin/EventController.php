@@ -12,6 +12,7 @@ use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use App\Service\Event\EventTimeUpdater;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,19 +40,27 @@ class EventController extends Controller
     private $workshopRepository;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * EventController constructor.
      * @param MultiEventRepository $multiEventRepository
      * @param EventRepository      $repository
      * @param WorkshopRepository   $workshopRepository
+     * @param LoggerInterface      $logger
      */
     public function __construct(
         MultiEventRepository $multiEventRepository,
         EventRepository $repository,
-        WorkshopRepository $workshopRepository
+        WorkshopRepository $workshopRepository,
+        LoggerInterface $logger
     ) {
         $this->multiEventRepository = $multiEventRepository;
         $this->repository = $repository;
         $this->workshopRepository = $workshopRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -113,7 +122,6 @@ class EventController extends Controller
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-            //TODO: Log
         }
 
         $form = $this->createForm(EventUpdateType::class, $event);
@@ -151,7 +159,6 @@ class EventController extends Controller
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-            //TODO: Log
         }
 
         $times = [];
@@ -168,7 +175,14 @@ class EventController extends Controller
                 $updater->update($formTimes, $event);
             } catch (\Exception $e) {
                 $this->addFlash('danger', 'Update error');
-                //TODO: Log
+                $this->logger->error(
+                    'Times update error',
+                    [
+                        'id'   => $eventId,
+                        'type' => 'event',
+                    ]
+                );
+
                 return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
             }
 
@@ -208,7 +222,6 @@ class EventController extends Controller
         }
 
         throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-        //TODO: Log
     }
 
     /**
@@ -236,7 +249,6 @@ class EventController extends Controller
         }
 
         throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-        //TODO: Log
     }
 
     /**

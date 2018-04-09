@@ -59,7 +59,6 @@ class FormController extends Controller
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
-            //TODO: Log
         }
 
         return $this->render(
@@ -115,7 +114,6 @@ class FormController extends Controller
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
-            //TODO: Log
         }
 
         $form = $this->createForm(FormConfigType::class, $formConfig);
@@ -152,7 +150,6 @@ class FormController extends Controller
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
-            //TODO: Log
         }
 
         $usesCount = count(

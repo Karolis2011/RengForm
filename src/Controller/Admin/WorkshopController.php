@@ -12,6 +12,7 @@ use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use App\Repository\WorkshopTimeRepository;
 use App\Service\Event\EventTimeUpdater;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,19 +40,27 @@ class WorkshopController extends Controller
     private $workshopTimeRepository;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * WorkshopController constructor.
      * @param WorkshopRepository     $repository
      * @param CategoryRepository     $categoryRepository
      * @param WorkshopTimeRepository $workshopTimeRepository
+     * @param LoggerInterface        $logger
      */
     public function __construct(
         WorkshopRepository $repository,
         CategoryRepository $categoryRepository,
-        WorkshopTimeRepository $workshopTimeRepository
+        WorkshopTimeRepository $workshopTimeRepository,
+        LoggerInterface $logger
     ) {
         $this->repository = $repository;
         $this->categoryRepository = $categoryRepository;
         $this->workshopTimeRepository = $workshopTimeRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -66,7 +75,6 @@ class WorkshopController extends Controller
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-            //TODO: Log
         }
 
         $workshop = new Workshop();
@@ -110,7 +118,6 @@ class WorkshopController extends Controller
 
         if ($workshop === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
-            //TODO: Log
         }
 
         $form = $this->createForm(
@@ -156,7 +163,6 @@ class WorkshopController extends Controller
 
         if ($workshop === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
-            //TODO: Log
         }
 
         $times = [];
@@ -173,7 +179,14 @@ class WorkshopController extends Controller
                 $updater->update($formTimes, $workshop);
             } catch (\Exception $e) {
                 $this->addFlash('danger', 'Update error');
-                //TODO: Log
+                $this->logger->error(
+                    'Times update error',
+                    [
+                        'id'   => $workshopId,
+                        'type' => 'workshop',
+                    ]
+                );
+
                 return $this->redirectToRoute('event_index');
             }
 
@@ -205,7 +218,6 @@ class WorkshopController extends Controller
 
         if ($workshop === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
-            //TODO: Log
         }
 
         $eventId = $workshop->getCategory()->getEvent()->getId();

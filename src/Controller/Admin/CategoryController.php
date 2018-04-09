@@ -49,7 +49,6 @@ class CategoryController extends Controller
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
-            //TODO: Log
         }
 
         $category = new Category();
@@ -87,7 +86,6 @@ class CategoryController extends Controller
 
         if ($category === null) {
             throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
-            //TODO: Log
         }
 
         $form = $this->createForm(CategoryType::class, $category);
@@ -123,7 +121,6 @@ class CategoryController extends Controller
 
         if ($category === null) {
             throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
-            //TODO: Log
         }
 
         $eventId = $category->getEvent()->getId();
