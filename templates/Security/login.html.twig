@@ -15,7 +15,7 @@
         <input type="password" id="inputPassword" class="form-control" name="_password"
                placeholder="{% trans %}Password{% endtrans %}" required>
         <label>
-            <input type="checkbox" value="remember-me"> {% trans %}Remember me{% endtrans %}
+            <input type="checkbox" id="remember_me" value="_remember_me"> {% trans %}Remember me{% endtrans %}
         </label>
         <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans %}Sign in{% endtrans %}</button>
         <a class="btn btn-secondary btn-block" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>

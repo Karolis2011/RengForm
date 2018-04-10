@@ -21,6 +21,10 @@ security:
             logout:
                 path:   /admin/logout
                 target: /admin/login
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
     access_control:
         - { path: ^/(.+)/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/(.+)/admin/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
