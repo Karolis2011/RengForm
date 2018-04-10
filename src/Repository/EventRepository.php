@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Event;
 use App\Entity\EventTime;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -12,8 +11,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Event|null findOneBy(array $criteria, array $orderBy = null)
  * @method Event[]    findAll()
  * @method Event[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method update(Event $object, bool $flush = true): void
+ * @method remove(Event $object, bool $flush = true): void
  */
-class EventRepository extends ServiceEntityRepository
+class EventRepository extends AbstractRepository
 {
     /**
      * EventRepository constructor.
@@ -25,44 +26,17 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Event $event
+     * @param Event $object
      * @param bool  $flush
      */
-    public function save(Event $event, bool $flush = true): void
+    public function save($object, bool $flush = true): void
     {
-        $event->setCreated(new \DateTime());
+        $object->setCreated(new \DateTime());
         /** @var EventTime $time */
-        foreach ($event->getTimes() as $time) {
-            $time->setEvent($event);
+        foreach ($object->getTimes() as $time) {
+            $time->setEvent($object);
         }
 
-        $this->_em->persist($event);
-        if ($flush) {
-            $this->_em->flush($event);
-        }
-    }
-
-    /**
-     * @param Event $event
-     * @param bool  $flush
-     */
-    public function update(Event $event, bool $flush = true): void
-    {
-        $this->_em->merge($event);
-        if ($flush) {
-            $this->_em->flush($event);
-        }
-    }
-
-    /**
-     * @param Event $event
-     * @param bool  $flush
-     */
-    public function remove(Event $event, bool $flush = true): void
-    {
-        $this->_em->remove($event);
-        if ($flush) {
-            $this->_em->flush($event);
-        }
+        parent::save($object, $flush);
     }
 }

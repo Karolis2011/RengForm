@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Registration;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -11,8 +10,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Registration|null findOneBy(array $criteria, array $orderBy = null)
  * @method Registration[]    findAll()
  * @method Registration[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method update(Registration $object, bool $flush = true): void
+ * @method remove(Registration $object, bool $flush = true): void
  */
-class RegistrationRepository extends ServiceEntityRepository
+class RegistrationRepository extends AbstractRepository
 {
     /**
      * RegistrationRepository constructor.
@@ -24,28 +25,13 @@ class RegistrationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Registration $registration
+     * @param Registration $object
      * @param bool         $flush
      */
-    public function save(Registration $registration, bool $flush = true): void
+    public function save($object, bool $flush = true): void
     {
-        $registration->setCreated(new \DateTime());
+        $object->setCreated(new \DateTime());
 
-        $this->_em->persist($registration);
-        if ($flush) {
-            $this->_em->flush($registration);
-        }
-    }
-
-    /**
-     * @param Registration $registration
-     * @param bool         $flush
-     */
-    public function update(Registration $registration, bool $flush = true): void
-    {
-        $this->_em->merge($registration);
-        if ($flush) {
-            $this->_em->flush($registration);
-        }
+        parent::save($object, $flush);
     }
 }

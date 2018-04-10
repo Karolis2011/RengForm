@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\MultiEvent;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -11,8 +10,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method MultiEvent|null findOneBy(array $criteria, array $orderBy = null)
  * @method MultiEvent[]    findAll()
  * @method MultiEvent[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method update(MultiEvent $object, bool $flush = true): void
+ * @method remove(MultiEvent $object, bool $flush = true): void
  */
-class MultiEventRepository extends ServiceEntityRepository
+class MultiEventRepository extends AbstractRepository
 {
     /**
      * EventRepository constructor.
@@ -24,40 +25,13 @@ class MultiEventRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param MultiEvent $event
+     * @param MultiEvent $object
      * @param bool       $flush
      */
-    public function save(MultiEvent $event, bool $flush = true): void
+    public function save($object, bool $flush = true): void
     {
-        $event->setCreated(new \DateTime());
+        $object->setCreated(new \DateTime());
 
-        $this->_em->persist($event);
-        if ($flush) {
-            $this->_em->flush($event);
-        }
-    }
-
-    /**
-     * @param MultiEvent $event
-     * @param bool       $flush
-     */
-    public function update(MultiEvent $event, bool $flush = true): void
-    {
-        $this->_em->merge($event);
-        if ($flush) {
-            $this->_em->flush($event);
-        }
-    }
-
-    /**
-     * @param MultiEvent $event
-     * @param bool       $flush
-     */
-    public function remove(MultiEvent $event, bool $flush = true): void
-    {
-        $this->_em->remove($event);
-        if ($flush) {
-            $this->_em->flush($event);
-        }
+        parent::save($object, $flush);
     }
 }

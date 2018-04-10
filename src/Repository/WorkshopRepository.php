@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\Workshop;
 use App\Entity\WorkshopTime;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -12,8 +11,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Workshop|null findOneBy(array $criteria, array $orderBy = null)
  * @method Workshop[]    findAll()
  * @method Workshop[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method update(Workshop $object, bool $flush = true): void
+ * @method remove(Workshop $object, bool $flush = true): void
  */
-class WorkshopRepository extends ServiceEntityRepository
+class WorkshopRepository extends AbstractRepository
 {
     /**
      * WorkshopRepository constructor.
@@ -25,33 +26,18 @@ class WorkshopRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Workshop $workshop
+     * @param Workshop $object
      * @param bool     $flush
      */
-    public function save(Workshop $workshop, bool $flush = true): void
+    public function save($object, bool $flush = true): void
     {
-        $workshop->setCreated(new \DateTime());
+        $object->setCreated(new \DateTime());
         /** @var WorkshopTime $time */
-        foreach ($workshop->getTimes() as $time) {
-            $time->setWorkshop($workshop);
+        foreach ($object->getTimes() as $time) {
+            $time->setWorkshop($object);
         }
 
-        $this->_em->persist($workshop);
-        if ($flush) {
-            $this->_em->flush($workshop);
-        }
-    }
-
-    /**
-     * @param Workshop $workshop
-     * @param bool     $flush
-     */
-    public function update(Workshop $workshop, bool $flush = true): void
-    {
-        $this->_em->merge($workshop);
-        if ($flush) {
-            $this->_em->flush($workshop);
-        }
+        parent::save($object, $flush);
     }
 
     /**
@@ -71,17 +57,5 @@ class WorkshopRepository extends ServiceEntityRepository
         $workshops = $query->getResult();
 
         return $workshops;
-    }
-
-    /**
-     * @param Workshop $workshop
-     * @param bool     $flush
-     */
-    public function remove(Workshop $workshop, bool $flush = true): void
-    {
-        $this->_em->remove($workshop);
-        if ($flush) {
-            $this->_em->flush($workshop);
-        }
     }
 }

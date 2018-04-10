@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Category;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -13,8 +12,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Category|null findOneBy(array $criteria, array $orderBy = null)
  * @method Category[]    findAll()
  * @method Category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method update(Category $object, bool $flush = true): void
+ * @method remove(Category $object, bool $flush = true): void
  */
-class CategoryRepository extends ServiceEntityRepository
+class CategoryRepository extends AbstractRepository
 {
     /**
      * CategoryRepository constructor.
@@ -26,31 +27,16 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Category $category
+     * @param Category $object
      * @param bool     $flush
      */
-    public function save(Category $category, bool $flush = true): void
+    public function save($object, bool $flush = true): void
     {
-        $category->setCreated(new \DateTime());
+        $object->setCreated(new \DateTime());
 
-        $this->_em->persist($category);
-        if ($flush) {
-            $this->_em->flush($category);
-        }
-        $category->setOrderNo($this->getNextOrderNo($category));
-        $this->_em->flush($category);
-    }
-
-    /**
-     * @param Category $category
-     * @param bool     $flush
-     */
-    public function update(Category $category, bool $flush = true): void
-    {
-        $this->_em->merge($category);
-        if ($flush) {
-            $this->_em->flush($category);
-        }
+        parent::save($object, $flush);
+        $object->setOrderNo($this->getNextOrderNo($object));
+        $this->_em->flush($object);
     }
 
     /**
@@ -88,17 +74,5 @@ class CategoryRepository extends ServiceEntityRepository
         }
 
         return $categoriesCount;
-    }
-
-    /**
-     * @param Category $category
-     * @param bool     $flush
-     */
-    public function remove(Category $category, bool $flush = true): void
-    {
-        $this->_em->remove($category);
-        if ($flush) {
-            $this->_em->flush($category);
-        }
     }
 }

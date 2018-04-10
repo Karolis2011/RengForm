@@ -3,7 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\FormConfig;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -11,8 +10,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method FormConfig|null findOneBy(array $criteria, array $orderBy = null)
  * @method FormConfig[]    findAll()
  * @method FormConfig[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method update(FormConfig $object, bool $flush = true): void
+ * @method remove(FormConfig $object, bool $flush = true): void
  */
-class FormConfigRepository extends ServiceEntityRepository
+class FormConfigRepository extends AbstractRepository
 {
     /**
      * FormConfigRepository constructor.
@@ -24,40 +25,13 @@ class FormConfigRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param FormConfig $formConfig
+     * @param FormConfig $object
      * @param bool       $flush
      */
-    public function save(FormConfig $formConfig, bool $flush = true): void
+    public function save($object, bool $flush = true): void
     {
-        $formConfig->setCreated(new \DateTime());
+        $object->setCreated(new \DateTime());
 
-        $this->_em->persist($formConfig);
-        if ($flush) {
-            $this->_em->flush($formConfig);
-        }
-    }
-
-    /**
-     * @param FormConfig $formConfig
-     * @param bool       $flush
-     */
-    public function update(FormConfig $formConfig, bool $flush = true): void
-    {
-        $this->_em->merge($formConfig);
-        if ($flush) {
-            $this->_em->flush($formConfig);
-        }
-    }
-
-    /**
-     * @param FormConfig $formConfig
-     * @param bool       $flush
-     */
-    public function remove(FormConfig $formConfig, bool $flush = true): void
-    {
-        $this->_em->remove($formConfig);
-        if ($flush) {
-            $this->_em->flush($formConfig);
-        }
+        parent::save($object, $flush);
     }
 }
