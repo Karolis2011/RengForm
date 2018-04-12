@@ -25,21 +25,6 @@ class ExporterTest extends TestCase
         $category->setTitle('Category Title');
         $event->getCategories()->add($category);
         $category->setEvent($event);
-        $workshop = new Workshop();
-        $workshop->setTitle('Workshop Title');
-        $this->addWorkshopTime(
-            $workshop,
-            '2018-01-01 12:00',
-            [
-                [
-                    'created' => '2017-12-20 12:34',
-                    'data'    => [
-                        'name' => 'Aaa',
-                        'age'  => '12',
-                    ],
-                ],
-            ]
-        );
         $config = new FormConfig();
         $config->setConfig(json_encode([
             [
@@ -53,6 +38,53 @@ class ExporterTest extends TestCase
                 'name'  => 'age',
             ],
         ]));
+        $workshop = new Workshop();
+        $workshop->setTitle('Workshop Title');
+        $this->addWorkshopTime(
+            $workshop,
+            '2018-01-01 12:00',
+            [
+                [
+                    'created' => '2017-12-20 12:34',
+                    'data'    => [
+                        'name' => 'Aaa',
+                        'age'  => '12',
+                    ],
+                ],
+                [
+                    'created' => '2017-12-20 12:00',
+                    'data'    => [
+                        'name' => 'Baa',
+                        'age'  => '15',
+                    ],
+                ],
+            ]
+        );
+        $workshop->setFormConfig($config);
+        $workshop->setCategory($category);
+        $category->getWorkshops()->add($workshop);
+        $workshop = new Workshop();
+        $workshop->setTitle('Workshop Title2');
+        $this->addWorkshopTime(
+            $workshop,
+            '2018-01-01 12:00',
+            [
+                [
+                    'created' => '2017-12-20 12:34',
+                    'data'    => [
+                        'name' => 'Aaa',
+                        'age'  => '12',
+                    ],
+                ],
+                [
+                    'created' => '2017-12-20 12:00',
+                    'data'    => [
+                        'name' => 'Baa',
+                        'age'  => '15',
+                    ],
+                ],
+            ]
+        );
         $workshop->setFormConfig($config);
         $workshop->setCategory($category);
         $category->getWorkshops()->add($workshop);
