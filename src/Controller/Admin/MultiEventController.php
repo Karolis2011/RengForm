@@ -138,7 +138,7 @@ class MultiEventController extends Controller
             $response->setData([
                 'message' => sprintf('MultiEvent by id %s not found', $eventId),
             ])->setStatusCode(400);
-        }//TODO: show error on FE
+        }
 
         return $response;
     }
