@@ -30,26 +30,26 @@
                             <dt class="col-md-3">{% trans %}Times{% endtrans %}</dt>
                             <dd class="col-md-9">
                                 {% for time in workshop.times %}
-                                    <span class="badge badge-primary">{{ time.startTime|date('Y-m-d H:i') }}, {{ time.entries }}</span>
+                                    <span class="badge badge-secondary">{{ time.startTime|date('Y-m-d H:i') }}, {{ time.entries }}</span>
                                 {% endfor %}
                             </dd>
                             <dt class="col-md-3">{% trans %}Description{% endtrans %}</dt>
                             <dd class="col-md-9">{{ workshop.description }}</dd>
                         </dl>
-                        <div class="px-2 pb-2">
-                            <a class="btn btn-primary"
+                        <div class="px-2 pb-2 btn-group">
+                            <a class="btn btn-outline-secondary"
                                href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
                                 {% trans %}Edit{% endtrans %}
                             </a>
-                            <a class="btn btn-primary"
+                            <a class="btn btn-outline-secondary"
                                href="{{ path('workshop_update_times', {'workshopId': workshop.id }) }}">
                                 {% trans %}Edit Times{% endtrans %}
                             </a>
-                            <a class="btn btn-primary"
+                            <a class="btn btn-outline-secondary"
                                href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
                                 {% trans %}View registrations{% endtrans %}
                             </a>
-                            <a class="btn btn-danger"
+                            <a class="btn btn-outline-danger"
                                href="{{ path('workshop_delete', {'workshopId': workshop.id }) }}">
                                 {% trans %}Delete{% endtrans %}
                             </a>
@@ -63,11 +63,11 @@
 {% endif %}
 <div>
     {% if event.categories is empty %}
-        <button type="button" class="btn btn-primary disabled" data-placement="top" data-toggle="tooltip"
+        <button type="button" class="btn btn-outline-secondary disabled" data-placement="top" data-toggle="tooltip"
                 title="{% trans %}At leats 1 category must exist{% endtrans %}">
             {% trans %}Add{% endtrans %}
         </button>
     {% else %}
-        <a class="btn btn-primary" href="{{ path('workshop_create', {'eventId': event.id}) }}">{% trans %}Add{% endtrans %}</a>
+        <a class="btn btn-outline-secondary" href="{{ path('workshop_create', {'eventId': event.id}) }}">{% trans %}Add{% endtrans %}</a>
     {% endif %}
 </div>
