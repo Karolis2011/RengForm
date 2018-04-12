@@ -68,28 +68,33 @@ class EventTimeUpdater
         }
 
         foreach ($newTimes as $time) {
-            $eventTime = $this->getNewTimeObject(get_class($event));
+            $eventTime = $this->getNewTimeObject($event);
             $eventTime->setStartTime($time->getStartTime());
-            $eventTime->setEvent($event);
             $event->getTimes()->add($eventTime);
             $repository->save($eventTime);
         }
     }
 
     /**
-     * @param string $class
+     * @param Event|Workshop $event
      * @return EventTime|WorkshopTime
      * @throws \Exception
      */
-    private function getNewTimeObject(string $class)
+    private function getNewTimeObject($event)
     {
-        switch ($class) {
+        switch (get_class($event)) {
             case Event::class:
-                return new EventTime();
+                $eventTime = new EventTime();
+                $eventTime->setEvent($event);
+
+                return $eventTime;
             case Workshop::class:
-                return new WorkshopTime();
+                $workshopTime = new WorkshopTime();
+                $workshopTime->setWorkshop($event);
+
+                return $workshopTime;
             default:
-                throw new \Exception(sprintf("Class not supported: %s", $class));
+                throw new \Exception(sprintf("Class not supported: %s", get_class($event)));
         }
     }
 
