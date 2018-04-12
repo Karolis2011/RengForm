@@ -1,2 +1,39 @@
-<h4>{% trans %}Download registrations{% endtrans %}</h4>
+{% for time in event.times %}
+    <h6>{{ time.startTime|date('Y-m-d H:i') }}</h6>
+    <table id="records" class="table table-sm table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>{#TODO: remove column#}
+            <th>{% trans %}Registration Date{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for registration in time.registrations %}
+            <tr class="expandable-row" data-toggle="collapse" data-target="#collapse_time_{{ registration.id }}"
+                aria-expanded="false" aria-controls="collapseExample">
+                <td>{{ registration.id }}</td>{#TODO: remove column#}
+                <td>{{ registration.created|date('Y-m-d H:i') }}</td>
+            </tr>
+            <tr>
+                <td class="p-0" colspan="6">
+                    <div class="collapse" id="collapse_time_{{ registration.id }}">
+                        <dl class="row px-2">
+                            {% for field, value in registration.data %}
+                                <dt class="col-md-3">{{ field|replace({'-': ' '})|capitalize }}</dt>
+                                <dd class="col-md-9">
+                                    {% if value is iterable %}
+                                        {{ value|join(', ') }}
+                                    {% else %}
+                                        {{ value }}
+                                    {% endif %}
+                                </dd>
+                            {% endfor %}
+                        </dl>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
 <a class="btn btn-primary" href="{{ path('download_registrations_event', {'eventId': event.id}) }}">{% trans %}Download{% endtrans %}</a>

@@ -33,7 +33,7 @@
                         <div class="collapse" id="collapse_{{ registration.id }}">
                             <dl class="row px-2">
                                 {% for field, value in registration.data %}
-                                    <dt class="col-md-3">{{ field }}</dt>
+                                    <dt class="col-md-3">{{ field|replace({'-': ' '})|capitalize }}</dt>
                                     <dd class="col-md-9">
                                         {% if value is iterable %}
                                             {{ value|join(', ') }}
