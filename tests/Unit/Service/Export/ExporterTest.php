@@ -95,7 +95,7 @@ class ExporterTest extends TestCase
             $this->assertSame(1, 0, $e->getMessage());
             $response = '';
         }
-        $expected = file_get_contents('fixtures/export.csv');
+        $expected = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'fixtures/export.csv');
         $this->assertSame($expected, $response->getContent());
         try {
             (new Exporter())->export(new FormConfig());
