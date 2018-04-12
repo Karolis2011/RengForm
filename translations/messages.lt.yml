@@ -27,7 +27,6 @@ Create Event: Sukurti Renginį
 Place: Vieta
 Save: Išsaugoti
 Empty: Tuščias
-Close: Uždaryti
 Download: Atsisiųsti
 Choose category to download: Pasirinkite kategoriją, kurią norite atsisiųsti
 Download registrations: Atsisiųsti registracijas
@@ -79,3 +78,17 @@ Registrations to: Registracijos į
 Registration Date: Registravimosi data
 Language: Kalba
 Create Multi Event: Sukurti Multi-Renginį
+Delete: Ištrinti
+Change Email: Keisti El. Paštą
+Close: Uždaryti
+Change Password: Kaisti Slaptažodį
+Old Password: Senas Slaptažodis
+New Password: Naujas Slaptažodis
+Repeat New Password: Pakartoti Naują Slaptažodį
+password: slaptažodis
+Type: Tipas
+Edit Times: Redaguoti Laikus
+Public link: Vieša nuoroda
+Update Time: Redaguoti Laikus
+Update Event Times: Redaguoti Renginio Laikus
+Update Workshop Times: Redaguoti Užsiėmimo Laikus

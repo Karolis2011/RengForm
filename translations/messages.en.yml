@@ -26,10 +26,18 @@ Description: Description
 Create Event: Create Event
 Place: Place
 Save: Save
+Empty: Empty
+Download: Download
+Choose category to download: Choose category to download
+Download registrations: Download registrations
+Single Workshop: Single Workshop
+Single Category: Single Category
+All: All
 Event details: Event details
 Categories: Categories
 Registrations: Registrations
 Workshops: Workshops
+Add: Add
 Category: Category
 Duration: Duration
 Capacity: Capacity
@@ -37,7 +45,6 @@ Form: Form
 Times: Times
 Edit: Edit
 View registrations: View registrations
-Add: Add
 Choose workshop to download: Choose workshop to download
 Select workshop: Select workshop
 Select category: Select category
@@ -49,11 +56,11 @@ Create Workshop: Create Workshop
 Add Time: Add Time
 Unlimited: Unlimited
 Registration form: Registration form
-Select registration form: Select Registration Form
+Select registration form: Select registration form
 Edit Workshop: Edit Workshop
 Create Form: Create Form
 Details: Details
-Form Builder: Builder
+Form Builder: Form Builder
 Form details: Form details
 Preview: Preview
 Edit Form: Edit Form
@@ -71,3 +78,17 @@ Registrations to: Registrations to
 Registration Date: Registration Date
 Language: Language
 Create Multi Event: Create Multi Event
+Delete: Delete
+Change Email: Change Email
+Close: Close
+Change Password: Change Password
+Old Password: Old Password
+New Password: New Password
+Repeat New Password: Repeat New Password
+password: password
+Type: Type
+Edit Times: Edit Times
+Public link: Public link
+Update Time: Update Time
+Update Event Times: Update Event Times
+Update Workshop Times: Update Workshop Times
