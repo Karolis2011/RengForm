@@ -21,7 +21,6 @@
     <table id="records" class="table table-striped table-hover table-sm">
         <thead>
         <tr>
-            <th>ID</th>{#TODO: remove column#}
             <th>{% trans %}Type{% endtrans %}</th>
             <th>{% trans %}Title{% endtrans %}</th>
             <th>{% trans %}Place{% endtrans %}</th>
@@ -31,7 +30,6 @@
         <tbody>
         {% for event in multiEvents %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
-                <td>{{ event.id }}</td>
                 <td>Multi</td>
                 <td>{{ event.title }}</td>
                 <td>-</td>
@@ -40,7 +38,6 @@
         {% endfor %}
         {% for event in events %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
-                <td>{{ event.id }}</td>
                 <td>Single</td>
                 <td>{{ event.title }}</td>
                 <td>{{ event.place }}</td>

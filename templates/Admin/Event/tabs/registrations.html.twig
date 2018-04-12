@@ -3,7 +3,6 @@
     <table id="records" class="table table-sm table-striped table-hover">
         <thead>
         <tr>
-            <th>Id</th>{#TODO: remove column#}
             <th>{% trans %}Registration Date{% endtrans %}</th>
         </tr>
         </thead>
@@ -11,7 +10,6 @@
         {% for registration in time.registrations %}
             <tr class="expandable-row" data-toggle="collapse" data-target="#collapse_time_{{ registration.id }}"
                 aria-expanded="false" aria-controls="collapseExample">
-                <td>{{ registration.id }}</td>{#TODO: remove column#}
                 <td>{{ registration.created|date('Y-m-d H:i') }}</td>
             </tr>
             <tr>

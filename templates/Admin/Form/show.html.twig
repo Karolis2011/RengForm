@@ -35,17 +35,10 @@
                     <a class="nav-link active" data-toggle="tab" href="#tab_2" role="tab" aria-controls="tab_2"
                        aria-selected="false">{% trans %}Preview{% endtrans %}</a>
                 </li>
-                <li class="nav-item">{#TODO: remove#}
-                    <a class="nav-link" data-toggle="tab" href="#tab_1" role="tab" aria-controls="tab_1"
-                       aria-selected="true">Configuration</a>
-                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab_2" role="tabpanel" aria-labelledby="tab_2" style="pointer-events: none;">
                     {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': formConfig.configParsed })) }}
-                </div>
-                <div class="tab-pane fade" id="tab_1" role="tabpanel" aria-labelledby="tab_1">{#TODO: remove#}
-                    {{ formConfig.config }}
                 </div>
             </div>
         </div>

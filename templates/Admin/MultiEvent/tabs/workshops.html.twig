@@ -2,7 +2,6 @@
     <table class="table table-bordered table-striped table-sm">
         <thead>
         <tr>
-            <th>ID</th>{#TODO: remove column#}
             <th>{% trans %}Title{% endtrans %}</th>
             <th>{% trans %}Category{% endtrans %}</th>
             <th>{% trans %}Duration{% endtrans %}</th>
@@ -13,7 +12,6 @@
         {% for workshop in workshops %}
             <tr class="expandable-row" data-toggle="collapse" data-target="#collapse_{{ workshop.id }}"
                 aria-expanded="false" aria-controls="collapseExample">
-                <td>{{ workshop.id }}</td>{#TODO: remove column#}
                 <td>{{ workshop.title }}</td>
                 <td>{{ workshop.category.title }}</td>
                 <td>{{ workshop.duration|date('H:i') }}</td>
