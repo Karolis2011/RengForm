@@ -434,6 +434,32 @@ class SelectFieldTest extends TestCase
             ],
         ];
 
+        //case #17
+        $cases[] = [
+            new FormField([
+                'type'     => 'select',
+                'name'     => 'txt',
+                'label'    => 'Test',
+                'required' => true,
+                'values'   => [
+                    [
+                        'label' => 'A',
+                        'value' => 'a',
+                    ],
+                    [
+                        'label' => 'B',
+                        'value' => 'b',
+                    ],
+                ],
+            ]),
+            [
+                'txt' => [],
+            ],
+            [
+                'Test is required',
+            ],
+        ];
+
         return $cases;
     }
 

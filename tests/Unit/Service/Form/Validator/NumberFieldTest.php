@@ -124,7 +124,7 @@ class NumberFieldTest extends TestCase
                 'max'   => '20',
             ]),
             [
-                'txt' => 10
+                'txt' => 10,
             ],
             [],
         ];
@@ -139,7 +139,7 @@ class NumberFieldTest extends TestCase
                 'max'   => '20',
             ]),
             [
-                'txt' => 20
+                'txt' => 20,
             ],
             [],
         ];
@@ -154,10 +154,10 @@ class NumberFieldTest extends TestCase
                 'max'   => '20',
             ]),
             [
-                'txt' => 9
+                'txt' => 9,
             ],
             [
-                'Test can not be lower than 10'
+                'Test can not be lower than 10',
             ],
         ];
 
@@ -171,10 +171,25 @@ class NumberFieldTest extends TestCase
                 'max'   => '20',
             ]),
             [
-                'txt' => 21
+                'txt' => 21,
             ],
             [
-                'Test can not be higher than 20'
+                'Test can not be higher than 20',
+            ],
+        ];
+
+        //case #11
+        $cases[] = [
+            new FormField([
+                'type'  => 'number',
+                'name'  => 'txt',
+                'label' => 'Test',
+            ]),
+            [
+                'txt' => 'asdf',
+            ],
+            [
+                'Test must be a number',
             ],
         ];
 

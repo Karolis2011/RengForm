@@ -5,6 +5,8 @@ namespace App\Tests\Functional\Service\Form;
 use App\Entity\Event;
 use App\Entity\EventTime;
 use App\Entity\FormConfig;
+use App\Entity\Workshop;
+use App\Entity\WorkshopTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -224,7 +226,30 @@ class FormValidatorTest extends WebTestCase
             false,
         ];
 
+        //case #4
+        $cases[] = [
+            [
+                [
+                    'type'     => 'texasdt',
+                    'name'     => 'txt',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+            ],
+            [
+                'txt' => 'a',
+            ],
+            false,
+        ];
+
         return $cases;
+    }
+
+    public function testValidateFail()
+    {
+        $validator = $this->createClient()->getContainer()->get('test.form_validator');
+        $result = $validator->validate(new FormConfig(), ['a']);
+        $this->assertEquals(false, $result);
     }
 
     /**
@@ -239,6 +264,10 @@ class FormValidatorTest extends WebTestCase
         $validator = $this->createClient()->getContainer()->get('test.form_validator');
         $event = $this->getEvent($formConfig);
         $result = $validator->validate($event, $formData);
+        $this->assertEquals($expected, $result);
+
+        $workshop = $this->getWorkshop($formConfig);
+        $result = $validator->validate($workshop, $formData);
         $this->assertEquals($expected, $result);
     }
 
@@ -256,6 +285,24 @@ class FormValidatorTest extends WebTestCase
 
         $eventTime = new EventTime();
         $eventTime->setEvent($event);
+
+        return $eventTime;
+    }
+
+    /**
+     * @param array $formConfig
+     * @return WorkshopTime
+     */
+    private function getWorkshop(array $formConfig): WorkshopTime
+    {
+        $form = new FormConfig();
+        $form->setConfig(json_encode($formConfig));
+
+        $workshop = new Workshop();
+        $workshop->setFormConfig($form);
+
+        $eventTime = new WorkshopTime();
+        $eventTime->setWorkshop($workshop);
 
         return $eventTime;
     }

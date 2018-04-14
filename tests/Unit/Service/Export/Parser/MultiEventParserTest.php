@@ -164,8 +164,12 @@ class MultiEventParserTest extends TestCase
                 [
                     'created' => '2017-12-20 12:34',
                     'data'    => [
-                        'name' => 'Aaa',
-                        'age'  => '12',
+                        'name'   => 'Aaa',
+                        'age'    => '12',
+                        'select' => [
+                            'aa',
+                            'bb',
+                        ],
                     ],
                 ],
             ]
@@ -181,6 +185,11 @@ class MultiEventParserTest extends TestCase
                 'type'  => 'number',
                 'label' => 'Age',
                 'name'  => 'age',
+            ],
+            [
+                'type'  => 'select',
+                'label' => 'Select',
+                'name'  => 'select',
             ],
         ]));
         $workshop->setFormConfig($config);
@@ -208,11 +217,13 @@ class MultiEventParserTest extends TestCase
                     'Registration Date',
                     'Name',
                     'Age',
+                    'Select',
                 ],
                 [
                     '2017-12-20 12:34',
                     'Aaa',
                     '12',
+                    'aa, bb',
                 ],
             ],
         ];

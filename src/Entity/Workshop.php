@@ -160,7 +160,7 @@ class Workshop
      * @param \DateTimeInterface $duration
      * @return Workshop
      */
-    public function setDuration(\DateTimeInterface $duration): self
+    public function setDuration($duration): self
     {
         $this->duration = $duration;
 

@@ -75,8 +75,12 @@ class EventParserTest extends TestCase
                 [
                     'created' => '2017-12-20 12:24',
                     'data'    => [
-                        'name' => 'Aaa',
-                        'age'  => '12',
+                        'name'   => 'Aaa',
+                        'age'    => '12',
+                        'select' => [
+                            'aa',
+                            'bb',
+                        ],
                     ],
                 ],
             ]
@@ -94,6 +98,11 @@ class EventParserTest extends TestCase
                 'label' => 'Age',
                 'name'  => 'age',
             ],
+            [
+                'type'  => 'select',
+                'label' => 'Select',
+                'name'  => 'select',
+            ],
         ]));
         $event->setFormConfig($config);
 
@@ -110,11 +119,13 @@ class EventParserTest extends TestCase
                     'Registration Date',
                     'Name',
                     'Age',
+                    'Select',
                 ],
                 [
                     '2017-12-20 12:24',
                     'Aaa',
                     '12',
+                    'aa, bb',
                 ],
             ],
         ];

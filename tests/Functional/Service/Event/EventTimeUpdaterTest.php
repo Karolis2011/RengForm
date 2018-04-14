@@ -11,39 +11,10 @@ use App\Entity\Registration;
 use App\Entity\Workshop;
 use App\Entity\WorkshopTime;
 use App\Form\Model\EventTimeModel;
-use Doctrine\DBAL\Connection;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\SchemaTool;
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use App\Tests\TestCases\DatabaseTestCase;
 
-class EventTimeUpdaterTest extends WebTestCase
+class EventTimeUpdaterTest extends DatabaseTestCase
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
-     * @var Client
-     */
-    private $client;
-
-    /**
-     * @var array
-     */
-    private $classes = [
-        MultiEvent::class,
-        Event::class,
-        EventTime::class,
-        Workshop::class,
-        WorkshopTime::class,
-        FormConfig::class,
-        Registration::class,
-        Category::class,
-    ];
-
     public function testUpdateFail()
     {
         $updater = $this->getContainer()->get('test.event_time_updater');
@@ -63,9 +34,10 @@ class EventTimeUpdaterTest extends WebTestCase
         $updater = $this->getContainer()->get('test.event_time_updater');
 
         $event = $this->getEntityManager()->getRepository(Event::class)->find('09606e22-3851-11e8-9074-080027c702a7');
+        $eventTime = $this->getEntityManager()->getRepository(EventTime::class)
+            ->find('367c42c6-3863-11e8-9074-080027c702a7');
         $newTimes = [];
-        $newTimes[0] = new EventTimeModel();
-        $newTimes[0]->setId('367c42c6-3863-11e8-9074-080027c702a7');
+        $newTimes[0] = new EventTimeModel($eventTime);
         $newTimes[0]->setStartTime(new \DateTime('2018-01-01 10:00'));
         $newTimes[1] = new EventTimeModel();
         $newTimes[1]->setStartTime(new \DateTime('2017-01-01 10:00'));
@@ -114,93 +86,29 @@ class EventTimeUpdaterTest extends WebTestCase
     }
 
     /**
-     * @inheritdoc
-     * @throws \Doctrine\ORM\Tools\ToolsException
-     * @throws \Doctrine\DBAL\DBALException
+     * @return array
      */
-    protected function setUp()
+    protected function getClasses(): array
     {
-        $this->createSchema();
-        $this->importFixtures();
+        $classes = [
+            MultiEvent::class,
+            Event::class,
+            EventTime::class,
+            Workshop::class,
+            WorkshopTime::class,
+            FormConfig::class,
+            Registration::class,
+            Category::class,
+        ];
+
+        return $classes;
     }
 
     /**
-     * Import fixtures to database
-     * @throws \Doctrine\DBAL\DBALException
+     * @return string
      */
-    private function importFixtures()
+    protected function getPathToFixture(): string
     {
-        $fixture = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'fixtures/event_time_updater_test_data.sql');
-        $fixtures = preg_split('/\n\n/', $fixture);
-        /** @var Connection $connection */
-        $connection = $this->getConnection();
-        foreach ($fixtures as $fixture) {
-            if (!empty($fixture)) {
-                $connection->executeQuery($fixture);
-            }
-        }
-    }
-
-    /**
-     * Create database schema
-     * @throws \Doctrine\ORM\Tools\ToolsException
-     */
-    private function createSchema()
-    {
-        $entityManager = $this->getEntityManager();
-        $schemaTool = new SchemaTool($entityManager);
-        $classes = [];
-
-        foreach ($this->classes as $class) {
-            $classes[] = $entityManager->getClassMetadata($class);
-        }
-
-        foreach ($classes as &$class) {
-            if (isset($class->table['indexes'])) {
-                unset($class->table['indexes']);
-            }
-        }
-
-        $schemaTool->createSchema($classes);
-    }
-
-    /**
-     * @return EntityManager
-     */
-    private function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine')->getManager();
-    }
-
-    /**
-     * @return Connection
-     */
-    private function getConnection()
-    {
-        return $this->getContainer()->get('doctrine')->getConnection();
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    private function getContainer()
-    {
-        if (is_null($this->container)) {
-            $this->container = $this->getClient()->getContainer();
-        }
-
-        return $this->container;
-    }
-
-    /**
-     * @return Client
-     */
-    private function getClient()
-    {
-        if (is_null($this->client)) {
-            $this->client = static::createClient(['debug' => false]);
-        }
-
-        return $this->client;
+        return __DIR__ . DIRECTORY_SEPARATOR . 'fixtures/event_time_updater_test_data.sql';
     }
 }
