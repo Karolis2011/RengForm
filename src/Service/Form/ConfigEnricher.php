@@ -18,9 +18,8 @@ class ConfigEnricher
 
     /**
      * @param FormConfig $formConfig
-     * @return FormConfig
      */
-    public function enrich(FormConfig $formConfig): FormConfig
+    public function enrich(FormConfig $formConfig): void
     {
         $config = $formConfig->getConfigParsed();
         $names = [];
@@ -53,7 +52,5 @@ class ConfigEnricher
         }
 
         $formConfig->setConfig(json_encode($config));
-
-        return $formConfig;
     }
 }
