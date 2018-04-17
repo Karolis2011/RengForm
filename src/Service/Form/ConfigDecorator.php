@@ -5,9 +5,9 @@ namespace App\Service\Form;
 use App\Entity\FormConfig;
 
 /**
- * Class ConfigEnricher
+ * Class ConfigDecorator
  */
-class ConfigEnricher
+class ConfigDecorator
 {
     const TYPE = 'type';
     const LABEL = 'label';
@@ -19,7 +19,7 @@ class ConfigEnricher
     /**
      * @param FormConfig $formConfig
      */
-    public function enrich(FormConfig $formConfig): void
+    public function decorate(FormConfig $formConfig): void
     {
         $config = $formConfig->getConfigParsed();
         $names = [];

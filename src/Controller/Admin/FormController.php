@@ -7,7 +7,7 @@ use App\Entity\FormConfig;
 use App\Entity\Workshop;
 use App\Form\FormConfigType;
 use App\Repository\FormConfigRepository;
-use App\Service\Form\ConfigEnricher;
+use App\Service\Form\ConfigDecorator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,18 +70,18 @@ class FormController extends Controller
     }
 
     /**
-     * @param Request        $request
-     * @param ConfigEnricher $enricher
+     * @param Request         $request
+     * @param ConfigDecorator $decorator
      * @return RedirectResponse|Response
      */
-    public function create(Request $request, ConfigEnricher $enricher)
+    public function create(Request $request, ConfigDecorator $decorator)
     {
         $formConfig = new FormConfig();
         $form = $this->createForm(FormConfigType::class, $formConfig);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $enricher->enrich($formConfig);
+            $decorator->decorate($formConfig);
             $formConfig->setOwner($this->getUser());
             $this->repository->save($formConfig);
 
@@ -103,12 +103,12 @@ class FormController extends Controller
     }
 
     /**
-     * @param Request        $request
-     * @param ConfigEnricher $enricher
+     * @param Request         $request
+     * @param ConfigDecorator $decorator
      * @param                $formId
      * @return RedirectResponse|Response
      */
-    public function edit(Request $request, ConfigEnricher $enricher, $formId)
+    public function edit(Request $request, ConfigDecorator $decorator, $formId)
     {
         $formConfig = $this->repository->find($formId);
 
@@ -120,7 +120,7 @@ class FormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $enricher->enrich($formConfig);
+            $decorator->decorate($formConfig);
             $this->repository->update($formConfig);
 
             return $this->redirectToRoute(

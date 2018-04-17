@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Service\Form;
 
 use App\Entity\FormConfig;
-use App\Service\Form\ConfigEnricher;
+use App\Service\Form\ConfigDecorator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -71,10 +71,10 @@ class ConfigEnricherTest extends TestCase
      */
     public function testEnrich(array $config, array $expected)
     {
-        $enricher = new ConfigEnricher();
+        $enricher = new ConfigDecorator();
         $formConfig = new FormConfig();
         $formConfig->setConfig(json_encode($config));
-        $enricher->enrich($formConfig);
+        $enricher->decorate($formConfig);
 
         $this->assertEquals($expected, $formConfig->getConfigParsed());
     }

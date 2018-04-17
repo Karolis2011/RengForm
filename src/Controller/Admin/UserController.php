@@ -36,7 +36,7 @@ class UserController extends Controller
         $user = $this->getUser();
 
         if (empty($request->get('email'))) {
-            $this->addFlash('danger', 'No new emal entered!');
+            $this->addFlash('danger', 'No new email entered!');
         } elseif ($request->get('email') == $user->getEmail()) {
             $this->addFlash('danger', 'New email is same as old one!');
         } else {
