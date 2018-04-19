@@ -1,10 +1,12 @@
 {% extends 'Security/base.html.twig' %}
+{% import 'Admin/macros.html.twig' as macros %}
 
 {% block title %}{% trans %}Registration{% endtrans %}{% endblock %}
 
 {% block body %}
     {{ form_start(form, {'attr': {'class': 'form-signin' }}) }}
     <h1 class="h3 mb-3 font-weight-normal">{% trans %}Register{% endtrans %}</h1>
+    {{ macros.display_form_errors(form) }}
     {{ form_row(form._token) }}
     {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'Username'}}) }}
     {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Email'}}) }}

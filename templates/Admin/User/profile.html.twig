@@ -15,7 +15,7 @@
                 </div>
                 <form action="{{ path('change_email') }}" method="post">
                     <div class="modal-body">
-                        <input type="email" name="email" class="form-control" placeholder="your@email.com">
+                        <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">
@@ -43,13 +43,13 @@
                     <div class="modal-body">
                         <label for="old-password">{% trans %}Old Password{% endtrans %}</label>
                         <input type="password" id="old-password" name="old-password" class="form-control"
-                               placeholder="{% trans %}password{% endtrans %}">
+                               placeholder="{% trans %}password{% endtrans %}" required>
                         <label for="new-password">{% trans %}New Password{% endtrans %}</label>
                         <input type="password" id="new-password" name="new-password" class="form-control"
-                               placeholder="{% trans %}password{% endtrans %}">
+                               placeholder="{% trans %}password{% endtrans %}" required>
                         <label for="new-password-2">{% trans %}Repeat New Password{% endtrans %}</label>
                         <input type="password" id="new-password-2" name="new-password-2" class="form-control"
-                               placeholder="{% trans %}password{% endtrans %}">
+                               placeholder="{% trans %}password{% endtrans %}" required>
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">

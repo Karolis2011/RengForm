@@ -2,11 +2,11 @@
     {% for error in form.vars.errors.form.getErrors(true) %}
         <div class="alert alert-danger">
             {% if error.origin.config.label is defined and error.origin.config.label is not null %}
-                {{ error.origin.config.label|trans|capitalize }}
+                {{ error.origin.config.label|capitalize|trans }}
             {% else %}
-                {{ error.origin.config.name|trans|capitalize }}
+                {{ error.origin.config.name|capitalize|trans }}
             {% endif %}
-            - {{ error.message|trans|capitalize }}
+            - {{ error.message|capitalize }}
         </div>
     {% endfor %}
 {% endmacro %}

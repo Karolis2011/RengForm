@@ -79,7 +79,7 @@ Create Multi Event: Sukurti Multi-Renginį
 Delete: Ištrinti
 Change Email: Keisti El. Paštą
 Close: Uždaryti
-Change Password: Kaisti Slaptažodį
+Change Password: Keisti Slaptažodį
 Old Password: Senas Slaptažodis
 New Password: Naujas Slaptažodis
 Repeat New Password: Pakartoti Naują Slaptažodį
@@ -91,3 +91,12 @@ Update Time: Redaguoti Laikus
 Update Event Times: Redaguoti Renginio Laikus
 Update Workshop Times: Redaguoti Užsiėmimo Laikus
 Index: Pradžia
+Email changed!: El. pašto adresas pakeistas!
+Config: Formos šablonas
+No new email entered!: Neįvestas naujas el. pašto adresas!
+New email is same as old one!: Naujas el. pašto adresas toks pat kaip senas!
+Old password does not match!: Neteisingas senas slaptažodis!
+No new password entered!: Neįvestas naujas slaptažodis!
+New password does not match!: Naujas slaptažodis nesutampa!
+New password is same as old one!: Naujas slaptažodis toks pat kaip senas!
+Password changed!: Slaptažodis pakeistas!

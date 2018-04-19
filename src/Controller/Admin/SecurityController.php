@@ -80,7 +80,7 @@ class SecurityController extends Controller
     public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         if (!$passwordEncoder->isPasswordValid($this->getUser(), $request->get('old-password'))) {
-            $this->addFlash('danger', 'Old username does not match!');
+            $this->addFlash('danger', 'Old password does not match!');
         } elseif (empty($request->get('new-password'))) {
             $this->addFlash('danger', 'No new password entered!');
         } elseif ($request->get('new-password') != $request->get('new-password-2')) {
