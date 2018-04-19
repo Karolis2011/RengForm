@@ -98,6 +98,7 @@ class FormController extends Controller
             [
                 'form'       => $form->createView(),
                 'formConfig' => $formConfig,
+                'locale'     => $request->getLocale(),
             ]
         );
     }
@@ -105,7 +106,7 @@ class FormController extends Controller
     /**
      * @param Request         $request
      * @param ConfigDecorator $decorator
-     * @param                $formId
+     * @param                 $formId
      * @return RedirectResponse|Response
      */
     public function edit(Request $request, ConfigDecorator $decorator, $formId)
@@ -136,6 +137,7 @@ class FormController extends Controller
             [
                 'form'       => $form->createView(),
                 'formConfig' => $formConfig,
+                'locale'     => $request->getLocale(),
             ]
         );
     }
