@@ -5,3 +5,4 @@ services:
     test.form_validator: '@App\Service\Form\FormValidator'
     test.url_generator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
     test.event_time_updater: '@App\Service\Event\EventTimeUpdater'
+    test.form_controller: '@App\Controller\Event\FormController'

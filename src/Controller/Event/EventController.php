@@ -5,9 +5,7 @@ namespace App\Controller\Event;
 use App\Entity\Event;
 use App\Entity\MultiEvent;
 use App\Repository\EventRepository;
-use App\Repository\EventTimeRepository;
 use App\Repository\MultiEventRepository;
-use App\Repository\RegistrationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -28,32 +26,16 @@ class EventController extends Controller
     private $eventRepository;
 
     /**
-     * @var EventTimeRepository
-     */
-    private $eventTimeRepository;
-
-    /**
-     * @var RegistrationRepository
-     */
-    private $registrationRepository;
-
-    /**
      * EventController constructor.
      * @param MultiEventRepository $multiEventRepository
      * @param EventRepository $eventRepository
-     * @param EventTimeRepository $eventTimeRepository
-     * @param RegistrationRepository $registrationRepository
      */
     public function __construct(
         MultiEventRepository $multiEventRepository,
-        EventRepository $eventRepository,
-        EventTimeRepository $eventTimeRepository,
-        RegistrationRepository $registrationRepository
+        EventRepository $eventRepository
     ) {
         $this->multiEventRepository = $multiEventRepository;
         $this->eventRepository = $eventRepository;
-        $this->eventTimeRepository = $eventTimeRepository;
-        $this->registrationRepository = $registrationRepository;
     }
 
     /**

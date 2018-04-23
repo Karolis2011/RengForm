@@ -49,10 +49,17 @@ class FormValidator
 
         try {
             $form = $this->getFormConfig($time);
-
+            $formFields = [];
             foreach ($form->getFields() as $field) {
+                $formFields[] = $field->getName();
                 $validator = $this->getValidator($field->getType());
                 $errors = array_merge($errors, $validator->validate($field, $formData));
+            }
+
+            foreach (array_keys($formData) as $fieldName) {
+                if (!in_array($fieldName, $formFields)) {
+                    $errors[] = sprintf("Field %s is not in the form", $fieldName);
+                }
             }
         } catch (\Exception $exception) {
             $this->logger->error($exception->getMessage());

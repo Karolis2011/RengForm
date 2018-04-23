@@ -242,6 +242,23 @@ class FormValidatorTest extends WebTestCase
             false,
         ];
 
+        //case #5
+        $cases[] = [
+            [
+                [
+                    'type'     => 'text',
+                    'name'     => 'txt',
+                    'label'    => 'Test',
+                    'required' => true,
+                ],
+            ],
+            [
+                'txt' => 'a',
+                'txt2' => 'a',
+            ],
+            false,
+        ];
+
         return $cases;
     }
 
