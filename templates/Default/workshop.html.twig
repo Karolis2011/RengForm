@@ -50,11 +50,7 @@
     </div>
 
     <footer class="my-5 pt-5 text-muted text-center text-small">
-        <p class="mb-1">&copy; 2018 RengForm</p>
         <ul class="list-inline">
-            <li class="list-inline-item"><a href="#">{% trans %}Privacy{% endtrans %}</a></li>
-            <li class="list-inline-item"><a href="#">{% trans %}Terms{% endtrans %}</a></li>
-            <li class="list-inline-item"><a href="#">{% trans %}Support{% endtrans %}</a></li>
             <li class="list-inline-item">
                 <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
                     <span class="flag-icon flag-icon-gb"></span>
