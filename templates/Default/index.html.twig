@@ -11,43 +11,40 @@
     <link rel="icon" href="{{ asset('/img/favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('style/css/custom/cover.css') }}">
 </head>
 
-<body class="text-center">
-
-<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-    <header class="masthead mb-auto">
-        <div class="inner">
-            <h3 class="masthead-brand">RengForm</h3>
-            <nav class="nav nav-masthead justify-content-center">
-                <a class="nav-link active" href="{{ path('index') }}">{% trans %}Home{% endtrans %}</a>
-                <a class="nav-link" href="{{ path('login') }}">{% trans %}Login{% endtrans %}</a>
-                <a class="nav-link" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>
-                <a class="nav-link" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
-                    <span class="flag-icon flag-icon-gb"></span>
+<body class="bg-light">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1">RengForm</span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link active" href="{{ path('index') }}">{% trans %}Home{% endtrans %}</a>
+            <a class="nav-item nav-link" href="{{ path('login') }}">{% trans %}Login{% endtrans %}</a>
+            <a class="nav-item nav-link" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% trans %}Language{% endtrans %}
                 </a>
-                <a class="nav-link" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
-                    <span class="flag-icon flag-icon-lt"></span>
-                </a>
-            </nav>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="min-width: 0">
+                    <a class="dropdown-item" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
+                        <span class="flag-icon flag-icon-gb"></span><span class="d-md-none"> {% trans %}English{% endtrans %}</span>
+                    </a>
+                    <a class="dropdown-item" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
+                        <span class="flag-icon flag-icon-lt"></span><span class="d-md-none"> {% trans %}Lithuanian{% endtrans %}</span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </header>
+    </div>
+</nav>
 
-    <main role="main" class="inner cover">
-        <h1 class="cover-heading">RengForm</h1>
-        <h2 class="cover-heading">{% trans %}Registrations management system{% endtrans %}</h2>
-        <p class="lead">RengForm is a registrations management system build specifically for events with multiple sub-events, lectures or workshops that all require separate registration. To cope with thet we build a system that allows you to build one or several registration forms and reuse them for all sub-events and even share them between events.</p>
-        <p class="lead">
-            <a href="#" class="btn btn-lg btn-secondary">{% trans %}Learn more{% endtrans %}</a>
-        </p>
-    </main>
-
-    <footer class="mastfoot mt-auto">
-        <div class="inner">
-            <p>Cover template for <a href="https://getbootstrap.com/">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-        </div>
-    </footer>
+<div class="container text-center">
+    <h1 class="cover-heading mt-5">RengForm</h1>
+    <h2 class="cover-heading">{% trans %}Registrations management system{% endtrans %}</h2>
+    <p class="lead">RengForm is a registrations management system build specifically for events with multiple sub-events, lectures or workshops that all require separate registration. To cope with thet we build a system that allows you to build one or several registration forms and reuse them for all sub-events and even share them between events.</p>
 </div>
 
 <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
