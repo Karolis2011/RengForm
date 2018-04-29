@@ -24,9 +24,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ml-auto">
-            <a class="nav-item nav-link active" href="{{ path('index') }}">{% trans %}Home{% endtrans %}</a>
-            <a class="nav-item nav-link" href="{{ path('login') }}">{% trans %}Login{% endtrans %}</a>
-            <a class="nav-item nav-link" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>
+            {{ render(controller('App\\Controller\\Admin\\ThemeController::menu', {'view': 'user'})) }}
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% trans %}Language{% endtrans %}

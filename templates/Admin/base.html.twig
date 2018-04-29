@@ -13,65 +13,53 @@
         <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('style/css/custom/dashboard.css') }}">
     {% endblock %}
 </head>
 
-<body>
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap navbar-expand-sm p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{ path('index') }}">RengForm</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<body class="bg-light" style="height: 100%">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1">RengForm</span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-sm-auto px-3">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown"
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav ml-auto">
+            {{ render(controller('App\\Controller\\Admin\\ThemeController::menu', {'view': 'admin'})) }}
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     {% trans %}Language{% endtrans %}
                 </a>
-                <div class="dropdown-menu" aria-labelledby="languageDropdown" style="min-width: 0">
-                    <a class="dropdown-item" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
-                        <span class="flag-icon flag-icon-gb"></span>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="min-width: 0">
+                    <a class="dropdown-item"
+                       href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
+                        <span class="flag-icon flag-icon-gb"></span><span
+                                class="d-md-none"> {% trans %}English{% endtrans %}</span>
                     </a>
-                    <a class="dropdown-item" href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
-                        <span class="flag-icon flag-icon-lt"></span>
+                    <a class="dropdown-item"
+                       href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
+                        <span class="flag-icon flag-icon-lt"></span><span
+                                class="d-md-none"> {% trans %}Lithuanian{% endtrans %}</span>
                     </a>
                 </div>
-            </li>
-            <li class="nav-item text-nowrap">
-                <a class="nav-link" href="{{ path('user_profile') }}">{% trans %}Profile{% endtrans %}</a>
-            </li>
-            <li class="nav-item text-nowrap">
-                <a class="nav-link" href="{{ path('logout') }}">{% trans %}Sign out{% endtrans %}</a>
-            </li>
-        </ul>
+            </div>
+            <a class="nav-item nav-link" href="{{ path('logout') }}">{% trans %}Sign out{% endtrans %}</a>
+        </div>
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-            <div class="sidebar-sticky">
-                {{ render(controller('App\\Controller\\Admin\\ThemeController::menu', {'view': 'admin'})) }}
+<div class="container mt-2">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}" role="alert">
+                {{ message|trans }}
             </div>
-        </nav>
+        {% endfor %}
+    {% endfor %}
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-
-            {% for label, messages in app.flashes %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ label }}" role="alert">
-                        {{ message|trans }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-
-            {% block body %}
-            {% endblock %}
-        </main>
-    </div>
+    {% block body %}
+    {% endblock %}
 </div>
 
 {% block javascripts %}

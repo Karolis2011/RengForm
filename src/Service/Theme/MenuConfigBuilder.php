@@ -32,7 +32,9 @@ class MenuConfigBuilder
         $route = $this->requestStack->getMasterRequest()->get('_route');
 
         foreach ($config as $name => $item) {
-            if ($item['route'] == $route || in_array($route, $item['child_routes'])) {
+            if ($item['route'] == $route
+                || (isset($item['child_routes']) && in_array($route, $item['child_routes']))
+            ) {
                 $config[$name]['active'] = true;
                 break;
             }

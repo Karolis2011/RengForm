@@ -8,7 +8,6 @@ parameters:
     menu_config.admin:
         events:
             title: Events
-            icon: fa fa-link
             route: event_index
             child_routes:
                 - event_create
@@ -27,18 +26,23 @@ parameters:
                 - workshop_update_times
         forms:
             title: Forms
-            icon: fa fa-link
             route: form_index
             child_routes:
                 - form_create
                 - form_show
                 - form_update
+        profile:
+            title: Profile
+            route: user_profile
     menu_config.user:
         index:
+            title: Home
             route: index
         login:
+            title: Login
             route: login
         register:
+            title: Register
             route: register
 
 services:
