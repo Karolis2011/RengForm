@@ -54,7 +54,7 @@
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
-                {{ render(controller('App\\Controller\\Admin\\ThemeController::menu')) }}
+                {{ render(controller('App\\Controller\\Admin\\ThemeController::menu', {'view': 'admin'})) }}
             </div>
         </nav>
 

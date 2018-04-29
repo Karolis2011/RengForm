@@ -10,43 +10,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class MenuConfigBuilder
 {
     /**
-     * @var array
-     */
-    private $config = [
-        'events' => [
-            'title'        => 'Events',
-            'icon'         => 'fa fa-link',
-            'route'        => 'event_index',
-            'child_routes' => [
-                'event_create',
-                'event_create_multi',
-                'event_show',
-                'event_delete',
-                'event_update_multi',
-                'event_save_category_order',
-                'event_times_update',
-                'workshop_create',
-                'event_update',
-                'category_create',
-                'category_update',
-                'workshop_update',
-                'workshop_registrations',
-                'workshop_update_times',
-            ],
-        ],
-        'forms'  => [
-            'title'        => 'Forms',
-            'icon'         => 'fa fa-link',
-            'route'        => 'form_index',
-            'child_routes' => [
-                'form_create',
-                'form_show',
-                'form_update',
-            ],
-        ],
-    ];
-
-    /**
      * @var RequestStack
      */
     private $requestStack;
@@ -61,11 +24,11 @@ class MenuConfigBuilder
     }
 
     /**
+     * @param array $config
      * @return array
      */
-    public function build()
+    public function build(array $config)
     {
-        $config = $this->config;
         $route = $this->requestStack->getMasterRequest()->get('_route');
 
         foreach ($config as $name => $item) {

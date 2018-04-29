@@ -5,6 +5,41 @@ parameters:
     locales:
         - en
         - lt
+    menu_config.admin:
+        events:
+            title: Events
+            icon: fa fa-link
+            route: event_index
+            child_routes:
+                - event_create
+                - event_create_multi
+                - event_show
+                - event_delete
+                - event_update_multi
+                - event_save_category_order
+                - event_times_update
+                - workshop_create
+                - event_update
+                - category_create
+                - category_update
+                - workshop_update
+                - workshop_registrations
+                - workshop_update_times
+        forms:
+            title: Forms
+            icon: fa fa-link
+            route: form_index
+            child_routes:
+                - form_create
+                - form_show
+                - form_update
+    menu_config.user:
+        index:
+            route: index
+        login:
+            route: login
+        register:
+            route: register
 
 services:
     # default configuration for services in *this* file

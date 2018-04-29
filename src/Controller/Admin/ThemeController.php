@@ -13,14 +13,17 @@ class ThemeController extends Controller
 {
     /**
      * @param MenuConfigBuilder $builder
+     * @param                   $view
      * @return Response
      */
-    public function menu(MenuConfigBuilder $builder)
+    public function menu(MenuConfigBuilder $builder, $view)
     {
+        $menuConfig = $this->getParameter('menu_config.' . $view);
+
         return $this->render(
             'Admin/Theme/menu.html.twig',
             [
-                'config' => $builder->build(),
+                'config' => $builder->build($menuConfig),
             ]
         );
     }

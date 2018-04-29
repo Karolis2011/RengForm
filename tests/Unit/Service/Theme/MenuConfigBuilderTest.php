@@ -14,8 +14,27 @@ class MenuConfigBuilderTest extends TestCase
 {
     public function testBuild()
     {
+        $config = [
+            'events' => [
+                'route'        => 'event_index',
+                'child_routes' => [
+                    'event_create',
+                    'event_update_multi',
+                    'event_update',
+                ],
+            ],
+            'forms'  => [
+                'route'        => 'form_index',
+                'child_routes' => [
+                    'form_create',
+                    'form_show',
+                    'form_update',
+                ],
+            ],
+        ];
+
         $builder = $this->getBuilder();
-        $config = $builder->build();
+        $config = $builder->build($config);
         $this->assertTrue($config['forms']['active'] ?? false);
         $this->assertFalse($config['events']['active'] ?? false);
     }
