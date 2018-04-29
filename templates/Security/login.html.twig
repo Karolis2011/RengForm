@@ -1,24 +1,33 @@
-{% extends 'Security/base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}{% trans %}Log in{% endtrans %}{% endblock %}
 
 {% block body %}
-    <form class="form-signin" action="{{ path('login') }}" method="post">
-        <h1 class="h3 mb-3 font-weight-normal">{% trans %}Please sign in{% endtrans %}</h1>
-        {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-        <label for="inputUsername" class="sr-only">{% trans %}Username{% endtrans %}</label>
-        <input type="text" id="inputUsername" class="form-control" value="{{ last_username }}" name="_username"
-               placeholder="{% trans %}Username{% endtrans %}" required autofocus>
-        <label for="inputPassword" class="sr-only">{% trans %}Password{% endtrans %}</label>
-        <input type="password" id="inputPassword" class="form-control" name="_password"
-               placeholder="{% trans %}Password{% endtrans %}" required>
-        <label>
-            <input type="checkbox" id="remember_me" value="_remember_me"> {% trans %}Remember me{% endtrans %}
-        </label>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans %}Sign in{% endtrans %}</button>
-        <a class="btn btn-secondary btn-block" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>
-        <a class="btn btn-secondary btn-block" href="#">{% trans %}I forgot my password{% endtrans %}</a>
-    </form>
+    <div class="container text-center">
+        <div class="row justify-content-center mt-5">
+            <div class="col-sm-10 col-md-7 col-lg-5 col-xl-4">
+                <form action="{{ path('login') }}" method="post">
+                    <h1 class="h3 mb-3 font-weight-normal">{% trans %}Please sign in{% endtrans %}</h1>
+                    {% if error %}
+                        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+                    <input type="text" id="inputUsername" class="form-control" value="{{ last_username }}"
+                           name="_username"
+                           placeholder="{% trans %}Username{% endtrans %}" required autofocus>
+                    <input type="password" id="inputPassword" class="form-control" name="_password"
+                           placeholder="{% trans %}Password{% endtrans %}" required>
+                    <label>
+                        <input type="checkbox" id="remember_me"
+                               value="_remember_me"> {% trans %}Remember me{% endtrans %}
+                    </label>
+                    <div class="mt-1 mb-1">
+                        <button class="btn btn-primary" type="submit">{% trans %}Sign in{% endtrans %}</button>
+                    </div>
+                    <div>
+                        <a class="btn btn-secondary" href="{{ path('register') }}">{% trans %}Register{% endtrans %}</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
