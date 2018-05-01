@@ -13,10 +13,10 @@ class ThemeController extends Controller
 {
     /**
      * @param MenuConfigBuilder $builder
-     * @param                   $view
+     * @param string            $view
      * @return Response
      */
-    public function menu(MenuConfigBuilder $builder, $view)
+    public function menu(MenuConfigBuilder $builder, string $view): Response
     {
         $menuConfig = $this->getParameter('menu_config.' . $view);
 

@@ -4,6 +4,7 @@ namespace App\Controller\Event;
 
 use App\Service\Form\Form;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class FormController
@@ -12,9 +13,9 @@ class FormController extends Controller
 {
     /**
      * @param array $config
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function renderForm($config)
+    public function renderForm(array $config): Response
     {
         $form = new Form($config);
 

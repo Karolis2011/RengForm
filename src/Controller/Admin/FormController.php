@@ -25,12 +25,19 @@ class FormController extends Controller
     private $repository;
 
     /**
+     * @var ConfigDecorator
+     */
+    private $decorator;
+
+    /**
      * FormController constructor.
      * @param FormConfigRepository $repository
+     * @param ConfigDecorator      $decorator
      */
-    public function __construct(FormConfigRepository $repository)
+    public function __construct(FormConfigRepository $repository, ConfigDecorator $decorator)
     {
         $this->repository = $repository;
+        $this->decorator = $decorator;
     }
 
     /**
@@ -71,17 +78,16 @@ class FormController extends Controller
 
     /**
      * @param Request         $request
-     * @param ConfigDecorator $decorator
      * @return RedirectResponse|Response
      */
-    public function create(Request $request, ConfigDecorator $decorator)
+    public function create(Request $request)
     {
         $formConfig = new FormConfig();
         $form = $this->createForm(FormConfigType::class, $formConfig);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $decorator->decorate($formConfig);
+            $this->decorator->decorate($formConfig);
             $formConfig->setOwner($this->getUser());
             $this->repository->save($formConfig);
 
@@ -105,11 +111,10 @@ class FormController extends Controller
 
     /**
      * @param Request         $request
-     * @param ConfigDecorator $decorator
      * @param                 $formId
      * @return RedirectResponse|Response
      */
-    public function edit(Request $request, ConfigDecorator $decorator, $formId)
+    public function edit(Request $request, $formId)
     {
         $formConfig = $this->repository->find($formId);
 
@@ -121,7 +126,7 @@ class FormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $decorator->decorate($formConfig);
+            $this->decorator->decorate($formConfig);
             $this->repository->update($formConfig);
 
             return $this->redirectToRoute(

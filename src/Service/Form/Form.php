@@ -8,7 +8,7 @@ namespace App\Service\Form;
 class Form
 {
     /**
-     * @var array
+     * @var FormField[]
      */
     private $fields = [];
 

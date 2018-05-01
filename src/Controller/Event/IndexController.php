@@ -3,13 +3,14 @@
 namespace App\Controller\Event;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends Controller
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function index()
+    public function index(): Response
     {
         return $this->render('Default/index.html.twig');
     }

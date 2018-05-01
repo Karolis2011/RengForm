@@ -13,10 +13,10 @@ class LanguageController extends Controller
 {
     /**
      * @param LanguageModifier $modifier
-     * @param                  $language
-     * @return string
+     * @param string           $language
+     * @return Response
      */
-    public function changeLanguage(LanguageModifier $modifier, $language)
+    public function changeLanguage(LanguageModifier $modifier, $language): Response
     {
         return new Response($modifier->getUrl($language));
     }
