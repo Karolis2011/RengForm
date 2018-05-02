@@ -30,7 +30,7 @@
         <tbody>
         {% for event in multiEvents %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
-                <td>Multi</td>
+                <td>{% trans %}Multi{% endtrans %}</td>
                 <td>{{ event.title }}</td>
                 <td>-</td>
                 <td>{{ event.description|length > 30 ? event.description|slice(0, 30) ~ '...' : event.description }}</td>
@@ -38,7 +38,7 @@
         {% endfor %}
         {% for event in events %}
             <tr class="clickable-row" data-href="{{ path('event_show', { 'eventId': event.id }) }}">
-                <td>Single</td>
+                <td>{% trans %}Single{% endtrans %}</td>
                 <td>{{ event.title }}</td>
                 <td>{{ event.place }}</td>
                 <td>{{ event.description|length > 30 ? event.description|slice(0, 30) ~ '...' : event.description }}</td>

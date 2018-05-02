@@ -75,7 +75,7 @@ No workshops: Nėra užsiėmimų
 Registrations to: Registracijos į
 Registration Date: Registravimosi data
 Language: Kalba
-Create Multi Event: Sukurti Multi-Renginį
+Create Multi Event: Sukurti Sudėtinį Renginį
 Delete: Ištrinti
 Change Email: Keisti El. Paštą
 Close: Uždaryti
@@ -102,3 +102,5 @@ New password is same as old one!: Naujas slaptažodis toks pat kaip senas!
 Password changed!: Slaptažodis pakeistas!
 English: Anglų
 Lithuanian: Lietuvių
+Multi: Sudėtinis
+Single: Paprastas
