@@ -34,9 +34,9 @@ class ConfigDecorator
 
             if ($name === null) {
                 $rawName = preg_replace(
-                    '/[^a-zA-Z0-9]+/',
+                    '/[^a-z0-9]+/',
                     '-',
-                    strtolower($label)
+                    strtolower($this->removeLithuanianLetters($label))
                 );
                 $name = $rawName;
                 $i = 1;
@@ -52,5 +52,35 @@ class ConfigDecorator
         }
 
         $formConfig->setConfig(json_encode($config));
+    }
+
+    private function removeLithuanianLetters(string $label)
+    {
+        $map = [
+            'ą' => 'a',
+            'č' => 'c',
+            'ę' => 'e',
+            'ė' => 'e',
+            'į' => 'i',
+            'š' => 's',
+            'ų' => 'u',
+            'ū' => 'u',
+            'ž' => 'z',
+            'Ą' => 'A',
+            'Č' => 'C',
+            'Ę' => 'E',
+            'Ė' => 'E',
+            'Į' => 'I',
+            'Š' => 'S',
+            'Ų' => 'U',
+            'Ū' => 'U',
+            'Ž' => 'Z',
+        ];
+
+        foreach ($map as $key => $value) {
+            $label = str_replace($key, $value, $label);
+        }
+
+        return $label;
     }
 }

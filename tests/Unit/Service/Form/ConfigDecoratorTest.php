@@ -7,9 +7,9 @@ use App\Service\Form\ConfigDecorator;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ConfigEnricherTest
+ * Class ConfigDecoratorTest
  */
-class ConfigEnricherTest extends TestCase
+class ConfigDecoratorTest extends TestCase
 {
     /**
      * @return array
@@ -61,6 +61,32 @@ class ConfigEnricherTest extends TestCase
             ],
         ];
 
+        //case #1 - lithuanian letters
+        $cases[] = [
+            [
+                [
+                    'type'  => 'text',
+                    'label' => 'ąčęėįšųūž',
+                ],
+                [
+                    'type'  => 'text',
+                    'label' => 'ĄČĘĖĮŠŲŪŽ',
+                ],
+            ],
+            [
+                [
+                    'type'  => 'text',
+                    'label' => 'ąčęėįšųūž',
+                    'name'  => 'aceeisuuz',
+                ],
+                [
+                    'type'  => 'text',
+                    'label' => 'ĄČĘĖĮŠŲŪŽ',
+                    'name'  => 'aceeisuuz-1',
+                ],
+            ],
+        ];
+
         return $cases;
     }
 
@@ -71,10 +97,10 @@ class ConfigEnricherTest extends TestCase
      */
     public function testEnrich(array $config, array $expected)
     {
-        $enricher = new ConfigDecorator();
+        $decorator = new ConfigDecorator();
         $formConfig = new FormConfig();
         $formConfig->setConfig(json_encode($config));
-        $enricher->decorate($formConfig);
+        $decorator->decorate($formConfig);
 
         $this->assertEquals($expected, $formConfig->getConfigParsed());
     }
