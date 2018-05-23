@@ -5,6 +5,7 @@ namespace App\Tests\Functional\Form;
 use App\Entity\Event;
 use App\Entity\EventTime;
 use App\Entity\FormConfig;
+use App\Entity\User;
 use App\Form\EventCreateType;
 use App\Tests\TestCases\TypeDatabaseTestCase;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -31,7 +32,13 @@ class EventCreateTypeTest extends TypeDatabaseTestCase
 
         $objectToCompare = new Event();
         // $objectToCompare will retrieve data from the form submission; pass it as the second argument
-        $form = $this->factory->create(EventCreateType::class, $objectToCompare);
+        $form = $this->factory->create(
+            EventCreateType::class,
+            $objectToCompare,
+            [
+                'ownerId' => '5f26cf7f-30a0-11e8-90c6-080027c702a7',
+            ]
+        );
 
         $object = new Event();
         $object->setTitle('a');
@@ -71,6 +78,7 @@ class EventCreateTypeTest extends TypeDatabaseTestCase
     {
         $classes = [
             FormConfig::class,
+            User::class
         ];
 
         return $classes;

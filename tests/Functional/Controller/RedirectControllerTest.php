@@ -19,7 +19,7 @@ class RedirectControllerTest extends WebTestCase
 
         //case #0
         $cases[] = [
-            '/en/',
+            '/lt/',
             200,
             null
         ];
@@ -28,33 +28,33 @@ class RedirectControllerTest extends WebTestCase
         $cases[] = [
             '/',
             302,
-            '/en/'
+            '/lt/'
         ];
 
         //case #2
         $cases[] = [
             '',
             302,
-            '/en/'
+            '/lt/'
         ];
 
         //case #3
         $cases[] = [
             '/asdf',
             302,
-            '/en/asdf'
+            '/lt/asdf'
         ];
 
         //case #4
         $cases[] = [
-            '/en/asdf',
+            '/lt/asdf',
             500,
             null
         ];
 
         //case #5
         $cases[] = [
-            '/lt/asdf',
+            '/en/asdf',
             500,
             null
         ];

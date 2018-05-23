@@ -5,6 +5,7 @@ namespace App\Tests\Functional\Form;
 use App\Entity\Category;
 use App\Entity\FormConfig;
 use App\Entity\MultiEvent;
+use App\Entity\User;
 use App\Entity\Workshop;
 use App\Entity\WorkshopTime;
 use App\Form\WorkshopCreateType;
@@ -39,6 +40,7 @@ class WorkshopCreateTypeTest extends TypeDatabaseTestCase
             $objectToCompare,
             [
                 'eventId' => 'ae9f01c4-38bb-11e8-9074-080027c702a7',
+                'ownerId' => '5f26cf7f-30a0-11e8-90c6-080027c702a7',
             ]
         );
 
@@ -86,6 +88,7 @@ class WorkshopCreateTypeTest extends TypeDatabaseTestCase
             FormConfig::class,
             Category::class,
             MultiEvent::class,
+            User::class
         ];
 
         return $classes;

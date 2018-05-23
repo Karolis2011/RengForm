@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\FormConfig;
 use App\Entity\Workshop;
 use App\Repository\CategoryRepository;
+use App\Repository\FormConfigRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -66,6 +67,9 @@ class WorkshopUpdateType extends AbstractType
                     'class'        => FormConfig::class,
                     'choice_label' => 'title',
                     'placeholder'  => '',
+                    'query_builder' => function (FormConfigRepository $repository) use ($options) {
+                        return $repository->createGetByOwnerIdQuery($options['ownerId']);
+                    },
                 ]
             )
             ->add(
@@ -93,6 +97,7 @@ class WorkshopUpdateType extends AbstractType
             ])
             ->setRequired([
                 'eventId',
+                'ownerId'
             ]);
     }
 }

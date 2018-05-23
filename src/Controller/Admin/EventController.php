@@ -87,8 +87,19 @@ class EventController extends Controller
      */
     public function create(Request $request)
     {
+        $user = $this->getUser();
+        $userId = null;
+        if ($user !== null) {
+            $userId = $user->getId();
+        }
         $event = new Event();
-        $form = $this->createForm(EventCreateType::class, $event);
+        $form = $this->createForm(
+            EventCreateType::class,
+            $event,
+            [
+                'ownerId' => $userId,
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -124,7 +135,19 @@ class EventController extends Controller
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
         }
 
-        $form = $this->createForm(EventUpdateType::class, $event);
+        $user = $this->getUser();
+        $userId = null;
+        if ($user !== null) {
+            $userId = $user->getId();
+        }
+
+        $form = $this->createForm(
+            EventUpdateType::class,
+            $event,
+            [
+                'ownerId' => $userId,
+            ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

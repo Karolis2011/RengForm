@@ -77,12 +77,19 @@ class WorkshopController extends Controller
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
         }
 
+        $user = $this->getUser();
+        $userId = null;
+        if ($user !== null) {
+            $userId = $user->getId();
+        }
+
         $workshop = new Workshop();
         $form = $this->createForm(
             WorkshopCreateType::class,
             $workshop,
             [
                 'eventId' => $eventId,
+                'ownerId' => $userId,
             ]
         );
         $form->handleRequest($request);
@@ -120,11 +127,18 @@ class WorkshopController extends Controller
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
         }
 
+        $user = $this->getUser();
+        $userId = null;
+        if ($user !== null) {
+            $userId = $user->getId();
+        }
+
         $form = $this->createForm(
             WorkshopUpdateType::class,
             $workshop,
             [
                 'eventId' => $workshop->getCategory()->getEvent()->getId(),
+                'ownerId' => $userId,
             ]
         );
 

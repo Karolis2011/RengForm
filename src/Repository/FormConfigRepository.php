@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\FormConfig;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -33,5 +34,20 @@ class FormConfigRepository extends AbstractRepository
         $object->setCreated(new \DateTime());
 
         parent::save($object, $flush);
+    }
+
+    /**
+     * @param $ownerId
+     * @return QueryBuilder
+     */
+    public function createGetByOwnerIdQuery($ownerId): QueryBuilder
+    {
+        $builder = $this->createQueryBuilder('c')
+            ->select('c')
+            ->leftJoin('c.owner', 'o')
+            ->where('o.id = :ownerId')
+            ->setParameter('ownerId', $ownerId);
+
+        return $builder;
     }
 }
