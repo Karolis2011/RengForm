@@ -25,6 +25,8 @@
                             <dd class="col-md-9">{{ workshop.place }}</dd>
                             <dt class="col-md-3">{% trans %}Form{% endtrans %}</dt>
                             <dd class="col-md-9"><a href="{{ path('form_show', {'formId': workshop.formConfig.id}) }}">{{ workshop.formConfig.title }}</a></dd>
+                            <dt class="col-md-3">{% trans %}Form for groups{% endtrans %}</dt>
+                            <dd class="col-md-9">{% if workshop.groupFormConfig is not null %}<a href="{{ path('form_show', {'formId': workshop.groupFormConfig.id}) }}">{{ workshop.groupFormConfig.title }}</a>{% endif %}</dd>
                             <dt class="col-md-3">{% trans %}Times{% endtrans %}</dt>
                             <dd class="col-md-9">
                                 {% for time in workshop.times %}

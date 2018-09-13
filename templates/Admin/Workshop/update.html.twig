@@ -56,6 +56,10 @@
                 {{ form_label(form.formConfig, 'Registration form') }}
                 {{ form_widget(form.formConfig, {'attr': {'class': 'form-control formSelectRegistration' }}) }}
             </div>
+            <div class="form-group">
+                {{ form_label(form.groupFormConfig, 'Group registration form') }}
+                {{ form_widget(form.groupFormConfig, {'attr': {'class': 'form-control formSelectRegistration' }}) }}
+            </div>
             <button type="submit" class="btn btn-outline-secondary">{% trans %}Save{% endtrans %}</button>
             {{ form_row(form._token) }}
             {{ form_end(form, {'render_rest': false}) }}

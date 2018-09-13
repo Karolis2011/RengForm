@@ -37,16 +37,24 @@ class FormConfigRepository extends AbstractRepository
     }
 
     /**
-     * @param $ownerId
+     * @param string $ownerId
+     * @param bool   $group
      * @return QueryBuilder
      */
-    public function createGetByOwnerIdQuery($ownerId): QueryBuilder
+    public function createGetByOwnerIdQuery(string $ownerId, bool $group): QueryBuilder
     {
         $builder = $this->createQueryBuilder('c')
             ->select('c')
             ->leftJoin('c.owner', 'o')
             ->where('o.id = :ownerId')
+            ->andWhere('c.type = :formType')
             ->setParameter('ownerId', $ownerId);
+
+        if ($group) {
+            $builder->setParameter('formType', FormConfig::GROUP);
+        } else {
+            $builder->setParameter('formType', FormConfig::SIMPLE);
+        }
 
         return $builder;
     }

@@ -67,6 +67,11 @@ class Event
     private $formConfig;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\FormConfig")
+     */
+    private $groupFormConfig;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -228,6 +233,25 @@ class Event
     public function setFormConfig(?FormConfig $formConfig): self
     {
         $this->formConfig = $formConfig;
+
+        return $this;
+    }
+
+    /**
+     * @return FormConfig|null
+     */
+    public function getGroupFormConfig(): ?FormConfig
+    {
+        return $this->groupFormConfig;
+    }
+
+    /**
+     * @param FormConfig|null $groupFormConfig
+     * @return Event
+     */
+    public function setGroupFormConfig(?FormConfig $groupFormConfig): self
+    {
+        $this->groupFormConfig = $groupFormConfig;
 
         return $this;
     }
