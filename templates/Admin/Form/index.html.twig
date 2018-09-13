@@ -21,6 +21,7 @@
         <thead>
         <tr>
             <th>{% trans %}Title{% endtrans %}</th>
+            <th>{% trans %}Type{% endtrans %}</th>
             <th>{% trans %}Description{% endtrans %}</th>
         </tr>
         </thead>
@@ -28,6 +29,7 @@
         {% for formConfig in formConfigs %}
             <tr class="clickable-row" data-href="{{ path('form_show', { 'formId': formConfig.id }) }}">
                 <td>{{ formConfig.title }}</td>
+                <td>{{ formConfig.type }}</td>
                 <td>{{ formConfig.description|length > 30 ? formConfig.description|slice(0, 30) ~ '...' : formConfig.description }}</td>
             </tr>
         {% endfor %}

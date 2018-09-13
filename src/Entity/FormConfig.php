@@ -10,6 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class FormConfig
 {
+    const SIMPLE = 'simple';
+    const GROUP = 'group';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="UUID")
@@ -47,7 +50,12 @@ class FormConfig
     private $owner;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="string", length=255)
+     */
+    private $type = self::SIMPLE;
+
+    /**
+     * @return string
      */
     public function getId()
     {
@@ -166,5 +174,21 @@ class FormConfig
         $this->owner = $owner;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
     }
 }
