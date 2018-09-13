@@ -17,6 +17,7 @@ class FormConfigTypeTest extends TypeTestCase
             'title'       => 'a',
             'description' => 'b',
             'config'      => 'c',
+            'type'        => 'simple',
         ];
 
         $objectToCompare = new FormConfig();

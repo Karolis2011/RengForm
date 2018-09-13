@@ -1,6 +1,6 @@
-INSERT INTO `FormConfig` (`id`, `owner_id`, `title`, `description`, `config`, `created`)
+INSERT INTO `FormConfig` (`id`, `owner_id`, `title`, `description`, `config`, `created`, `type`)
 VALUES
-  ('ebe13752-384c-11e8-9074-080027c702a7', '5f26cf7f-30a0-11e8-90c6-080027c702a7', 'selects', '', '[{\"type\":\"radio-group\",\"required\":true,\"label\":\"Radio Group\",\"values\":[{\"label\":\"Option 1\",\"value\":\"option-1\"},{\"label\":\"Option 2\",\"value\":\"option-2\"},{\"label\":\"Option 3\",\"value\":\"option-3\"}],\"name\":\"radio-group\"},{\"type\":\"radio-group\",\"label\":\"Radio Group2\",\"values\":[{\"label\":\"Option 1\",\"value\":\"option-1\"},{\"label\":\"Option 2\",\"value\":\"option-2\"},{\"label\":\"Option 3\",\"value\":\"option-3\"}],\"name\":\"radio-group2\"}]', '2018-04-06 18:58:29');
+  ('ebe13752-384c-11e8-9074-080027c702a7', '5f26cf7f-30a0-11e8-90c6-080027c702a7', 'selects', '', '[{\"type\":\"radio-group\",\"required\":true,\"label\":\"Radio Group\",\"values\":[{\"label\":\"Option 1\",\"value\":\"option-1\"},{\"label\":\"Option 2\",\"value\":\"option-2\"},{\"label\":\"Option 3\",\"value\":\"option-3\"}],\"name\":\"radio-group\"},{\"type\":\"radio-group\",\"label\":\"Radio Group2\",\"values\":[{\"label\":\"Option 1\",\"value\":\"option-1\"},{\"label\":\"Option 2\",\"value\":\"option-2\"},{\"label\":\"Option 3\",\"value\":\"option-3\"}],\"name\":\"radio-group2\"}]', '2018-04-06 18:58:29', 'simple');
 
 INSERT INTO `Event` (`id`, `owner_id`, `title`, `description`, `place`, `duration`, `capacity`, `created`, `formConfig_id`)
 VALUES

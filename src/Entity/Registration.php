@@ -37,6 +37,11 @@ class Registration
     private $eventTime;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $groupRegistration = false;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -112,6 +117,33 @@ class Registration
     public function setEventTime(?EventTime $eventTime): self
     {
         $this->eventTime = $eventTime;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getGroupRegistration(): bool
+    {
+        return $this->groupRegistration;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGroupRegistration(): bool
+    {
+        return $this->getGroupRegistration();
+    }
+
+    /**
+     * @param bool $groupRegistration
+     * @return Registration
+     */
+    public function setGroupRegistration(bool $groupRegistration): self
+    {
+        $this->groupRegistration = $groupRegistration;
 
         return $this;
     }

@@ -25,7 +25,7 @@ class EventTimeParser implements ParserInterface
             [
                 'Event',
                 $object->getEvent()->getTitle(),
-                $object->getStartTime()->format('Y-m-d H:i')
+                $object->getStartTime()->format('Y-m-d H:i'),
             ],
         ];
 
@@ -38,27 +38,63 @@ class EventTimeParser implements ParserInterface
                 }
             }
 
-            $data[] = array_merge(['Registration Date'], array_values($fieldList));
+            $data[] = ['Single registrations'];
+            $data = self::parseRegistrations($object, $fieldList, $data);
 
-            /** @var Registration $registration */
-            foreach ($object->getRegistrations() as $registration) {
-                $row = [
-                    $registration->getCreated()->format('Y-m-d H:i'),
-                ];
+            if ($object->getEvent()->getGroupFormConfig() !== null) {
+                $fieldList = [];
 
-                $rawData = $registration->getData();
-                foreach (array_keys($fieldList) as $field) {
-                    if (is_array($rawData[$field])) {
-                        $row[] = join(', ', $rawData[$field]);
-                    } else {
-                        $row[] = $rawData[$field];
+                foreach ($object->getEvent()->getGroupFormConfig()->getConfigParsed() as $field) {
+                    if ($field['type'] != 'paragraph') {
+                        $fieldList[$field['name']] = $field['label'];
                     }
                 }
 
-                $data[] = $row;
+                $data[] = ['Group registrations'];
+                $data = self::parseRegistrations($object, $fieldList, $data, true);
             }
         } else {
             $data[] = ['No registrations in event'];
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param EventTime $object
+     * @param array     $fieldList
+     * @param array     $data
+     * @param bool      $group
+     * @return array
+     */
+    private static function parseRegistrations(
+        EventTime $object,
+        array $fieldList,
+        array $data,
+        bool $group = false
+    ): array {
+        $data[] = array_merge(['Registration Date'], array_values($fieldList));
+
+        /** @var Registration $registration */
+        foreach ($object->getRegistrations() as $registration) {
+            if ($registration->isGroupRegistration() && !$group) {
+                continue;
+            }
+
+            $row = [
+                $registration->getCreated()->format('Y-m-d H:i'),
+            ];
+
+            $rawData = $registration->getData();
+            foreach (array_keys($fieldList) as $field) {
+                if (is_array($rawData[$field])) {
+                    $row[] = join(', ', $rawData[$field]);
+                } else {
+                    $row[] = $rawData[$field];
+                }
+            }
+
+            $data[] = $row;
         }
 
         return $data;

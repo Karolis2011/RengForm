@@ -37,11 +37,11 @@ class FormConfigRepository extends AbstractRepository
     }
 
     /**
-     * @param string $ownerId
+     * @param $ownerId
      * @param bool   $group
      * @return QueryBuilder
      */
-    public function createGetByOwnerIdQuery(string $ownerId, bool $group): QueryBuilder
+    public function createGetByOwnerIdQuery($ownerId, bool $group): QueryBuilder
     {
         $builder = $this->createQueryBuilder('c')
             ->select('c')

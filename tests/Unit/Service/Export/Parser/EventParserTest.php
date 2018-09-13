@@ -116,6 +116,9 @@ class EventParserTest extends TestCase
                     '2018-01-10 10:00',
                 ],
                 [
+                    'Single registrations',
+                ],
+                [
                     'Registration Date',
                     'Name',
                     'Age',
