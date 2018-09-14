@@ -28,7 +28,7 @@
                         <dt class="col-md-4">{% trans %}Capacity{% endtrans %}</dt>
                         <dd class="col-md-8">{% if event.capacity is null %}&#8734{% else %}{{ event.capacity }}{% endif %}</dd>
                         <dt class="col-md-4">{% trans %}Form{% endtrans %}</dt>
-                        <dd class="col-md-8"><a href="{{ path('form_show', {'formId': event.formConfig.id}) }}">{{ event.formConfig.title }}</a></dd>
+                        <dd class="col-md-8">{% if event.formConfig is not null %}<a href="{{ path('form_show', {'formId': event.formConfig.id}) }}">{{ event.formConfig.title }}</a>{% endif %}</dd>
                         <dt class="col-md-4">{% trans %}Form for groups{% endtrans %}</dt>
                         <dd class="col-md-8">{% if event.groupFormConfig is not null %}<a href="{{ path('form_show', {'formId': event.groupFormConfig.id}) }}">{{ event.groupFormConfig.title }}</a>{% endif %}</dd>
                         <dt class="col-md-4">{% trans %}Duration{% endtrans %}</dt>

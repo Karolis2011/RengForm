@@ -18,7 +18,7 @@ abstract class DatabaseTestCase extends WebTestCase
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected $realContainer;
 
     /**
      * @var Client
@@ -112,11 +112,11 @@ abstract class DatabaseTestCase extends WebTestCase
      */
     protected function getContainer()
     {
-        if (is_null($this->container)) {
-            $this->container = $this->getClient()->getContainer();
+        if (is_null($this->realContainer)) {
+            $this->realContainer = $this->getClient()->getContainer();
         }
 
-        return $this->container;
+        return $this->realContainer;
     }
 
     /**

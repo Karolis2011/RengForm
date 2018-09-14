@@ -67,7 +67,7 @@ class RegistrationControllerTest extends DatabaseTestCase
         $client = $this->getClient();
         $client->request(
             'POST',
-            '/en/register/' . $timeId,
+            '/en/register/' . $timeId . '/simple',
             $formData,
             [],
             []

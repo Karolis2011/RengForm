@@ -62,9 +62,10 @@ class EventUpdateType extends AbstractType
                 'formConfig',
                 EntityType::class,
                 [
-                    'class'        => FormConfig::class,
-                    'choice_label' => 'title',
-                    'placeholder'  => '',
+                    'class'         => FormConfig::class,
+                    'choice_label'  => 'title',
+                    'placeholder'   => '',
+                    'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
                         return $repository->createGetByOwnerIdQuery($options['ownerId'], false);
                     },
@@ -74,9 +75,10 @@ class EventUpdateType extends AbstractType
                 'groupFormConfig',
                 EntityType::class,
                 [
-                    'class'        => FormConfig::class,
-                    'choice_label' => 'title',
-                    'placeholder'  => '',
+                    'class'         => FormConfig::class,
+                    'choice_label'  => 'title',
+                    'placeholder'   => '',
+                    'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
                         return $repository->createGetByOwnerIdQuery($options['ownerId'], true);
                     },
@@ -90,8 +92,8 @@ class EventUpdateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-                'data_class' => Event::class,
-            ])
+            'data_class' => Event::class,
+        ])
             ->setRequired([
                 'ownerId',
             ]);

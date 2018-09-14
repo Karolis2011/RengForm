@@ -213,6 +213,8 @@ class MultiEventParserTest extends TestCase
                     'Workshop Title',
                     '2018-01-01 12:00',
                 ],
+                [],
+                ['Single registrations'],
                 [
                     'Registration Date',
                     'Name',

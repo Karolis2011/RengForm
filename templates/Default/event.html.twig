@@ -37,7 +37,11 @@
 
             <h4 class="mb-3">{% trans %}Registration{% endtrans %}</h4>
             <form name="registration" method="post">
-                {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.formConfig.configParsed })) }}
+                {% if groupRegistration %}
+                    {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.groupFormConfig.configParsed })) }}
+                {% else %}
+                    {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.formConfig.configParsed })) }}
+                {% endif %}
                 <button class="btn btn-primary btn-lg btn-block" type="submit">{% trans %}Register{% endtrans %}</button>
             </form>
         </div>

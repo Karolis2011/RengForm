@@ -64,9 +64,10 @@ class WorkshopUpdateType extends AbstractType
                 'formConfig',
                 EntityType::class,
                 [
-                    'class'        => FormConfig::class,
-                    'choice_label' => 'title',
-                    'placeholder'  => '',
+                    'class'         => FormConfig::class,
+                    'choice_label'  => 'title',
+                    'placeholder'   => '',
+                    'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
                         return $repository->createGetByOwnerIdQuery($options['ownerId'], false);
                     },
@@ -76,9 +77,10 @@ class WorkshopUpdateType extends AbstractType
                 'groupFormConfig',
                 EntityType::class,
                 [
-                    'class'        => FormConfig::class,
-                    'choice_label' => 'title',
-                    'placeholder'  => '',
+                    'class'         => FormConfig::class,
+                    'choice_label'  => 'title',
+                    'placeholder'   => '',
+                    'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
                         return $repository->createGetByOwnerIdQuery($options['ownerId'], true);
                     },
@@ -109,7 +111,7 @@ class WorkshopUpdateType extends AbstractType
             ])
             ->setRequired([
                 'eventId',
-                'ownerId'
+                'ownerId',
             ]);
     }
 }

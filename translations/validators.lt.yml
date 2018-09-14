@@ -1,3 +1,5 @@
 Form is empty: Tuščia forma
 At least 1 time has to be added: Turi būti prodėtas bent 1 laikas
 Event end time can not be before start time: Renginio pabaigos data negali būti prieš pradžios datą
+Event must have at least one type of registration form set: Renginys privalo turėti pasirinktą bent vieno tipo registracijos formą
+Workshop must have at least one type of registration form set: Užsiėmimas privalo turėti pasirinktą bent vieno tipo registracijos formą

@@ -17,7 +17,7 @@ class Registration
     private $id;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json")
      */
     private $data;
 
