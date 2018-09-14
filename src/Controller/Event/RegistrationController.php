@@ -116,7 +116,7 @@ class RegistrationController extends Controller
      * @param               $timeId
      * @return Response
      */
-    public function registerSingle(Request $request, $timeId)
+    public function registerSimple(Request $request, $timeId)
     {
         $formData = $request->get('registration', null);
         $time = $this->workshopTimeRepository->find($timeId);

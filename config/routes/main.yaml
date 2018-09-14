@@ -12,7 +12,7 @@ registration:
 
 registration_simple:
     path: /register/{timeId}/simple
-    controller: App\Controller\Event\RegistrationController::registerSingle
+    controller: App\Controller\Event\RegistrationController::registerSimple
 
 registration_multi:
     path: /register/{timeId}/multi
