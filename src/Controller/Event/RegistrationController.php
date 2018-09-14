@@ -78,8 +78,12 @@ class RegistrationController extends Controller
                 return $this->redirectToRoute('registration_multi', ['timeId' => $timeId]);
             }
 
-            //TODO: give a choice for single or multi registration
-            throw new NotFoundHttpException('choice');
+            return $this->render(
+                'Default/formChoice.html.twig',
+                [
+                    'timeId' => $timeId,
+                ]
+            );
         }
 
         $time = $this->eventTimeRepository->find($timeId);
@@ -96,10 +100,15 @@ class RegistrationController extends Controller
                 return $this->redirectToRoute('registration_multi', ['timeId' => $timeId]);
             }
 
-            //TODO: give a choice for single or multi registration
+            return $this->render(
+                'Default/formChoice.html.twig',
+                [
+                    'timeId' => $timeId,
+                ]
+            );
         }
 
-        throw new NotFoundHttpException('choice');
+        throw new NotFoundHttpException(sprintf('Workshop or Event by id %s not found', $timeId));
     }
 
     /**
