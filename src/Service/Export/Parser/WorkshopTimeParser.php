@@ -30,17 +30,19 @@ class WorkshopTimeParser implements ParserInterface
         ];
 
         if (is_iterable($object->getRegistrations()) && count($object->getRegistrations()) > 0) {
-            $fieldList = [];
+            if ($object->getWorkshop()->getFormConfig() !== null) {
+                $fieldList = [];
 
-            foreach ($object->getWorkshop()->getFormConfig()->getConfigParsed() as $field) {
-                if ($field['type'] != 'paragraph') {
-                    $fieldList[$field['name']] = $field['label'];
+                foreach ($object->getWorkshop()->getFormConfig()->getConfigParsed() as $field) {
+                    if ($field['type'] != 'paragraph') {
+                        $fieldList[$field['name']] = $field['label'];
+                    }
                 }
-            }
 
-            $data[] = [];
-            $data[] = ['Single registrations'];
-            $data = self::parseRegistrations($object, $fieldList, $data);
+                $data[] = [];
+                $data[] = ['Single registrations'];
+                $data = self::parseRegistrations($object, $fieldList, $data);
+            }
 
             if ($object->getWorkshop()->getGroupFormConfig() !== null) {
                 $fieldList = [];
@@ -89,6 +91,12 @@ class WorkshopTimeParser implements ParserInterface
 
             $rawData = $registration->getData();
             foreach (array_keys($fieldList) as $field) {
+                if (!isset($rawData[$field])) {
+                    //TODO: change this so missing fields would output something
+                    //and fields that are no longer in config would be exported
+                    continue;
+                }
+
                 if (is_array($rawData[$field])) {
                     $row[] = join(', ', $rawData[$field]);
                 } else {

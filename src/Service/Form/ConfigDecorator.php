@@ -16,6 +16,11 @@ class ConfigDecorator
         'paragraph',
     ];
 
+    // Group form constants
+    const GROUP_COUNT_FIELD_NAME = '_group_size';
+    const GROUP_COUNT_FIELD_DEFAULT_LABEL = 'Group size';
+    const GROUP_COUNT_FIELD_TYPE = 'number';
+
     /**
      * @param FormConfig $formConfig
      */
@@ -51,9 +56,17 @@ class ConfigDecorator
             $config[$key][self::NAME] = $name;
         }
 
+        if ($formConfig->getType() == FormConfig::GROUP) {
+            $this->addGroupFormField($config);
+        }
+
         $formConfig->setConfig(json_encode($config));
     }
 
+    /**
+     * @param string $label
+     * @return mixed|string
+     */
     private function removeLithuanianLetters(string $label)
     {
         $map = [
@@ -82,5 +95,31 @@ class ConfigDecorator
         }
 
         return $label;
+    }
+
+    /**
+     * @param array $config
+     */
+    private function addGroupFormField(array &$config)
+    {
+        $exists = false;
+
+        foreach ($config as $field) {
+            if ($field[self::TYPE] == self::GROUP_COUNT_FIELD_TYPE
+                && $field[self::NAME] == self::GROUP_COUNT_FIELD_NAME
+            ) {
+                $exists = true;
+                break;
+            }
+        }
+
+        if (!$exists) {
+            $config[] = [
+                self::TYPE  => self::GROUP_COUNT_FIELD_TYPE,
+                self::NAME  => self::GROUP_COUNT_FIELD_NAME,
+                self::LABEL => self::GROUP_COUNT_FIELD_DEFAULT_LABEL,
+                'required'  => true,
+            ];
+        }
     }
 }

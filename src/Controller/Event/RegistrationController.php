@@ -8,6 +8,7 @@ use App\Entity\WorkshopTime;
 use App\Repository\EventTimeRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\WorkshopTimeRepository;
+use App\Service\Form\ConfigDecorator;
 use App\Service\Form\FormValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,6 +116,7 @@ class RegistrationController extends Controller
      * @param Request       $request
      * @param               $timeId
      * @return Response
+     * @throws \Exception
      */
     public function registerSimple(Request $request, $timeId)
     {
@@ -138,6 +140,7 @@ class RegistrationController extends Controller
      * @param Request       $request
      * @param               $timeId
      * @return Response
+     * @throws \Exception
      */
     public function registerMulti(Request $request, $timeId)
     {
@@ -162,6 +165,7 @@ class RegistrationController extends Controller
      * @param array     $formData
      * @param bool      $group
      * @return Response
+     * @throws \Exception
      */
     private function processEvent(EventTime $eventTime, $formData, bool $group = false): Response
     {
@@ -176,7 +180,19 @@ class RegistrationController extends Controller
                 $registration->setEventTime($eventTime);
                 $registration->setGroupRegistration($group);
                 $this->registrationRepository->save($registration);
-                $eventTime->increaseEntries();
+
+                $entries = 1;
+                if ($group) {
+                    if (!isset($formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME])) {
+                        throw new \Exception(sprintf(
+                            'Got group registration for event %s without group count field set',
+                            $eventTime->getEvent()->getId()
+                        ));
+                    }
+                    $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
+                }
+                $eventTime->increaseEntries($entries);
+
                 $this->eventTimeRepository->update($eventTime);
                 $this->addFlash('success', 'Registration successful');
             }
@@ -196,6 +212,7 @@ class RegistrationController extends Controller
      * @param array        $formData
      * @param bool         $group
      * @return Response
+     * @throws \Exception
      */
     private function processWorkshop(WorkshopTime $workshopTime, $formData, bool $group = false): Response
     {
@@ -210,7 +227,19 @@ class RegistrationController extends Controller
                 $registration->setWorkshopTime($workshopTime);
                 $registration->setGroupRegistration($group);
                 $this->registrationRepository->save($registration);
-                $workshopTime->increaseEntries();
+
+                $entries = 1;
+                if ($group) {
+                    if (!isset($formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME])) {
+                        throw new \Exception(sprintf(
+                            'Got group registration for event %s without group count field set',
+                            $workshopTime->getWorkshop()->getId()
+                        ));
+                    }
+                    $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
+                }
+                $workshopTime->increaseEntries($entries);
+
                 $this->workshopTimeRepository->update($workshopTime);
                 $this->addFlash('success', 'Registration successful');
             }
