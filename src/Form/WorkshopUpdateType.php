@@ -67,6 +67,7 @@ class WorkshopUpdateType extends AbstractType
                     'class'         => FormConfig::class,
                     'choice_label'  => 'title',
                     'placeholder'   => '',
+                    'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
                         return $repository->createGetByOwnerIdQuery($options['ownerId'], false);
                     },

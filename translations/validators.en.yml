@@ -1,3 +1,5 @@
 Form is empty: Form is empty
 At least 1 time has to be added: At least 1 time has to be added
 Event end time can not be before start time: Renginio pabaiga negali būti prieš jo pradžią
+Event must have at least one type of registration form set: Event must have at least one type of registration form set
+Workshop must have at least one type of registration form set: Workshop must have at least one type of registration form set
