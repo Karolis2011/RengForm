@@ -13,6 +13,20 @@ redirect_admin:
     path: /admin
     controller: App\Controller\RedirectController::redirectAction
 
+redirect_main_lt:
+    path: /lt
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /lt/
+        permanent: true
+
+redirect_main_en:
+    path: /en
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController::urlRedirectAction
+    defaults:
+        path: /en/
+        permanent: true
+
 redirect_admin_with_params:
     path: /admin/{path}
     controller: App\Controller\RedirectController::redirectAction
