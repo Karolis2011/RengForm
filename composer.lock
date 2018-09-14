@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "936df191185e4a0b06cce22d6de4b828",
+    "content-hash": "b9987d7ce4a7d97fe1f6a67fcf8e4702",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3272,6 +3272,7 @@
             ],
             "description": "Enforces Long Term Supported versions of Symfony components",
             "homepage": "https://symfony.com",
+            "abandoned": "symfony/flex",
             "time": "2017-10-19T02:16:32+00:00"
         },
         {
@@ -5679,7 +5680,8 @@
     "prefer-lowest": false,
     "platform": {
         "php": "^7.1.3",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "ext-json": "^1.5"
     },
     "platform-dev": []
 }

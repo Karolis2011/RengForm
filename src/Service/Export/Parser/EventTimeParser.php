@@ -38,6 +38,7 @@ class EventTimeParser implements ParserInterface
                 }
             }
 
+            $data[] = [];
             $data[] = ['Single registrations'];
             $data = self::parseRegistrations($object, $fieldList, $data);
 
@@ -50,6 +51,7 @@ class EventTimeParser implements ParserInterface
                     }
                 }
 
+                $data[] = [];
                 $data[] = ['Group registrations'];
                 $data = self::parseRegistrations($object, $fieldList, $data, true);
             }

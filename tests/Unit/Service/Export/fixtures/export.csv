@@ -3,11 +3,15 @@ MultiEvent,"Multi Event Title"
 Category,"Category Title"
 
 Workshop,"Workshop Title","2018-01-01 12:00"
+
+"Single registrations"
 "Registration Date",Name,Age
 "2017-12-20 12:34",Aaa,12
 "2017-12-20 12:00",Baa,15
 
 Workshop,"Workshop Title2","2018-01-01 12:00"
+
+"Single registrations"
 "Registration Date",Name,Age
 "2017-12-20 12:34",Aaa,12
 "2017-12-20 12:00",Baa,15
