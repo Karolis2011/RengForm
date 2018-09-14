@@ -10,6 +10,14 @@ registration:
     path: /register/{timeId}
     controller: App\Controller\Event\RegistrationController::register
 
+registration_simple:
+    path: /register/{timeId}/simple
+    controller: App\Controller\Event\RegistrationController::registerSingle
+
+registration_multi:
+    path: /register/{timeId}/multi
+    controller: App\Controller\Event\RegistrationController::registerMulti
+
 admin:
     prefix: /admin
     resource: 'admin.yaml'

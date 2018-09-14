@@ -59,11 +59,55 @@ class RegistrationController extends Controller
     }
 
     /**
+     * @param $timeId
+     * @return Response
+     */
+    public function register($timeId)
+    {
+        $time = $this->workshopTimeRepository->find($timeId);
+
+        if ($time !== null) {
+            $formConfig = $time->getWorkshop()->getFormConfig();
+            $groupFormConfig = $time->getWorkshop()->getGroupFormConfig();
+
+            if ($formConfig !== null && $groupFormConfig === null) {
+                return $this->redirectToRoute('registration_simple', ['timeId' => $timeId]);
+            }
+
+            if ($formConfig === null && $groupFormConfig !== null) {
+                return $this->redirectToRoute('registration_multi', ['timeId' => $timeId]);
+            }
+
+            //TODO: give a choice for single or multi registration
+            throw new NotFoundHttpException('choice');
+        }
+
+        $time = $this->eventTimeRepository->find($timeId);
+
+        if ($time !== null) {
+            $formConfig = $time->getEvent()->getFormConfig();
+            $groupFormConfig = $time->getEvent()->getGroupFormConfig();
+
+            if ($formConfig !== null && $groupFormConfig === null) {
+                return $this->redirectToRoute('registration_simple', ['timeId' => $timeId]);
+            }
+
+            if ($formConfig === null && $groupFormConfig !== null) {
+                return $this->redirectToRoute('registration_multi', ['timeId' => $timeId]);
+            }
+
+            //TODO: give a choice for single or multi registration
+        }
+
+        throw new NotFoundHttpException('choice');
+    }
+
+    /**
      * @param Request       $request
      * @param               $timeId
      * @return Response
      */
-    public function register(Request $request, $timeId)
+    public function registerSingle(Request $request, $timeId)
     {
         $formData = $request->get('registration', null);
         $time = $this->workshopTimeRepository->find($timeId);
@@ -82,11 +126,35 @@ class RegistrationController extends Controller
     }
 
     /**
-     * @param EventTime $eventTime
-     * @param array     $formData
+     * @param Request       $request
+     * @param               $timeId
      * @return Response
      */
-    private function processEvent(EventTime $eventTime, $formData): Response
+    public function registerMulti(Request $request, $timeId)
+    {
+        $formData = $request->get('registration', null);
+        $time = $this->workshopTimeRepository->find($timeId);
+
+        if ($time !== null) {
+            return $this->processWorkshop($time, $formData, true);
+        }
+
+        $time = $this->eventTimeRepository->find($timeId);
+
+        if ($time !== null) {
+            return $this->processEvent($time, $formData, true);
+        }
+
+        throw new NotFoundHttpException(sprintf('Workshop or Event by id %s not found', $timeId));
+    }
+
+    /**
+     * @param EventTime $eventTime
+     * @param array     $formData
+     * @param bool      $group
+     * @return Response
+     */
+    private function processEvent(EventTime $eventTime, $formData, bool $group = false): Response
     {
         if (!$eventTime->isAvailable()) {
             $this->addFlash('danger', 'Event is full.');
@@ -97,6 +165,7 @@ class RegistrationController extends Controller
                 $registration = new Registration();
                 $registration->setData($formData);
                 $registration->setEventTime($eventTime);
+                $registration->setGroupRegistration($group);
                 $this->registrationRepository->save($registration);
                 $eventTime->increaseEntries();
                 $this->eventTimeRepository->update($eventTime);
@@ -107,7 +176,8 @@ class RegistrationController extends Controller
         return $this->render(
             'Default/event.html.twig',
             [
-                'eventTime' => $eventTime,
+                'eventTime'         => $eventTime,
+                'groupRegistration' => $group,
             ]
         );
     }
@@ -115,9 +185,10 @@ class RegistrationController extends Controller
     /**
      * @param WorkshopTime $workshopTime
      * @param array        $formData
+     * @param bool         $group
      * @return Response
      */
-    private function processWorkshop(WorkshopTime $workshopTime, $formData): Response
+    private function processWorkshop(WorkshopTime $workshopTime, $formData, bool $group = false): Response
     {
         if (!$workshopTime->isAvailable()) {
             $this->addFlash('danger', 'Workshop is full.');
@@ -128,6 +199,7 @@ class RegistrationController extends Controller
                 $registration = new Registration();
                 $registration->setData($formData);
                 $registration->setWorkshopTime($workshopTime);
+                $registration->setGroupRegistration($group);
                 $this->registrationRepository->save($registration);
                 $workshopTime->increaseEntries();
                 $this->workshopTimeRepository->update($workshopTime);
@@ -138,7 +210,8 @@ class RegistrationController extends Controller
         return $this->render(
             'Default/workshop.html.twig',
             [
-                'workshopTime' => $workshopTime,
+                'workshopTime'      => $workshopTime,
+                'groupRegistration' => $group,
             ]
         );
     }
