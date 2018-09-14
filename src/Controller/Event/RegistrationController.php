@@ -168,7 +168,7 @@ class RegistrationController extends Controller
         if (!$eventTime->isAvailable()) {
             $this->addFlash('danger', 'Event is full.');
         } elseif ($formData !== null) {
-            if (!$this->formValidator->validate($eventTime, $formData)) {
+            if (!$this->formValidator->validate($eventTime, $formData, $group)) {
                 $this->addFlash('danger', 'Registration form is not filled correctly');
             } else {
                 $registration = new Registration();
@@ -202,7 +202,7 @@ class RegistrationController extends Controller
         if (!$workshopTime->isAvailable()) {
             $this->addFlash('danger', 'Workshop is full.');
         } elseif ($formData !== null) {
-            if (!$this->formValidator->validate($workshopTime, $formData)) {
+            if (!$this->formValidator->validate($workshopTime, $formData, $group)) {
                 $this->addFlash('danger', 'Registration form is not filled correctly');
             } else {
                 $registration = new Registration();

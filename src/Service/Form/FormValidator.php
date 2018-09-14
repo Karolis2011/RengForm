@@ -19,6 +19,7 @@ class FormValidator
         Validator\TextAreaField::TYPE      => Validator\TextAreaField::class,
         Validator\RadioGroupField::TYPE    => Validator\RadioGroupField::class,
         Validator\CheckboxGroupField::TYPE => Validator\CheckboxGroupField::class,
+        'paragraph'                        => Validator\AlwaysTrueValidator::class,
     ];
 
     /**
@@ -38,9 +39,10 @@ class FormValidator
     /**
      * @param EventTime|WorkshopTime $time
      * @param array                  $formData
+     * @param bool                   $group
      * @return bool
      */
-    public function validate($time, array $formData): bool
+    public function validate($time, array $formData, bool $group = false): bool
     {
         if (empty($formData)) {
             return false;
@@ -48,7 +50,7 @@ class FormValidator
         $errors = [];
 
         try {
-            $form = $this->getFormConfig($time);
+            $form = $this->getFormConfig($time, $group);
             $formFields = [];
             foreach ($form->getFields() as $field) {
                 $formFields[] = $field->getName();
@@ -88,21 +90,28 @@ class FormValidator
 
     /**
      * @param EventTime|WorkshopTime $time
+     * @param bool                   $group
      * @return Form
      * @throws \Exception
      */
-    private function getFormConfig($time): Form
+    private function getFormConfig($time, bool $group): Form
     {
         switch (get_class($time)) {
             case EventTime::class:
-                $formConfig = $time->getEvent()->getFormConfig();
+                $event = $time->getEvent();
                 break;
             case WorkshopTime::class:
-                $formConfig = $time->getWorkshop()->getFormConfig();
+                $event = $time->getWorkshop();
                 break;
             default:
                 throw new \Exception(sprintf('Unsupported class %s', get_class($time)));
                 break;
+        }
+
+        if ($group) {
+            $formConfig = $event->getGroupFormConfig();
+        } else {
+            $formConfig = $event->getFormConfig();
         }
 
         $form = new Form($formConfig->getConfigParsed());
