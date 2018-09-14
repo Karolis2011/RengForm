@@ -15,7 +15,7 @@ cd RengForm
 ```
 npm install
 composer install --no-dev --optimize-autoloader
-node_modules/grunt/bin/grunt
+npx grunt
 ```
 5. Create database and run its migrations to latest version.
 ```
@@ -43,9 +43,9 @@ vagrant up
 4. SSH into VM and build project with it's dependencies.
 ```
 npm install
-composer install --no-dev --optimize-autoloader
-node_modules/grunt/bin/grunt
-bin/console doctrine:database:create
-bin/console doctrine:migrations:migrate
+composer install --optimize-autoloader
+npx grunt
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
 ```
 5. That's it! You should be able to access the web through [rengform.test](rengform.test) .
