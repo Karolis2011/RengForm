@@ -107,5 +107,7 @@
                 {% endfor %}
             </select>
         </div>
+    {% elseif field.type == 'hidden' %}
+        <input type="hidden" class="form-control" name="registration[{{ field.name }}]" id="{{ field.name }}" value="{{ field.value }}">
     {% endif %}
 {% endfor %}
