@@ -16,7 +16,7 @@ npm install
 composer install --no-dev --optimize-autoloader
 npx grunt
 ```
-`.env` file update DATABASE_URL parameter to your database connection and change APP_ENV parameter to 'prod' (without quotes).
+4. Inside `.env` file update DATABASE_URL parameter to your database connection and change APP_ENV parameter to 'prod' (without quotes).
 5. Create database and run its migrations to latest version.
 ```Bash
 php bin/console doctrine:database:create
