@@ -14,7 +14,6 @@ class ConfigDecorator
     const NAME = 'name';
     const TYPE_BLACKLIST = [
         'paragraph',
-        'hidden'
     ];
 
     // Group form constants
