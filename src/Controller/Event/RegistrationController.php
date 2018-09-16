@@ -289,7 +289,7 @@ class RegistrationController extends Controller
             ->setTo($recipient)
             ->setBody(
                 $emailTemplate->getBody(),
-                'text/plain'
+                'text/html'
             );
 
         $this->mailer->send($message);
