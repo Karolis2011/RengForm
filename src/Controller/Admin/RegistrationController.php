@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Repository\WorkshopRepository;
+use App\Service\Helper\SharedAmongUsersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class RegistrationController extends Controller
 {
+    use SharedAmongUsersTrait;
+
     /**
      * @var WorkshopRepository
      */
@@ -34,7 +37,7 @@ class RegistrationController extends Controller
     {
         $workshop = $this->workshopRepository->find($workshopId);
 
-        if ($workshop === null) {
+        if ($workshop === null || !$this->isOwner($workshop->getCategory()->getEvent()->getOwner())) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
         }
 

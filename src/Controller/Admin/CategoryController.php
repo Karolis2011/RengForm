@@ -3,9 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Entity\MultiEvent;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\MultiEventRepository;
+use App\Service\Helper\SharedAmongUsersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,35 +19,32 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class CategoryController extends Controller
 {
+    use SharedAmongUsersTrait;
+
     /**
      * @var CategoryRepository
      */
     private $repository;
 
     /**
-     * @var MultiEventRepository
-     */
-    private $eventRepository;
-
-    /**
      * CategoryController constructor.
      * @param CategoryRepository   $repository
-     * @param MultiEventRepository $eventRepository
      */
-    public function __construct(CategoryRepository $repository, MultiEventRepository $eventRepository)
+    public function __construct(CategoryRepository $repository)
     {
         $this->repository = $repository;
-        $this->eventRepository = $eventRepository;
     }
 
     /**
-     * @param Request $request
-     * @param         $eventId
+     * @param Request              $request
+     * @param MultiEventRepository $eventRepository
+     * @param                      $eventId
      * @return RedirectResponse|Response
      */
-    public function create(Request $request, $eventId)
+    public function create(Request $request, MultiEventRepository $eventRepository, $eventId)
     {
-        $event = $this->eventRepository->find($eventId);
+        /** @var MultiEvent|null $event */
+        $event = $this->findEntity($eventRepository, $eventId);
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
@@ -62,7 +61,7 @@ class CategoryController extends Controller
             return $this->redirectToRoute(
                 'event_show',
                 [
-                    'eventId' => $category->getEvent()->getId(),
+                    'eventId' => $eventId,
                 ]
             );
         }
@@ -82,7 +81,7 @@ class CategoryController extends Controller
      */
     public function edit(Request $request, $categoryId)
     {
-        $category = $this->repository->find($categoryId);
+        $category = $this->getCategory($categoryId);
 
         if ($category === null) {
             throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
@@ -117,7 +116,7 @@ class CategoryController extends Controller
      */
     public function delete($categoryId)
     {
-        $category = $this->repository->find($categoryId);
+        $category = $this->getCategory($categoryId);
 
         if ($category === null) {
             throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
@@ -129,5 +128,20 @@ class CategoryController extends Controller
         $this->addFlash('success', "Category successfully deleted");
 
         return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
+    }
+
+    /**
+     * @param $categoryId
+     * @return Category|null
+     */
+    private function getCategory($categoryId): ?Category
+    {
+        $category = $this->repository->find($categoryId);
+
+        if ($category !== null && !$this->isOwner($category->getEvent()->getOwner())) {
+            return null;
+        }
+
+        return $category;
     }
 }

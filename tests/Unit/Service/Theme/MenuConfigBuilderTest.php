@@ -4,6 +4,7 @@ namespace App\Tests\Unit\Service\Theme;
 
 use App\Service\Theme\MenuConfigBuilder;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -50,7 +51,7 @@ class MenuConfigBuilderTest extends TestCase
         $stack = new RequestStack();
         $stack->push($request);
 
-        $builder = new MenuConfigBuilder($stack);
+        $builder = new MenuConfigBuilder($stack, new ParameterBag());
 
         return $builder;
     }

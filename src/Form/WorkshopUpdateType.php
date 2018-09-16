@@ -68,7 +68,11 @@ class WorkshopUpdateType extends AbstractType
                     'placeholder'   => '',
                     'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
-                        return $repository->createGetByOwnerIdQuery($options['ownerId'], false);
+                        return $repository->createGetByOwnerIdQuery(
+                            $options['ownerId'],
+                            $options['shared_events'],
+                            false
+                        );
                     },
                 ]
             )
@@ -81,7 +85,11 @@ class WorkshopUpdateType extends AbstractType
                     'placeholder'   => '',
                     'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
-                        return $repository->createGetByOwnerIdQuery($options['ownerId'], true);
+                        return $repository->createGetByOwnerIdQuery(
+                            $options['ownerId'],
+                            $options['shared_events'],
+                            true
+                        );
                     },
                 ]
             )
@@ -111,6 +119,7 @@ class WorkshopUpdateType extends AbstractType
             ->setRequired([
                 'eventId',
                 'ownerId',
+                'shared_events',
             ]);
     }
 }

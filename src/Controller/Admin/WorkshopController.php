@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\MultiEvent;
 use App\Entity\Workshop;
 use App\Form\EventTimeModelCollectionType;
 use App\Form\Model\EventTimeModel;
@@ -12,6 +13,7 @@ use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use App\Repository\WorkshopTimeRepository;
 use App\Service\Event\EventTimeUpdater;
+use App\Service\Helper\SharedAmongUsersTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +26,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class WorkshopController extends Controller
 {
+    use SharedAmongUsersTrait;
+
     /**
      * @var WorkshopRepository
      */
@@ -71,7 +75,8 @@ class WorkshopController extends Controller
      */
     public function create(Request $request, MultiEventRepository $eventRepository, $eventId)
     {
-        $event = $eventRepository->find($eventId);
+        /** @var MultiEvent|null $event */
+        $event = $this->findEntity($eventRepository, $eventId);
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
@@ -88,8 +93,9 @@ class WorkshopController extends Controller
             WorkshopCreateType::class,
             $workshop,
             [
-                'eventId' => $eventId,
-                'ownerId' => $userId,
+                'eventId'       => $eventId,
+                'ownerId'       => $userId,
+                'shared_events' => $this->getParameter('shared_events'),
             ]
         );
         $form->handleRequest($request);
@@ -121,7 +127,7 @@ class WorkshopController extends Controller
      */
     public function edit(Request $request, $workshopId)
     {
-        $workshop = $this->repository->find($workshopId);
+        $workshop = $this->getWorkshop($workshopId);
 
         if ($workshop === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
@@ -137,8 +143,9 @@ class WorkshopController extends Controller
             WorkshopUpdateType::class,
             $workshop,
             [
-                'eventId' => $workshop->getCategory()->getEvent()->getId(),
-                'ownerId' => $userId,
+                'eventId'       => $workshop->getCategory()->getEvent()->getId(),
+                'ownerId'       => $userId,
+                'shared_events' => $this->getParameter('shared_events'),
             ]
         );
 
@@ -173,7 +180,7 @@ class WorkshopController extends Controller
      */
     public function updateTimes(Request $request, EventTimeUpdater $updater, $workshopId)
     {
-        $workshop = $this->repository->find($workshopId);
+        $workshop = $this->getWorkshop($workshopId);
 
         if ($workshop === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
@@ -228,7 +235,7 @@ class WorkshopController extends Controller
      */
     public function delete($workshopId)
     {
-        $workshop = $this->repository->find($workshopId);
+        $workshop = $this->getWorkshop($workshopId);
 
         if ($workshop === null) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
@@ -239,5 +246,20 @@ class WorkshopController extends Controller
         $this->addFlash('success', "Workshop successfully deleted");
 
         return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
+    }
+
+    /**
+     * @param $workshopId
+     * @return Workshop|null
+     */
+    private function getWorkshop($workshopId): ?Workshop
+    {
+        $workshop = $this->repository->find($workshopId);
+
+        if ($workshop !== null && !$this->isOwner($workshop->getCategory()->getEvent()->getOwner())) {
+            return null;
+        }
+
+        return $workshop;
     }
 }

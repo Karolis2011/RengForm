@@ -66,7 +66,11 @@ class EventUpdateType extends AbstractType
                     'placeholder'   => '',
                     'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
-                        return $repository->createGetByOwnerIdQuery($options['ownerId'], false);
+                        return $repository->createGetByOwnerIdQuery(
+                            $options['ownerId'],
+                            $options['shared_events'],
+                            false
+                        );
                     },
                 ]
             )
@@ -79,7 +83,11 @@ class EventUpdateType extends AbstractType
                     'placeholder'   => '',
                     'required'      => false,
                     'query_builder' => function (FormConfigRepository $repository) use ($options) {
-                        return $repository->createGetByOwnerIdQuery($options['ownerId'], true);
+                        return $repository->createGetByOwnerIdQuery(
+                            $options['ownerId'],
+                            $options['shared_events'],
+                            true
+                        );
                     },
                 ]
             );
@@ -95,6 +103,7 @@ class EventUpdateType extends AbstractType
         ])
             ->setRequired([
                 'ownerId',
+                'shared_events',
             ]);
     }
 }

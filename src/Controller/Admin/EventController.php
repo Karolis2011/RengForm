@@ -12,6 +12,7 @@ use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
 use App\Service\Event\EventTimeUpdater;
+use App\Service\Helper\SharedAmongUsersTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class EventController extends Controller
 {
+    use SharedAmongUsersTrait;
+
     /**
      * @var MultiEventRepository
      */
@@ -68,9 +71,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $user = $this->getUser();
-        $multiEvents = $this->multiEventRepository->findBy(['owner' => $user]);
-        $events = $this->repository->findBy(['owner' => $user]);
+        $multiEvents = $this->findAllEntities($this->multiEventRepository);
+        $events = $this->findAllEntities($this->repository);
 
         return $this->render(
             'Admin/Event/index.html.twig',
@@ -97,7 +99,8 @@ class EventController extends Controller
             EventCreateType::class,
             $event,
             [
-                'ownerId' => $userId,
+                'ownerId'       => $userId,
+                'shared_events' => $this->getParameter('shared_events'),
             ]
         );
         $form->handleRequest($request);
@@ -129,7 +132,8 @@ class EventController extends Controller
      */
     public function update(Request $request, $eventId)
     {
-        $event = $this->repository->find($eventId);
+        /** @var Event|null $event */
+        $event = $this->findEntity($this->repository, $eventId);
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
@@ -145,7 +149,8 @@ class EventController extends Controller
             EventUpdateType::class,
             $event,
             [
-                'ownerId' => $userId,
+                'ownerId'       => $userId,
+                'shared_events' => $this->getParameter('shared_events'),
             ]
         );
         $form->handleRequest($request);
@@ -178,7 +183,8 @@ class EventController extends Controller
      */
     public function updateTimes(Request $request, EventTimeUpdater $updater, $eventId)
     {
-        $event = $this->repository->find($eventId);
+        /** @var Event|null $event */
+        $event = $this->findEntity($this->repository, $eventId);
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
@@ -232,13 +238,15 @@ class EventController extends Controller
      */
     public function show($eventId)
     {
-        $event = $this->multiEventRepository->find($eventId);
+        /** @var MultiEvent|null $event */
+        $event = $this->findEntity($this->multiEventRepository, $eventId);
 
         if ($event !== null) {
             return $this->showMultiEvent($event);
         }
 
-        $event = $this->repository->find($eventId);
+        /** @var Event|null $event */
+        $event = $this->findEntity($this->repository, $eventId);
 
         if ($event !== null) {
             return $this->showEvent($event);
@@ -253,7 +261,8 @@ class EventController extends Controller
      */
     public function delete($eventId)
     {
-        $event = $this->multiEventRepository->find($eventId);
+        /** @var MultiEvent|null $event */
+        $event = $this->findEntity($this->multiEventRepository, $eventId);
 
         if ($event !== null) {
             $this->multiEventRepository->remove($event);
@@ -262,7 +271,8 @@ class EventController extends Controller
             return $this->redirectToRoute('event_index');
         }
 
-        $event = $this->repository->find($eventId);
+        /** @var Event|null $event */
+        $event = $this->findEntity($this->repository, $eventId);
 
         if ($event !== null) {
             $this->repository->remove($event);

@@ -51,6 +51,7 @@ parameters:
 
     # Feature toggles
     user_creation_enabled: false
+    shared_events: true  # Events and registrations will be visible for all users
 
 services:
     # default configuration for services in *this* file

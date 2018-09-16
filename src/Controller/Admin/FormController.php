@@ -8,6 +8,7 @@ use App\Entity\Workshop;
 use App\Form\FormConfigType;
 use App\Repository\FormConfigRepository;
 use App\Service\Form\ConfigDecorator;
+use App\Service\Helper\SharedAmongUsersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class FormController extends Controller
 {
+    use SharedAmongUsersTrait;
+
     /**
      * @var FormConfigRepository
      */
@@ -45,8 +48,7 @@ class FormController extends Controller
      */
     public function index()
     {
-        $user = $this->getUser();
-        $formConfigs = $this->repository->findBy(['owner' => $user]);
+        $formConfigs = $this->findAllEntities($this->repository);
 
         return $this->render(
             'Admin/Form/index.html.twig',
@@ -62,7 +64,8 @@ class FormController extends Controller
      */
     public function show($formId)
     {
-        $formConfig = $this->repository->find($formId);
+        /** @var FormConfig|null $formConfig */
+        $formConfig = $this->findEntity($this->repository, $formId);
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
@@ -116,7 +119,8 @@ class FormController extends Controller
      */
     public function edit(Request $request, $formId)
     {
-        $formConfig = $this->repository->find($formId);
+        /** @var FormConfig|null $formConfig */
+        $formConfig = $this->findEntity($this->repository, $formId);
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));
@@ -153,7 +157,8 @@ class FormController extends Controller
      */
     public function delete($formId)
     {
-        $formConfig = $this->repository->find($formId);
+        /** @var FormConfig|null $formConfig */
+        $formConfig = $this->findEntity($this->repository, $formId);
 
         if ($formConfig === null) {
             throw new NotFoundHttpException(sprintf('Form by id %s not found', $formId));

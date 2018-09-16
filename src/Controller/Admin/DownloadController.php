@@ -7,6 +7,7 @@ use App\Repository\EventRepository;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopTimeRepository;
 use App\Service\Export\Exporter;
+use App\Service\Helper\SharedAmongUsersTrait;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,6 +20,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class DownloadController extends Controller
 {
+    use SharedAmongUsersTrait;
+
     /**
      * @var Exporter
      */
@@ -47,7 +50,7 @@ class DownloadController extends Controller
      */
     public function multiEvent(MultiEventRepository $repository, $eventId)
     {
-        $event = $repository->find($eventId);
+        $event = $this->findEntity($repository, $eventId);
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
@@ -70,7 +73,7 @@ class DownloadController extends Controller
      */
     public function event(EventRepository $repository, $eventId)
     {
-        $event = $repository->find($eventId);
+        $event = $this->findEntity($repository, $eventId);
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
@@ -96,7 +99,9 @@ class DownloadController extends Controller
         $workshopTimeId = $request->get('workshop');
         $workshopTime = $repository->find($workshopTimeId);
 
-        if ($workshopTime === null) {
+        if ($workshopTime === null
+            || !$this->isOwner($workshopTime->getWorkshop()->getCategory()->getEvent()->getOwner())
+        ) {
             throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopTimeId));
         }
 
@@ -125,7 +130,9 @@ class DownloadController extends Controller
         $categoryId = $request->get('category');
         $category = $repository->find($categoryId);
 
-        if ($category === null) {
+        if ($category === null
+            || !$this->isOwner($category->getEvent()->getOwner())
+        ) {
             throw new NotFoundHttpException(sprintf('Category by id %s not found', $categoryId));
         }
 

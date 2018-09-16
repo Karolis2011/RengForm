@@ -7,6 +7,7 @@ use App\Entity\MultiEvent;
 use App\Form\MultiEventType;
 use App\Repository\MultiEventRepository;
 use App\Repository\WorkshopRepository;
+use App\Service\Helper\SharedAmongUsersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class MultiEventController extends Controller
 {
+    use SharedAmongUsersTrait;
+
     /**
      * @var MultiEventRepository
      */
@@ -77,7 +80,8 @@ class MultiEventController extends Controller
      */
     public function update(Request $request, $eventId)
     {
-        $event = $this->repository->find($eventId);
+        /** @var MultiEvent|null $event */
+        $event = $this->findEntity($this->repository, $eventId);
 
         if ($event === null) {
             throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
@@ -113,7 +117,8 @@ class MultiEventController extends Controller
      */
     public function saveCategoryOrder(Request $request, $eventId)
     {
-        $event = $this->repository->find($eventId);
+        /** @var MultiEvent|null $event */
+        $event = $this->findEntity($this->repository, $eventId);
         $response = new JsonResponse(null, 200);
 
         if ($event !== null) {

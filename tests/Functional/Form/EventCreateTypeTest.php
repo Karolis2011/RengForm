@@ -36,7 +36,8 @@ class EventCreateTypeTest extends TypeDatabaseTestCase
             EventCreateType::class,
             $objectToCompare,
             [
-                'ownerId' => '5f26cf7f-30a0-11e8-90c6-080027c702a7',
+                'ownerId'       => '5f26cf7f-30a0-11e8-90c6-080027c702a7',
+                'shared_events' => false,
             ]
         );
 
@@ -78,7 +79,7 @@ class EventCreateTypeTest extends TypeDatabaseTestCase
     {
         $classes = [
             FormConfig::class,
-            User::class
+            User::class,
         ];
 
         return $classes;
