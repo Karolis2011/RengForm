@@ -37,6 +37,10 @@ class ConfigDecorator
             $name = $field[self::NAME] ?? null;
             $label = $field[self::LABEL];
 
+            // Clear label
+            $label = $this->clearLabel($label);
+
+            // Generate name for a field
             if ($name === null) {
                 $rawName = preg_replace(
                     '/[^a-z0-9]+/',
@@ -51,9 +55,10 @@ class ConfigDecorator
                     $i++;
                 }
             }
-
             $names[$name] = $label;
+
             $config[$key][self::NAME] = $name;
+            $config[$key][self::LABEL] = $label;
         }
 
         if ($formConfig->getType() == FormConfig::GROUP) {
@@ -121,5 +126,16 @@ class ConfigDecorator
                 'required'  => true,
             ];
         }
+    }
+
+    /**
+     * @param string $label
+     * @return string
+     */
+    private function clearLabel(string $label): string
+    {
+        $label = str_replace('<br>', '', $label);
+
+        return $label;
     }
 }
