@@ -12,10 +12,6 @@
         <div class="col-md-6">
             {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
             <div class="form-group">
-                {{ form_label(form.sender) }}
-                {{ form_widget(form.sender, {'attr': {'class': 'form-control', 'placeholder': 'sender@site.com'}}) }}
-            </div>
-            <div class="form-group">
                 {{ form_label(form.receiverField) }}
                 {{ form_widget(form.receiverField, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
             </div>

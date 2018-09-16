@@ -2,6 +2,7 @@
 
 namespace App\Controller\Event;
 
+use App\Entity\EmailTemplate;
 use App\Entity\EventTime;
 use App\Entity\Registration;
 use App\Entity\WorkshopTime;
@@ -41,22 +42,30 @@ class RegistrationController extends Controller
     private $formValidator;
 
     /**
+     * @var \Swift_Mailer
+     */
+    private $mailer;
+
+    /**
      * RegistrationController constructor.
      * @param WorkshopTimeRepository $workshopTimeRepository
      * @param EventTimeRepository    $eventTimeRepository
      * @param RegistrationRepository $registrationRepository
      * @param FormValidator          $formValidator
+     * @param \Swift_Mailer          $mailer
      */
     public function __construct(
         WorkshopTimeRepository $workshopTimeRepository,
         EventTimeRepository $eventTimeRepository,
         RegistrationRepository $registrationRepository,
-        FormValidator $formValidator
+        FormValidator $formValidator,
+        \Swift_Mailer $mailer
     ) {
         $this->workshopTimeRepository = $workshopTimeRepository;
         $this->eventTimeRepository = $eventTimeRepository;
         $this->registrationRepository = $registrationRepository;
         $this->formValidator = $formValidator;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -195,6 +204,8 @@ class RegistrationController extends Controller
 
                 $this->eventTimeRepository->update($eventTime);
                 $this->addFlash('success', 'Registration successful');
+
+                $this->sendEmail($eventTime->getEvent()->getFormConfig()->getEmailTemplate(), $formData);
             }
         }
 
@@ -242,6 +253,8 @@ class RegistrationController extends Controller
 
                 $this->workshopTimeRepository->update($workshopTime);
                 $this->addFlash('success', 'Registration successful');
+
+                $this->sendEmail($workshopTime->getWorkshop()->getFormConfig()->getEmailTemplate(), $formData);
             }
         }
 
@@ -252,5 +265,33 @@ class RegistrationController extends Controller
                 'groupRegistration' => $group,
             ]
         );
+    }
+
+    /**
+     * @param EmailTemplate|null $emailTemplate
+     * @param array              $formData
+     */
+    private function sendEmail(?EmailTemplate $emailTemplate, array $formData): void
+    {
+        if ($emailTemplate === null) {
+            return;
+        }
+
+        if (!isset($formData[$emailTemplate->getReceiverField()])) {
+            //TODO: log that form was missing a recipient field
+            return;
+        }
+
+        $recipient = $formData[$emailTemplate->getReceiverField()];
+
+        //TODO: Format the email
+        $message = (new \Swift_Message($emailTemplate->getTitle()))
+            ->setTo($recipient)
+            ->setBody(
+                $emailTemplate->getBody(),
+                'text/plain'
+            );
+
+        $this->mailer->send($message);
     }
 }
