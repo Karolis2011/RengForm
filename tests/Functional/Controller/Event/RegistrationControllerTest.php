@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Controller\Event;
 
 use App\Entity\Category;
+use App\Entity\EmailTemplate;
 use App\Entity\Event;
 use App\Entity\EventTime;
 use App\Entity\FormConfig;
@@ -103,6 +104,7 @@ class RegistrationControllerTest extends DatabaseTestCase
             Workshop::class,
             Category::class,
             MultiEvent::class,
+            EmailTemplate::class,
         ];
 
         return $classes;

@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Form;
 
 use App\Entity\Category;
+use App\Entity\EmailTemplate;
 use App\Entity\FormConfig;
 use App\Entity\MultiEvent;
 use App\Entity\User;
@@ -90,6 +91,7 @@ class WorkshopCreateTypeTest extends TypeDatabaseTestCase
             Category::class,
             MultiEvent::class,
             User::class,
+            EmailTemplate::class,
         ];
 
         return $classes;
