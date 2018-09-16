@@ -17,3 +17,7 @@ form_update:
 form_delete:
     path: /{formId}/delete
     controller: App\Controller\Admin\FormController::delete
+
+email_template_create:
+    path: /{formId}/email_template/create
+    controller: App\Controller\Admin\EmailController::create

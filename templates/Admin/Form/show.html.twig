@@ -29,6 +29,19 @@
                         <dt class="col-md-4">{% trans %}Type{% endtrans %}</dt>
                         <dd class="col-md-8">{{ formConfig.type }}</dd>
                     </dl>
+                    <dl class="row px-2">
+                        <dt class="col-md-4">{% trans %}Email Template{% endtrans %}</dt>
+                        <dd class="col-md-8">
+                            {% if formConfig.emailTemplate is null %}
+                                <a class="btn btn-sm btn-outline-secondary" href="{{ path('email_template_create', {'formId': formConfig.id}) }}">Create</a>
+                            {% else %}
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ path('email_template_update', {'emailTemplateId': formConfig.emailTemplate.id}) }}">Edit</a>
+                                    <a class="btn btn-sm btn-outline-danger" href="{{ path('email_template_delete', {'emailTemplateId': formConfig.emailTemplate.id}) }}">Remove</a>
+                                </div>
+                            {% endif %}
+                        </dd>
+                    </dl>
                 </div>
             </div>
         </div>

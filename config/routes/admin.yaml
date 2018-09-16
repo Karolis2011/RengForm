@@ -59,3 +59,11 @@ workshop_registrations:
 workshop_update_times:
     path: /workshop/{workshopId}/times/update
     controller: App\Controller\Admin\WorkshopController::updateTimes
+
+email_template_update:
+    path: /email_template/{emailTemplateId}/update
+    controller: App\Controller\Admin\EmailController::edit
+
+email_template_delete:
+    path: /email_template/{emailTemplateId}/delete
+    controller: App\Controller\Admin\EmailController::delete

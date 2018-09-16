@@ -55,6 +55,11 @@ class FormConfig
     private $type = self::SIMPLE;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\EmailTemplate", mappedBy="formConfig", cascade={"persist", "remove"})
+     */
+    private $emailTemplate;
+
+    /**
      * @return string
      */
     public function getId()
@@ -190,5 +195,43 @@ class FormConfig
     public function setType($type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return EmailTemplate|null
+     */
+    public function getEmailTemplate(): ?EmailTemplate
+    {
+        return $this->emailTemplate;
+    }
+
+    /**
+     * @param EmailTemplate|null $emailTemplate
+     * @return FormConfig
+     */
+    public function setEmailTemplate(?EmailTemplate $emailTemplate): self
+    {
+        $this->emailTemplate = $emailTemplate;
+
+        // set the owning side of the relation if necessary
+        if ($emailTemplate !== null && $this !== $emailTemplate->getFormConfig()) {
+            $emailTemplate->setFormConfig($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFieldNames(): array
+    {
+        $names = [];
+
+        foreach ($this->getConfigParsed() as $field) {
+            $names[$field['label']] = $field['name'];
+        }
+
+        return $names;
     }
 }
