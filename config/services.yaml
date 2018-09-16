@@ -1,10 +1,13 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    # Locale related parameters
     locale: lt
     locales:
         - en
         - lt
+
+    # Menu configurations
     menu_config.admin:
         events:
             title: Events
@@ -44,6 +47,10 @@ parameters:
         register:
             title: Register
             route: register
+            toggle: user_creation_enabled
+
+    # Feature toggles
+    user_creation_enabled: false
 
 services:
     # default configuration for services in *this* file
