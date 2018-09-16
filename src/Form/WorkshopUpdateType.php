@@ -50,7 +50,6 @@ class WorkshopUpdateType extends AbstractType
                     'widget'   => 'single_text',
                     'html5'    => false,
                     'required' => true,
-                    'data'     => new \DateTime('01:00'),
                 ]
             )
             ->add(

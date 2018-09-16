@@ -83,6 +83,7 @@ class Event
     public function __construct()
     {
         $this->times = new ArrayCollection();
+        $this->duration = new \DateTime('01:00');
     }
 
     /**
