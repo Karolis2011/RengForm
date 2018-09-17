@@ -75,7 +75,7 @@ class EmailController extends Controller
             'Admin/EmailTemplate/create.html.twig',
             [
                 'form'        => $form->createView(),
-                'form_fields' =>  $formConfig->getFieldNames()
+                'form_fields' => $formConfig->getFieldNames()
             ]
         );
     }
