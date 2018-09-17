@@ -35,7 +35,10 @@ class EmailTemplateType extends AbstractType
             )
             ->add(
                 'body',
-                TextareaType::class
+                TextareaType::class,
+                [
+                    'required' => false,
+                ]
             );
     }
 
