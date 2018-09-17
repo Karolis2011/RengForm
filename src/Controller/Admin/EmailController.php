@@ -101,7 +101,7 @@ class EmailController extends Controller
             ]
         );
         $form->handleRequest($request);
-        dump($emailTemplate->getFormConfig()->getFieldNames());
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $this->repository->update($emailTemplate);
 
