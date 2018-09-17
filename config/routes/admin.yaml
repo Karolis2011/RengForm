@@ -67,3 +67,7 @@ email_template_update:
 email_template_delete:
     path: /email_template/{emailTemplateId}/delete
     controller: App\Controller\Admin\EmailController::delete
+
+registration_delete:
+    path: /registration/{registrationId}/delete
+    controller: App\Controller\Admin\RegistrationController::delete
