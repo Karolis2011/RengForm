@@ -124,6 +124,32 @@ module.exports = function (grunt) {
                     }
                 ]
             },
+            'tinymce': {
+                files: [
+                    {
+                        src: 'node_modules/tinymce/tinymce.min.js',
+                        dest: 'public/js/tinymce/tinymce.min.js'
+                    },
+                    {
+                        cwd: 'node_modules/tinymce/plugins/',
+                        src: '**/*',
+                        dest: 'public/js/tinymce/plugins/',
+                        expand: true
+                    },
+                    {
+                        cwd: 'node_modules/tinymce/themes/',
+                        src: '**/*',
+                        dest: 'public/js/tinymce/themes/',
+                        expand: true
+                    },
+                    {
+                        cwd: 'node_modules/tinymce/skins/',
+                        src: '**/*',
+                        dest: 'public/js/tinymce/skins/',
+                        expand: true
+                    },
+                ]
+            },
             'rengform': {
                 files: [
                     {
@@ -177,6 +203,7 @@ module.exports = function (grunt) {
         'copy:select2',
         'copy:formBuilder',
         'copy:flag-icon-css',
+        'copy:tinymce',
         'copy:assets'
     ]);
 
