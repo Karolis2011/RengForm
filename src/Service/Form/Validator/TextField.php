@@ -16,7 +16,7 @@ class TextField implements ValidatorInterface
      * @param array      $fieldData
      * @return array
      */
-    public static function validate(FormField $field, array $fieldData): array
+    public function validate(FormField $field, array $fieldData): array
     {
         $errors = [];
         $value = $fieldData[$field->getName()] ?? null;

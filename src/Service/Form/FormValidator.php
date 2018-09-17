@@ -3,6 +3,7 @@
 namespace App\Service\Form;
 
 use App\Entity\EventTime;
+use App\Entity\FormConfig;
 use App\Entity\WorkshopTime;
 use Psr\Log\LoggerInterface;
 
@@ -14,6 +15,7 @@ class FormValidator
     const VALIDATORS = [
         Validator\TextField::TYPE          => Validator\TextField::class,
         Validator\DateField::TYPE          => Validator\DateField::class,
+        Validator\EmailField::TYPE         => Validator\EmailField::class,
         Validator\SelectField::TYPE        => Validator\SelectField::class,
         Validator\NumberField::TYPE        => Validator\NumberField::class,
         Validator\TextAreaField::TYPE      => Validator\TextAreaField::class,
@@ -50,11 +52,18 @@ class FormValidator
         $errors = [];
 
         try {
-            $form = $this->getFormConfig($time, $group);
+            $formConfig = $this->getFormConfig($time, $group);
+            $form = new Form($formConfig->getConfigParsed());
+            $emailField = null;
+
+            if ($formConfig->getEmailTemplate() !== null) {
+                $emailField = $formConfig->getEmailTemplate()->getReceiverField();
+            }
+
             $formFields = [];
             foreach ($form->getFields() as $field) {
                 $formFields[] = $field->getName();
-                $validator = $this->getValidator($field->getType());
+                $validator = $this->getValidator($field, $emailField);
                 $errors = array_merge($errors, $validator->validate($field, $formData));
             }
 
@@ -72,17 +81,25 @@ class FormValidator
     }
 
     /**
-     * @param string $type
+     * @param FormField   $field
+     * @param null|string $emailField
      * @return Validator\ValidatorInterface
      * @throws \Exception
      */
-    private function getValidator(string $type): Validator\ValidatorInterface
+    private function getValidator(FormField $field, ?string $emailField): Validator\ValidatorInterface
     {
+        $type = $field->getType();
+
         if (!isset(self::VALIDATORS[$type])) {
             throw new \Exception(sprintf('Validator for type %s not found', $type));
         }
 
-        $validator = self::VALIDATORS[$type];
+        if ($emailField !== null && $emailField == $field->getName()) {
+            $validator = self::VALIDATORS['email'];
+        } else {
+            $validator = self::VALIDATORS[$type];
+        }
+
         $validator = new $validator();
 
         return $validator;
@@ -91,10 +108,10 @@ class FormValidator
     /**
      * @param EventTime|WorkshopTime $time
      * @param bool                   $group
-     * @return Form
+     * @return FormConfig
      * @throws \Exception
      */
-    private function getFormConfig($time, bool $group): Form
+    private function getFormConfig($time, bool $group): FormConfig
     {
         switch (get_class($time)) {
             case EventTime::class:
@@ -114,8 +131,7 @@ class FormValidator
             $formConfig = $event->getFormConfig();
         }
 
-        $form = new Form($formConfig->getConfigParsed());
 
-        return $form;
+        return $formConfig;
     }
 }
