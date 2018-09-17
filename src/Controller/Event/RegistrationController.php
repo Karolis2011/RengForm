@@ -47,25 +47,33 @@ class RegistrationController extends Controller
     private $mailer;
 
     /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+
+    /**
      * RegistrationController constructor.
      * @param WorkshopTimeRepository $workshopTimeRepository
      * @param EventTimeRepository    $eventTimeRepository
      * @param RegistrationRepository $registrationRepository
      * @param FormValidator          $formValidator
      * @param \Swift_Mailer          $mailer
+     * @param \Twig_Environment      $twig
      */
     public function __construct(
         WorkshopTimeRepository $workshopTimeRepository,
         EventTimeRepository $eventTimeRepository,
         RegistrationRepository $registrationRepository,
         FormValidator $formValidator,
-        \Swift_Mailer $mailer
+        \Swift_Mailer $mailer,
+        \Twig_Environment $twig
     ) {
         $this->workshopTimeRepository = $workshopTimeRepository;
         $this->eventTimeRepository = $eventTimeRepository;
         $this->registrationRepository = $registrationRepository;
         $this->formValidator = $formValidator;
         $this->mailer = $mailer;
+        $this->twig = $twig;
     }
 
     /**
@@ -204,8 +212,17 @@ class RegistrationController extends Controller
 
                 $this->eventTimeRepository->update($eventTime);
                 $this->addFlash('success', 'Registration successful');
-
-                $this->sendEmail($eventTime->getEvent()->getFormConfig()->getEmailTemplate(), $formData);
+                
+                if($group) {
+                    $emailTemplate = $eventTime->getEvent()->getGroupFormConfig()->getEmailTemplate();
+                } else {
+                    $emailTemplate = $eventTime->getEvent()->getFormConfig()->getEmailTemplate();
+                }
+                $this->sendEmail($emailTemplate, $formData, [
+                    'type' => 'event',
+                    'title' => $eventTime->getEvent()->getTitle(),
+                    'description' => $eventTime->getEvent()->getDescription()
+                ]);
             }
         }
 
@@ -254,7 +271,16 @@ class RegistrationController extends Controller
                 $this->workshopTimeRepository->update($workshopTime);
                 $this->addFlash('success', 'Registration successful');
 
-                $this->sendEmail($workshopTime->getWorkshop()->getFormConfig()->getEmailTemplate(), $formData);
+                if($group) {
+                    $emailTemplate = $workshopTime->getWorkshop()->getGroupFormConfig()->getEmailTemplate();
+                } else {
+                    $emailTemplate = $workshopTime->getWorkshop()->getFormConfig()->getEmailTemplate();
+                }
+                $this->sendEmail($emailTemplate, $formData, [
+                    'type' => 'workshop',
+                    'title' => $workshopTime->getWorkshop()->getTitle(),
+                    'description' => $workshopTime->getWorkshop()->getDescription()
+                ]);
             }
         }
 
@@ -271,7 +297,7 @@ class RegistrationController extends Controller
      * @param EmailTemplate|null $emailTemplate
      * @param array              $formData
      */
-    private function sendEmail(?EmailTemplate $emailTemplate, array $formData): void
+    private function sendEmail(?EmailTemplate $emailTemplate, array $formData, array $extraData): void
     {
         if ($emailTemplate === null) {
             return;
@@ -285,10 +311,14 @@ class RegistrationController extends Controller
         $recipient = $formData[$emailTemplate->getReceiverField()];
 
         //TODO: Format the email
+        $template = $this->twig->createTemplate($emailTemplate->getBody());
         $message = (new \Swift_Message($emailTemplate->getTitle()))
             ->setTo($recipient)
             ->setBody(
-                $emailTemplate->getBody(),
+                $template->render([
+                    'data' => $formData,
+                    'extra' => $extraData
+                ]),
                 'text/html'
             );
 
