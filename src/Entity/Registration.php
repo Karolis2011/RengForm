@@ -42,6 +42,11 @@ class Registration
     private $groupRegistration = false;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $registrationSize = 1;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -144,6 +149,25 @@ class Registration
     public function setGroupRegistration(bool $groupRegistration): self
     {
         $this->groupRegistration = $groupRegistration;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRegistrationSize()
+    {
+        return $this->registrationSize;
+    }
+
+    /**
+     * @param int $registrationSize
+     * @return Registration
+     */
+    public function setRegistrationSize(int $registrationSize): self
+    {
+        $this->registrationSize = $registrationSize;
 
         return $this;
     }

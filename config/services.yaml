@@ -53,6 +53,9 @@ parameters:
     user_creation_enabled: false
     shared_events: true  # Events and registrations will be visible for all users
 
+    # else
+    sender_email: smd@kkarolis.lt
+
 services:
     # default configuration for services in *this* file
     _defaults:

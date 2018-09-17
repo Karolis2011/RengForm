@@ -196,7 +196,6 @@ class RegistrationController extends Controller
                 $registration->setData($formData);
                 $registration->setEventTime($eventTime);
                 $registration->setGroupRegistration($group);
-                $this->registrationRepository->save($registration);
 
                 $entries = 1;
                 if ($group) {
@@ -207,21 +206,23 @@ class RegistrationController extends Controller
                         ));
                     }
                     $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
+                    $registration->setRegistrationSize($entries);
                 }
                 $eventTime->increaseEntries($entries);
 
+                $this->registrationRepository->save($registration);
                 $this->eventTimeRepository->update($eventTime);
                 $this->addFlash('success', 'Registration successful');
-                
-                if($group) {
+
+                if ($group) {
                     $emailTemplate = $eventTime->getEvent()->getGroupFormConfig()->getEmailTemplate();
                 } else {
                     $emailTemplate = $eventTime->getEvent()->getFormConfig()->getEmailTemplate();
                 }
                 $this->sendEmail($emailTemplate, $formData, [
-                    'type' => 'event',
-                    'title' => $eventTime->getEvent()->getTitle(),
-                    'description' => $eventTime->getEvent()->getDescription()
+                    'type'        => 'event',
+                    'title'       => $eventTime->getEvent()->getTitle(),
+                    'description' => $eventTime->getEvent()->getDescription(),
                 ]);
             }
         }
@@ -254,7 +255,6 @@ class RegistrationController extends Controller
                 $registration->setData($formData);
                 $registration->setWorkshopTime($workshopTime);
                 $registration->setGroupRegistration($group);
-                $this->registrationRepository->save($registration);
 
                 $entries = 1;
                 if ($group) {
@@ -265,21 +265,23 @@ class RegistrationController extends Controller
                         ));
                     }
                     $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
+                    $registration->setRegistrationSize($entries);
                 }
                 $workshopTime->increaseEntries($entries);
 
+                $this->registrationRepository->save($registration);
                 $this->workshopTimeRepository->update($workshopTime);
                 $this->addFlash('success', 'Registration successful');
 
-                if($group) {
+                if ($group) {
                     $emailTemplate = $workshopTime->getWorkshop()->getGroupFormConfig()->getEmailTemplate();
                 } else {
                     $emailTemplate = $workshopTime->getWorkshop()->getFormConfig()->getEmailTemplate();
                 }
                 $this->sendEmail($emailTemplate, $formData, [
-                    'type' => 'workshop',
-                    'title' => $workshopTime->getWorkshop()->getTitle(),
-                    'description' => $workshopTime->getWorkshop()->getDescription()
+                    'type'        => 'workshop',
+                    'title'       => $workshopTime->getWorkshop()->getTitle(),
+                    'description' => $workshopTime->getWorkshop()->getDescription(),
                 ]);
             }
         }
@@ -314,10 +316,11 @@ class RegistrationController extends Controller
         $template = $this->twig->createTemplate($emailTemplate->getBody());
         $message = (new \Swift_Message($emailTemplate->getTitle()))
             ->setTo($recipient)
+            ->setFrom($this->getParameter('sender_email'))
             ->setBody(
                 $template->render([
-                    'data' => $formData,
-                    'extra' => $extraData
+                    'data'  => $formData,
+                    'extra' => $extraData,
                 ]),
                 'text/html'
             );
