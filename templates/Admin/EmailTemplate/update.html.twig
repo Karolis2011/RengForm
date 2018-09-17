@@ -9,7 +9,7 @@
     </div>
     {{ macros.display_form_errors(form) }}
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8">
             {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
             <div class="form-group">
                 {{ form_label(form.receiverField) }}
@@ -32,7 +32,18 @@
 {% block javascript_inline %}
     {{ parent() }}
 
-    <script>tinymce.init({ selector:'.tinymce' });</script>
+    <script>tinymce.init({ 
+        selector:'.tinymce',
+        plugins: 'template link lists textcolor',
+        toolbar1: 'formatselect template | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+        templates: [
+            {title: '{% trans %}Title{% endtrans %}', description: '', content: '{{ '{{ extra.title }}' }}'},
+            {title: '{% trans %}Description{% endtrans %}', description: '', content: '{{ '{{ extra.description }}' }}'},
+            {% for label, name in form_fields %}
+                {title: '(Form field) {{ label }}', description: '', content: '{{ '{{ data.' ~ name ~ ' }}' }}'},
+            {% endfor %}
+        ]
+        });</script>
 {% endblock %}
 
 

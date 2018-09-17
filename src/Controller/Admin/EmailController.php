@@ -71,11 +71,11 @@ class EmailController extends Controller
                 ]
             );
         }
-
         return $this->render(
             'Admin/EmailTemplate/create.html.twig',
             [
-                'form' => $form->createView(),
+                'form'        => $form->createView(),
+                'form_fields' => $emailTemplate->getFormConfig()->getFieldNames()
             ]
         );
     }
@@ -101,7 +101,7 @@ class EmailController extends Controller
             ]
         );
         $form->handleRequest($request);
-
+        dump($emailTemplate->getFormConfig()->getFieldNames());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->repository->update($emailTemplate);
 
@@ -118,6 +118,7 @@ class EmailController extends Controller
             [
                 'form'          => $form->createView(),
                 'emailTemplate' => $emailTemplate,
+                'form_fields'   => $emailTemplate->getFormConfig()->getFieldNames()
             ]
         );
     }
