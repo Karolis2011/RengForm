@@ -17,17 +17,17 @@ class SelectField implements ValidatorInterface
      * @param array     $fieldData
      * @return array
      */
-    public static function validate(FormField $field, array $fieldData): array
+    public function validate(FormField $field, array $fieldData): array
     {
         $errors = [];
         $values = $fieldData[$field->getName()] ?? null;
 
-        if ($field->isRequired() && self::isEmpty($field, $values)) {
+        if ($field->isRequired() && $this->isEmpty($field, $values)) {
             $errors[] = sprintf(
                 "%s is required",
                 ucfirst($field->getLabel())
             );
-        } elseif (!self::isEmpty($field, $values)) {
+        } elseif (!$this->isEmpty($field, $values)) {
             $fieldValues = array_map(
                 function (FieldValue $value) {
                     return $value->getValue();
@@ -70,7 +70,7 @@ class SelectField implements ValidatorInterface
      * @param           $values
      * @return bool
      */
-    public static function isEmpty(FormField $field, $values): bool
+    public function isEmpty(FormField $field, $values): bool
     {
         $empty = false;
 

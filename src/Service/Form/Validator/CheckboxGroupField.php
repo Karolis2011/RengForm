@@ -17,7 +17,7 @@ class CheckboxGroupField implements ValidatorInterface
      * @param array     $fieldData
      * @return array
      */
-    public static function validate(FormField $field, array $fieldData): array
+    public function validate(FormField $field, array $fieldData): array
     {
         $errors = [];
         $values = $fieldData[$field->getName()] ?? null;

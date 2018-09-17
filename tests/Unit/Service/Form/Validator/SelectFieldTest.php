@@ -471,7 +471,8 @@ class SelectFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = SelectField::validate($field, $formData);
+        $validator = new SelectField();
+        $errors = $validator->validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }
