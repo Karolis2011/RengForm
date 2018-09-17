@@ -75,7 +75,7 @@ class EmailController extends Controller
             'Admin/EmailTemplate/create.html.twig',
             [
                 'form'        => $form->createView(),
-                'form_fields' => $emailTemplate->getFormConfig()->getFieldNames()
+                'form_fields' => $formConfig->getFieldNames()
             ]
         );
     }
@@ -101,7 +101,7 @@ class EmailController extends Controller
             ]
         );
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->repository->update($emailTemplate);
 
