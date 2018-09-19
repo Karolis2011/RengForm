@@ -192,11 +192,6 @@ class RegistrationController extends Controller
             if (!$this->formValidator->validate($eventTime, $formData, $group)) {
                 $this->addFlash('danger', 'Registration form is not filled correctly');
             } else {
-                $registration = new Registration();
-                $registration->setData($formData);
-                $registration->setEventTime($eventTime);
-                $registration->setGroupRegistration($group);
-
                 $entries = 1;
                 if ($group) {
                     if (!isset($formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME])) {
@@ -206,8 +201,27 @@ class RegistrationController extends Controller
                         ));
                     }
                     $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
-                    $registration->setRegistrationSize($entries);
+
+                    // Check if there are enough space for a group
+                    if ($eventTime->getEntriesLeft() < $entries) {
+                        //Not enough free spaces left in event
+                        $this->addFlash('danger', 'Event does not have enough space left.');
+
+                        return $this->render(
+                            'Default/event.html.twig',
+                            [
+                                'eventTime'      => $eventTime,
+                                'groupRegistration' => $group,
+                            ]
+                        );
+                    }
                 }
+                $registration = new Registration();
+                $registration->setData($formData);
+                $registration->setEventTime($eventTime);
+                $registration->setGroupRegistration($group);
+                $registration->setRegistrationSize($entries);
+
                 $eventTime->increaseEntries($entries);
 
                 $this->registrationRepository->save($registration);
@@ -253,11 +267,6 @@ class RegistrationController extends Controller
             if (!$this->formValidator->validate($workshopTime, $formData, $group)) {
                 $this->addFlash('danger', 'Registration form is not filled correctly');
             } else {
-                $registration = new Registration();
-                $registration->setData($formData);
-                $registration->setWorkshopTime($workshopTime);
-                $registration->setGroupRegistration($group);
-
                 $entries = 1;
                 if ($group) {
                     if (!isset($formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME])) {
@@ -267,8 +276,28 @@ class RegistrationController extends Controller
                         ));
                     }
                     $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
-                    $registration->setRegistrationSize($entries);
+
+                    // Check if there are enough space for a group
+                    if ($workshopTime->getEntriesLeft() < $entries) {
+                        //Not enough free spaces left in event
+                        $this->addFlash('danger', 'Workshop does not have enough space left.');
+
+                        return $this->render(
+                            'Default/workshop.html.twig',
+                            [
+                                'workshopTime'      => $workshopTime,
+                                'groupRegistration' => $group,
+                            ]
+                        );
+                    }
                 }
+
+                $registration = new Registration();
+                $registration->setData($formData);
+                $registration->setWorkshopTime($workshopTime);
+                $registration->setGroupRegistration($group);
+                $registration->setRegistrationSize($entries);
+
                 $workshopTime->increaseEntries($entries);
 
                 $this->registrationRepository->save($registration);
