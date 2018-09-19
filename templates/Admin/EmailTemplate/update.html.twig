@@ -39,6 +39,8 @@
         templates: [
             {title: '{% trans %}Title{% endtrans %}', description: '', content: '{{ '{{ extra.title }}' }}'},
             {title: '{% trans %}Description{% endtrans %}', description: '', content: '{{ '{{ extra.description }}' }}'},
+            {title: '{% trans %}Start Time{% endtrans %}', description: '', content: '{{ '{{ extra.time }}' }}'},
+            {title: '{% trans %}Duration{% endtrans %}', description: '', content: '{{ '{{ extra.duration }}' }}'},
             {% for label, name in form_fields %}
                 {title: '(Form field) {{ label }}', description: '', content: '{{ '{{ data.' ~ name ~ ' }}' }}'},
             {% endfor %}

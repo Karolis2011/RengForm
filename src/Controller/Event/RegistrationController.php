@@ -223,6 +223,8 @@ class RegistrationController extends Controller
                     'type'        => 'event',
                     'title'       => $eventTime->getEvent()->getTitle(),
                     'description' => $eventTime->getEvent()->getDescription(),
+                    'time'        => $eventTime->getStartTime(),
+                    'duration'    => $eventTime->getEvent()->getDuration()
                 ]);
             }
         }
@@ -282,6 +284,8 @@ class RegistrationController extends Controller
                     'type'        => 'workshop',
                     'title'       => $workshopTime->getWorkshop()->getTitle(),
                     'description' => $workshopTime->getWorkshop()->getDescription(),
+                    'time'        => $workshopTime->getStartTime(),
+                    'duration'    => $workshopTime->getWorkshop()->getDuration()
                 ]);
             }
         }
