@@ -42,9 +42,8 @@
                         <tbody>
                         {% for workshop in category.workshops %}
                             {% for time in workshop.times %}
-                                <tr class="clickable-row"
-                                    data-href="{{ path('registration', {'timeId': time.id}) }}">
-                                    <td>{{ workshop.title }}</td>
+                                <tr class="clickable-row">
+                                    <td><a href="{{ path('registration', {'timeId': time.id}) }}">{{ workshop.title }}</a></td>
                                     <td>{{ time.startTime|date('Y-m-d H:i') }}</td>
                                     <td>{{ workshop.duration|date('H:i') }}</td>
                                     <td>
@@ -84,12 +83,5 @@
 
 <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".clickable-row").click(function () {
-            window.location = $(this).data("href");
-        });
-    });
-</script>
 </body>
 </html>

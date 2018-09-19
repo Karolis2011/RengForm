@@ -1,7 +1,7 @@
 {% for field in form.fields %}
     {% if field.type == 'paragraph' %}
         <div class="mb-3">
-            <p>{{ field.label }}</p>
+            <p>{{ field.label|raw }}</p>
         </div>
     {% elseif field.type == 'text' %}
         <div class="mb-3">
