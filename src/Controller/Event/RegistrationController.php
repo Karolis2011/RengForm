@@ -203,14 +203,14 @@ class RegistrationController extends Controller
                     $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
 
                     // Check if there are enough space for a group
-                    if ($eventTime->getEntriesLeft() < $entries) {
+                    if ($eventTime->getEvent()->getCapacity() !== null && $eventTime->getEntriesLeft() < $entries) {
                         //Not enough free spaces left in event
                         $this->addFlash('danger', 'Event does not have enough space left.');
 
                         return $this->render(
                             'Default/event.html.twig',
                             [
-                                'eventTime'      => $eventTime,
+                                'eventTime'         => $eventTime,
                                 'groupRegistration' => $group,
                             ]
                         );
@@ -238,7 +238,7 @@ class RegistrationController extends Controller
                     'title'       => $eventTime->getEvent()->getTitle(),
                     'description' => $eventTime->getEvent()->getDescription(),
                     'time'        => $eventTime->getStartTime(),
-                    'duration'    => $eventTime->getEvent()->getDuration()
+                    'duration'    => $eventTime->getEvent()->getDuration(),
                 ]);
             }
         }
@@ -278,7 +278,9 @@ class RegistrationController extends Controller
                     $entries = $formData[ConfigDecorator::GROUP_COUNT_FIELD_NAME];
 
                     // Check if there are enough space for a group
-                    if ($workshopTime->getEntriesLeft() < $entries) {
+                    if ($workshopTime->getWorkshop()->getCapacity() !== null
+                        && $workshopTime->getEntriesLeft() < $entries
+                    ) {
                         //Not enough free spaces left in event
                         $this->addFlash('danger', 'Workshop does not have enough space left.');
 
@@ -314,7 +316,7 @@ class RegistrationController extends Controller
                     'title'       => $workshopTime->getWorkshop()->getTitle(),
                     'description' => $workshopTime->getWorkshop()->getDescription(),
                     'time'        => $workshopTime->getStartTime(),
-                    'duration'    => $workshopTime->getWorkshop()->getDuration()
+                    'duration'    => $workshopTime->getWorkshop()->getDuration(),
                 ]);
             }
         }
