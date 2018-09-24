@@ -7,6 +7,7 @@ use App\Entity\MultiEvent;
 use App\Entity\OneTimeEmailTemplate;
 use App\Entity\RegistrationEmailTemplate;
 use App\Entity\FormConfig;
+use App\Entity\Workshop;
 use App\Form\EmailTemplateType;
 use App\Form\OneTimeEmailTemplateType;
 use App\Repository\EventRepository;
@@ -14,6 +15,7 @@ use App\Repository\MultiEventRepository;
 use App\Repository\OneTimeEmailTemplateRepository;
 use App\Repository\RegistrationEmailTemplateRepository;
 use App\Repository\FormConfigRepository;
+use App\Repository\WorkshopRepository;
 use App\Service\Email\Mailer;
 use App\Service\Helper\SharedAmongUsersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -174,7 +176,10 @@ class EmailController extends Controller
      * @param MultiEventRepository $multiEventRepository
      * @param Request              $request
      * @param string               $eventId
-     * @return Response|RedirectResponse
+     * @return RedirectResponse|Response
+     * @throws \Throwable
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Syntax
      */
     public function sendEvent(
         EventRepository $eventRepository,
@@ -220,6 +225,56 @@ class EmailController extends Controller
         }
 
         throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+    }
+
+    /**
+     * @param WorkshopRepository $workshopRepository
+     * @param Request            $request
+     * @param string             $workshopId
+     * @return RedirectResponse|Response
+     * @throws \Throwable
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Syntax
+     */
+    public function sendWorkshop(
+        WorkshopRepository $workshopRepository,
+        Request $request,
+        $workshopId
+    ) {
+        /** @var Workshop|null $workshop */
+        $workshop = $this->findEntity($workshopRepository, $workshopId);
+
+        if ($workshop !== null) {
+            $emailTemplate = new OneTimeEmailTemplate();
+            $form = $this->createForm(
+                OneTimeEmailTemplateType::class,
+                $emailTemplate
+            );
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $emailTemplate->setWorkshop($workshop);
+                $this->oneTimeRepository->save($emailTemplate);
+                $this->addFlash('success', 'Emails sent.');
+                $this->mailer->sendEmailsWorkshop($emailTemplate, $workshop);
+
+                return $this->redirectToRoute(
+                    'event_show',
+                    [
+                        'eventId' => $workshop->getCategory()->getEvent()->getId(),
+                    ]
+                );
+            }
+
+            return $this->render(
+                'Admin/OneTimeEmail/create.html.twig',
+                [
+                    'form' => $form->createView(),
+                ]
+            );
+        }
+
+        throw new NotFoundHttpException(sprintf('Workshop by id %s not found', $workshopId));
     }
 
     /**

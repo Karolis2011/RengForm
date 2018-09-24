@@ -56,6 +56,10 @@ workshop_registrations:
     path: /workshop/{workshopId}/registrations
     controller: App\Controller\Admin\RegistrationController::index
 
+workshop_send_email:
+    path: /workshop/{workshopId}/send_email
+    controller: App\Controller\Admin\EmailController::sendWorkshop
+
 workshop_update_times:
     path: /workshop/{workshopId}/times/update
     controller: App\Controller\Admin\WorkshopController::updateTimes
