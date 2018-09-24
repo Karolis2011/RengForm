@@ -35,7 +35,7 @@
                         <tr>
                             <th>{% trans %}Workshop{% endtrans %}</th>
                             <th>{% trans %}Start Time{% endtrans %}</th>
-                            <th>{% trans %}Duration{% endtrans %}</th>
+                            <th>{% trans %}End Time{% endtrans %}</th>
                             <th>{% trans %}Places left{% endtrans %}</th>
                         </tr>
                         </thead>
@@ -44,8 +44,8 @@
                             {% for time in workshop.times %}
                                 <tr class="clickable-row">
                                     <td><a href="{{ path('registration', {'timeId': time.id}) }}">{{ workshop.title }}</a></td>
-                                    <td>{{ time.startTime|date('Y-m-d H:i') }}</td>
-                                    <td>{{ workshop.duration|date('H:i') }}</td>
+                                    <td>{{ time.startTime|date('H:i') }}</td>
+                                    <td>{{ time.endTime|date('H:i') }}</td>
                                     <td>
                                         {% if workshop.capacity is not null %}
                                             <span class="badge badge-pill {% if time.available %}badge-primary{% else %}badge-secondary{% endif %}">{{ time.entriesLeft }}</span>

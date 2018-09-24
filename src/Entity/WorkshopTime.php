@@ -79,6 +79,14 @@ class WorkshopTime
     }
 
     /**
+     * @return \DateTimeInterface|null
+     */
+    public function getEndTime(): ?\DateTimeInterface
+    {
+        return $this->startTime->add((new \DateTime('00:00'))->diff($this->getWorkshop()->getDuration()));
+    }
+
+    /**
      * @return int|null
      */
     public function getEntries(): ?int
