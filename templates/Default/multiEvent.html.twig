@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
+
+    <style>
+    .popup {
+        font-size: 0.8em;
+    }
+    </style>
 </head>
 
 <body class="bg-light">
@@ -43,7 +49,13 @@
                         {% for workshop in category.workshops %}
                             {% for time in workshop.times %}
                                 <tr class="clickable-row">
-                                    <td><a href="{{ path('registration', {'timeId': time.id}) }}">{{ workshop.title }}</a></td>
+                                    <td>
+                                        <a class="link" href="{{ path('registration', {'timeId': time.id}) }}">{{ workshop.title }}</a>
+                                        <div class="popup" style="display: none;">
+                                            <b style="font-size: 1.2em;">{% trans %}Description{% endtrans %}:</b></br>
+                                            {{ workshop.description|raw }}
+                                        </div>
+                                    </td>
                                     <td>{{ time.startTime|date('H:i') }}</td>
                                     <td>{{ time.endTime|date('H:i') }}</td>
                                     <td>
@@ -83,5 +95,12 @@
 
 <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+<script>
+    $('.clickable-row .link').hover(function() {
+        $(this).parents('.clickable-row').find('.popup').show(200);
+    }, function() {
+        $(this).parents('.clickable-row').find('.popup').hide(200);
+    })
+</script>
 </body>
 </html>
