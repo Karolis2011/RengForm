@@ -2,10 +2,10 @@
 
 namespace App\Tests\Functional\Form;
 
-use App\Entity\EmailTemplate;
 use App\Entity\Event;
 use App\Entity\EventTime;
 use App\Entity\FormConfig;
+use App\Entity\RegistrationEmailTemplate;
 use App\Entity\User;
 use App\Form\EventCreateType;
 use App\Tests\TestCases\TypeDatabaseTestCase;
@@ -80,7 +80,7 @@ class EventCreateTypeTest extends TypeDatabaseTestCase
     {
         $classes = [
             FormConfig::class,
-            EmailTemplate::class,
+            RegistrationEmailTemplate::class,
             User::class,
         ];
 

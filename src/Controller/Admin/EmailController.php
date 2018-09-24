@@ -14,6 +14,7 @@ use App\Repository\MultiEventRepository;
 use App\Repository\OneTimeEmailTemplateRepository;
 use App\Repository\RegistrationEmailTemplateRepository;
 use App\Repository\FormConfigRepository;
+use App\Service\Email\Mailer;
 use App\Service\Helper\SharedAmongUsersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,16 +40,24 @@ class EmailController extends Controller
     private $oneTimeRepository;
 
     /**
+     * @var Mailer
+     */
+    private $mailer;
+
+    /**
      * EmailController constructor.
      * @param RegistrationEmailTemplateRepository $repository
      * @param OneTimeEmailTemplateRepository      $oneTimeRepository
+     * @param Mailer                              $mailer
      */
     public function __construct(
         RegistrationEmailTemplateRepository $repository,
-        OneTimeEmailTemplateRepository $oneTimeRepository
+        OneTimeEmailTemplateRepository $oneTimeRepository,
+        Mailer $mailer
     ) {
         $this->repository = $repository;
         $this->oneTimeRepository = $oneTimeRepository;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -163,6 +172,7 @@ class EmailController extends Controller
     /**
      * @param EventRepository      $eventRepository
      * @param MultiEventRepository $multiEventRepository
+     * @param Request              $request
      * @param string               $eventId
      * @return Response|RedirectResponse
      */
@@ -195,9 +205,8 @@ class EmailController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 $emailTemplate->setEvent($event);
                 $this->oneTimeRepository->save($emailTemplate);
-                $this->addFlash('success', 'Email sent.');
-
-                // TODO: send emails
+                $this->addFlash('success', 'Emails sent.');
+                $this->mailer->sendEmailsEvent($emailTemplate, $event);
 
                 return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
             }
@@ -205,7 +214,7 @@ class EmailController extends Controller
             return $this->render(
                 'Admin/OneTimeEmail/create.html.twig',
                 [
-                    'form'        => $form->createView(),
+                    'form' => $form->createView(),
                 ]
             );
         }

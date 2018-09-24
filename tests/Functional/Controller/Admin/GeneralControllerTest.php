@@ -3,7 +3,7 @@
 namespace App\Tests\Functional\Controller\Admin;
 
 use App\Entity\Category;
-use App\Entity\EmailTemplate;
+use App\Entity\RegistrationEmailTemplate;
 use App\Entity\Event;
 use App\Entity\EventTime;
 use App\Entity\FormConfig;
@@ -281,7 +281,7 @@ class GeneralControllerTest extends DatabaseTestCase
             Registration::class,
             Category::class,
             User::class,
-            EmailTemplate::class,
+            RegistrationEmailTemplate::class,
         ];
 
         return $classes;

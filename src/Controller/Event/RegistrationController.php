@@ -9,6 +9,7 @@ use App\Entity\WorkshopTime;
 use App\Repository\EventTimeRepository;
 use App\Repository\RegistrationRepository;
 use App\Repository\WorkshopTimeRepository;
+use App\Service\Email\Mailer;
 use App\Service\Form\ConfigDecorator;
 use App\Service\Form\FormValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,14 +43,9 @@ class RegistrationController extends Controller
     private $formValidator;
 
     /**
-     * @var \Swift_Mailer
+     * @var Mailer
      */
     private $mailer;
-
-    /**
-     * @var \Twig_Environment
-     */
-    private $twig;
 
     /**
      * RegistrationController constructor.
@@ -57,23 +53,20 @@ class RegistrationController extends Controller
      * @param EventTimeRepository    $eventTimeRepository
      * @param RegistrationRepository $registrationRepository
      * @param FormValidator          $formValidator
-     * @param \Swift_Mailer          $mailer
-     * @param \Twig_Environment      $twig
+     * @param Mailer                 $mailer
      */
     public function __construct(
         WorkshopTimeRepository $workshopTimeRepository,
         EventTimeRepository $eventTimeRepository,
         RegistrationRepository $registrationRepository,
         FormValidator $formValidator,
-        \Swift_Mailer $mailer,
-        \Twig_Environment $twig
+        Mailer $mailer
     ) {
         $this->workshopTimeRepository = $workshopTimeRepository;
         $this->eventTimeRepository = $eventTimeRepository;
         $this->registrationRepository = $registrationRepository;
         $this->formValidator = $formValidator;
         $this->mailer = $mailer;
-        $this->twig = $twig;
     }
 
     /**
@@ -233,12 +226,13 @@ class RegistrationController extends Controller
                 } else {
                     $emailTemplate = $eventTime->getEvent()->getFormConfig()->getRegistrationEmailTemplate();
                 }
+
                 $this->sendEmail($emailTemplate, $formData, [
                     'type'        => 'event',
                     'title'       => $eventTime->getEvent()->getTitle(),
                     'description' => $eventTime->getEvent()->getDescription(),
-                    'time'        => $eventTime->getStartTime(),
-                    'duration'    => $eventTime->getEvent()->getDuration(),
+                    'time'        => $eventTime->getStartTime()->format('Y-m-d H:i'),
+                    'duration'    => $eventTime->getEvent()->getDuration()->format('H:i'),
                 ]);
             }
         }
@@ -311,12 +305,13 @@ class RegistrationController extends Controller
                 } else {
                     $emailTemplate = $workshopTime->getWorkshop()->getFormConfig()->getRegistrationEmailTemplate();
                 }
+
                 $this->sendEmail($emailTemplate, $formData, [
                     'type'        => 'workshop',
                     'title'       => $workshopTime->getWorkshop()->getTitle(),
                     'description' => $workshopTime->getWorkshop()->getDescription(),
-                    'time'        => $workshopTime->getStartTime(),
-                    'duration'    => $workshopTime->getWorkshop()->getDuration(),
+                    'time'        => $workshopTime->getStartTime()->format('Y-m-d H:i'),
+                    'duration'    => $workshopTime->getWorkshop()->getDuration()->format('H:i'),
                 ]);
             }
         }
@@ -333,6 +328,7 @@ class RegistrationController extends Controller
     /**
      * @param EmailTemplate|null $emailTemplate
      * @param array              $formData
+     * @param array              $extraData
      */
     private function sendEmail(?EmailTemplate $emailTemplate, array $formData, array $extraData): void
     {
@@ -346,20 +342,11 @@ class RegistrationController extends Controller
         }
 
         $recipient = $formData[$emailTemplate->getReceiverField()];
+        $data = [
+            'data'  => $formData,
+            'extra' => $extraData,
+        ];
 
-        //TODO: Format the email
-        $template = $this->twig->createTemplate($emailTemplate->getBody());
-        $message = (new \Swift_Message($emailTemplate->getSubject()))
-            ->setTo($recipient)
-            ->setFrom($this->getParameter('sender_email'))
-            ->setBody(
-                $template->render([
-                    'data'  => $formData,
-                    'extra' => $extraData,
-                ]),
-                'text/html'
-            );
-
-        $this->mailer->send($message);
+        $this->mailer->sendEmail($emailTemplate, $recipient, $data);
     }
 }

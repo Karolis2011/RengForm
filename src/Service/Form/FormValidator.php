@@ -56,8 +56,8 @@ class FormValidator
             $form = new Form($formConfig->getConfigParsed());
             $emailField = null;
 
-            if ($formConfig->getEmailTemplate() !== null) {
-                $emailField = $formConfig->getEmailTemplate()->getReceiverField();
+            if ($formConfig->getRegistrationEmailTemplate() !== null) {
+                $emailField = $formConfig->getRegistrationEmailTemplate()->getReceiverField();
             }
 
             $formFields = [];
