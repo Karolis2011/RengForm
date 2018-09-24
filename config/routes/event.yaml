@@ -30,6 +30,10 @@ event_save_category_order:
     path: /{eventId}/save_order
     controller: App\Controller\Admin\MultiEventController::saveCategoryOrder
 
+event_send_email:
+    path: /{eventId}/send_email
+    controller: App\Controller\Admin\EmailController::sendEvent
+
 event_times_update:
     path: /{eventId}/times/update
     controller: App\Controller\Admin\EventController::updateTimes

@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\EmailTemplateRepository")
+ * @ORM\MappedSuperclass()
  */
 class EmailTemplate
 {
@@ -17,25 +17,19 @@ class EmailTemplate
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $receiverField;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private $subject;
 
     /**
      * @ORM\Column(type="text")
      */
     private $body;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\FormConfig", inversedBy="emailTemplate")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $formConfig;
 
     public function getId(): ?string
     {
@@ -54,14 +48,14 @@ class EmailTemplate
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getSubject(): ?string
     {
-        return $this->title;
+        return $this->subject;
     }
 
-    public function setTitle(string $title): self
+    public function setSubject(string $subject): self
     {
-        $this->title = $title;
+        $this->subject = $subject;
 
         return $this;
     }
@@ -74,18 +68,6 @@ class EmailTemplate
     public function setBody(string $body): self
     {
         $this->body = $body;
-
-        return $this;
-    }
-
-    public function getFormConfig(): ?FormConfig
-    {
-        return $this->formConfig;
-    }
-
-    public function setFormConfig(FormConfig $formConfig): self
-    {
-        $this->formConfig = $formConfig;
 
         return $this;
     }

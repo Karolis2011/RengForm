@@ -2,10 +2,17 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\EmailTemplate;
+use App\Entity\Event;
+use App\Entity\MultiEvent;
+use App\Entity\OneTimeEmailTemplate;
+use App\Entity\RegistrationEmailTemplate;
 use App\Entity\FormConfig;
 use App\Form\EmailTemplateType;
-use App\Repository\EmailTemplateRepository;
+use App\Form\OneTimeEmailTemplateType;
+use App\Repository\EventRepository;
+use App\Repository\MultiEventRepository;
+use App\Repository\OneTimeEmailTemplateRepository;
+use App\Repository\RegistrationEmailTemplateRepository;
 use App\Repository\FormConfigRepository;
 use App\Service\Helper\SharedAmongUsersTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,17 +29,26 @@ class EmailController extends Controller
     use SharedAmongUsersTrait;
 
     /**
-     * @var EmailTemplateRepository
+     * @var RegistrationEmailTemplateRepository
      */
     private $repository;
 
     /**
-     * EmailController constructor.
-     * @param EmailTemplateRepository $repository
+     * @var OneTimeEmailTemplateRepository
      */
-    public function __construct(EmailTemplateRepository $repository)
-    {
+    private $oneTimeRepository;
+
+    /**
+     * EmailController constructor.
+     * @param RegistrationEmailTemplateRepository $repository
+     * @param OneTimeEmailTemplateRepository      $oneTimeRepository
+     */
+    public function __construct(
+        RegistrationEmailTemplateRepository $repository,
+        OneTimeEmailTemplateRepository $oneTimeRepository
+    ) {
         $this->repository = $repository;
+        $this->oneTimeRepository = $oneTimeRepository;
     }
 
     /**
@@ -50,7 +66,7 @@ class EmailController extends Controller
             throw new NotFoundHttpException(sprintf('Form config by id %s not found', $formId));
         }
 
-        $emailTemplate = new EmailTemplate();
+        $emailTemplate = new RegistrationEmailTemplate();
         $form = $this->createForm(
             EmailTemplateType::class,
             $emailTemplate,
@@ -71,11 +87,12 @@ class EmailController extends Controller
                 ]
             );
         }
+
         return $this->render(
             'Admin/EmailTemplate/create.html.twig',
             [
                 'form'        => $form->createView(),
-                'form_fields' => $formConfig->getFieldNames()
+                'form_fields' => $formConfig->getFieldNames(),
             ]
         );
     }
@@ -87,7 +104,7 @@ class EmailController extends Controller
      */
     public function edit(Request $request, $emailTemplateId)
     {
-        $emailTemplate = $this->getEmailTemplate($emailTemplateId);
+        $emailTemplate = $this->getRegistrationEmailTemplate($emailTemplateId);
 
         if ($emailTemplate === null) {
             throw new NotFoundHttpException(sprintf('Email template by id %s not found', $emailTemplateId));
@@ -118,7 +135,7 @@ class EmailController extends Controller
             [
                 'form'          => $form->createView(),
                 'emailTemplate' => $emailTemplate,
-                'form_fields'   => $emailTemplate->getFormConfig()->getFieldNames()
+                'form_fields'   => $emailTemplate->getFormConfig()->getFieldNames(),
             ]
         );
     }
@@ -129,7 +146,7 @@ class EmailController extends Controller
      */
     public function delete($emailTemplateId)
     {
-        $emailTemplate = $this->getEmailTemplate($emailTemplateId);
+        $emailTemplate = $this->getRegistrationEmailTemplate($emailTemplateId);
 
         if ($emailTemplate === null) {
             throw new NotFoundHttpException(sprintf('Email template by id %s not found', $emailTemplateId));
@@ -144,10 +161,63 @@ class EmailController extends Controller
     }
 
     /**
-     * @param $emailTemplateId
-     * @return EmailTemplate|null
+     * @param EventRepository      $eventRepository
+     * @param MultiEventRepository $multiEventRepository
+     * @param string               $eventId
+     * @return Response|RedirectResponse
      */
-    private function getEmailTemplate($emailTemplateId): ?EmailTemplate
+    public function sendEvent(
+        EventRepository $eventRepository,
+        MultiEventRepository $multiEventRepository,
+        Request $request,
+        $eventId
+    ) {
+        /** @var MultiEvent|null $event */
+        $event = $this->findEntity($multiEventRepository, $eventId);
+
+        if ($event !== null) {
+            $this->addFlash('danger', 'Email message can only be sent to simple event or multi events workshop');
+
+            return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
+        }
+
+        /** @var Event|null $event */
+        $event = $this->findEntity($eventRepository, $eventId);
+
+        if ($event !== null) {
+            $emailTemplate = new OneTimeEmailTemplate();
+            $form = $this->createForm(
+                OneTimeEmailTemplateType::class,
+                $emailTemplate
+            );
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $emailTemplate->setEvent($event);
+                $this->oneTimeRepository->save($emailTemplate);
+                $this->addFlash('success', 'Email sent.');
+
+                // TODO: send emails
+
+                return $this->redirectToRoute('event_show', ['eventId' => $eventId]);
+            }
+
+            return $this->render(
+                'Admin/OneTimeEmail/create.html.twig',
+                [
+                    'form'        => $form->createView(),
+                ]
+            );
+        }
+
+        throw new NotFoundHttpException(sprintf('Event by id %s not found', $eventId));
+    }
+
+    /**
+     * @param $emailTemplateId
+     * @return RegistrationEmailTemplate|null
+     */
+    private function getRegistrationEmailTemplate($emailTemplateId): ?RegistrationEmailTemplate
     {
         $emailTemplate = $this->repository->find($emailTemplateId);
 

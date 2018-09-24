@@ -1,20 +1,16 @@
 {% extends 'Admin/base.html.twig' %}
 {% import 'Admin/macros.html.twig' as macros %}
 
-{% block title %}{% trans %}Email Templates{% endtrans %} | {% trans %}Update{% endtrans %}{% endblock %}
+{% block title %}{% trans %}Email{% endtrans %} | {% trans %}Send{% endtrans %}{% endblock %}
 
 {% block body %}
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h2>{% block header %}{% trans %}Edit Email Template{% endtrans %}{% endblock %}</h2>
+        <h2>{% block header %}{% trans %}Send Email to registrations{% endtrans %}{% endblock %}</h2>
     </div>
     {{ macros.display_form_errors(form) }}
     <div class="row">
         <div class="col-md-8">
             {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
-            <div class="form-group">
-                {{ form_label(form.receiverField) }}
-                {{ form_widget(form.receiverField, {'attr': {'class': 'form-control', 'placeholder': 'Description'}}) }}
-            </div>
             <div class="form-group">
                 {{ form_label(form.subject) }}
                 {{ form_widget(form.subject, {'attr': {'class': 'form-control', 'placeholder': 'Subject'}}) }}
@@ -23,7 +19,7 @@
                 {{ form_label(form.body) }}
                 {{ form_widget(form.body, {'attr': {'class': 'form-control tinymce'}}) }}
             </div>
-            <button type="submit" class="btn btn-outline-secondary">{% trans %}Save{% endtrans %}</button>
+            <button type="submit" class="btn btn-outline-secondary">{% trans %}Send email{% endtrans %}</button>
             {{ form_end(form) }}
         </div>
     </div>
@@ -39,11 +35,9 @@
         templates: [
             {title: '{% trans %}Title{% endtrans %}', description: '', content: '{{ '{{ extra.title }}' }}'},
             {title: '{% trans %}Description{% endtrans %}', description: '', content: '{{ '{{ extra.description }}' }}'},
+            {title: '{% trans %}Place{% endtrans %}', description: '', content: '{{ '{{ extra.place }}' }}'},
             {title: '{% trans %}Start Time{% endtrans %}', description: '', content: '{{ '{{ extra.time }}' }}'},
-            {title: '{% trans %}Duration{% endtrans %}', description: '', content: '{{ '{{ extra.duration }}' }}'},
-            {% for label, name in form_fields %}
-                {title: '(Form field) {{ label }}', description: '', content: '{{ '{{ data.' ~ name ~ ' }}' }}'},
-            {% endfor %}
+            {title: '{% trans %}Duration{% endtrans %}', description: '', content: '{{ '{{ extra.duration }}' }}'}
         ]
         });</script>
 {% endblock %}

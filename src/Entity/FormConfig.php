@@ -55,7 +55,7 @@ class FormConfig
     private $type = self::SIMPLE;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\EmailTemplate", mappedBy="formConfig", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\RegistrationEmailTemplate", mappedBy="formConfig", cascade={"persist", "remove"})
      */
     private $emailTemplate;
 
@@ -198,18 +198,18 @@ class FormConfig
     }
 
     /**
-     * @return EmailTemplate|null
+     * @return RegistrationEmailTemplate|null
      */
-    public function getEmailTemplate(): ?EmailTemplate
+    public function getRegistrationEmailTemplate(): ?RegistrationEmailTemplate
     {
         return $this->emailTemplate;
     }
 
     /**
-     * @param EmailTemplate|null $emailTemplate
+     * @param RegistrationEmailTemplate|null $emailTemplate
      * @return FormConfig
      */
-    public function setEmailTemplate(?EmailTemplate $emailTemplate): self
+    public function setRegistrationEmailTemplate(?RegistrationEmailTemplate $emailTemplate): self
     {
         $this->emailTemplate = $emailTemplate;
 

@@ -229,9 +229,9 @@ class RegistrationController extends Controller
                 $this->addFlash('success', 'Registration successful');
 
                 if ($group) {
-                    $emailTemplate = $eventTime->getEvent()->getGroupFormConfig()->getEmailTemplate();
+                    $emailTemplate = $eventTime->getEvent()->getGroupFormConfig()->getRegistrationEmailTemplate();
                 } else {
-                    $emailTemplate = $eventTime->getEvent()->getFormConfig()->getEmailTemplate();
+                    $emailTemplate = $eventTime->getEvent()->getFormConfig()->getRegistrationEmailTemplate();
                 }
                 $this->sendEmail($emailTemplate, $formData, [
                     'type'        => 'event',
@@ -307,9 +307,9 @@ class RegistrationController extends Controller
                 $this->addFlash('success', 'Registration successful');
 
                 if ($group) {
-                    $emailTemplate = $workshopTime->getWorkshop()->getGroupFormConfig()->getEmailTemplate();
+                    $emailTemplate = $workshopTime->getWorkshop()->getGroupFormConfig()->getRegistrationEmailTemplate();
                 } else {
-                    $emailTemplate = $workshopTime->getWorkshop()->getFormConfig()->getEmailTemplate();
+                    $emailTemplate = $workshopTime->getWorkshop()->getFormConfig()->getRegistrationEmailTemplate();
                 }
                 $this->sendEmail($emailTemplate, $formData, [
                     'type'        => 'workshop',
@@ -349,7 +349,7 @@ class RegistrationController extends Controller
 
         //TODO: Format the email
         $template = $this->twig->createTemplate($emailTemplate->getBody());
-        $message = (new \Swift_Message($emailTemplate->getTitle()))
+        $message = (new \Swift_Message($emailTemplate->getSubject()))
             ->setTo($recipient)
             ->setFrom($this->getParameter('sender_email'))
             ->setBody(
