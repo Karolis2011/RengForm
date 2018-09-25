@@ -129,7 +129,7 @@ class TextFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = TextField::validate($field, $formData);
+        $errors = (new TextField())->validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }

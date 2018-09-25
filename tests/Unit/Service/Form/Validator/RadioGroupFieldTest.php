@@ -245,7 +245,7 @@ class RadioGroupFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = RadioGroupField::validate($field, $formData);
+        $errors = (new RadioGroupField())->validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }

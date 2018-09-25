@@ -266,7 +266,7 @@ class FormValidatorTest extends WebTestCase
     {
         $validator = $this->createClient()->getContainer()->get('test.form_validator');
         $result = $validator->validate(new FormConfig(), ['a']);
-        $this->assertEquals(false, $result);
+        $this->assertEquals(false, empty($result));
     }
 
     /**
@@ -281,11 +281,11 @@ class FormValidatorTest extends WebTestCase
         $validator = $this->createClient()->getContainer()->get('test.form_validator');
         $event = $this->getEvent($formConfig);
         $result = $validator->validate($event, $formData);
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, empty($result));
 
         $workshop = $this->getWorkshop($formConfig);
         $result = $validator->validate($workshop, $formData);
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected, empty($result));
     }
 
     /**

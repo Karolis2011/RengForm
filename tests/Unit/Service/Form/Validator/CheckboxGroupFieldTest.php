@@ -195,7 +195,7 @@ class CheckboxGroupFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = CheckboxGroupField::validate($field, $formData);
+        $errors = (new CheckboxGroupField())->validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }

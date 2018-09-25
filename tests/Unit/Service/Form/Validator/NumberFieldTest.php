@@ -204,7 +204,7 @@ class NumberFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = NumberField::validate($field, $formData);
+        $errors = (new NumberField())->validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }

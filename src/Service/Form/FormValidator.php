@@ -42,12 +42,12 @@ class FormValidator
      * @param EventTime|WorkshopTime $time
      * @param array                  $formData
      * @param bool                   $group
-     * @return bool
+     * @return array
      */
-    public function validate($time, array $formData, bool $group = false): bool
+    public function validate($time, array $formData, bool $group = false): array
     {
         if (empty($formData)) {
-            return false;
+            return ["Form is empty"];
         }
         $errors = [];
 
@@ -77,7 +77,7 @@ class FormValidator
             $errors[] = 'Unknown validation error occurred, please try again';
         }
 
-        return empty($errors);
+        return $errors;
     }
 
     /**

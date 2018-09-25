@@ -182,8 +182,14 @@ class RegistrationController extends Controller
         if (!$eventTime->isAvailable()) {
             $this->addFlash('danger', 'Event is full.');
         } elseif ($formData !== null) {
-            if (!$this->formValidator->validate($eventTime, $formData, $group)) {
+            $errors = $this->formValidator->validate($eventTime, $formData, $group);
+            if (!empty($errors)) {
                 $this->addFlash('danger', 'Registration form is not filled correctly');
+
+                // THIS OUTPUTS NOT TRANSLATED MESSAGES!!!
+                foreach ($errors as $error) {
+                    $this->addFlash('danger', $error);
+                }
             } else {
                 $entries = 1;
                 if ($group) {
@@ -258,8 +264,14 @@ class RegistrationController extends Controller
         if (!$workshopTime->isAvailable()) {
             $this->addFlash('danger', 'Workshop is full.');
         } elseif ($formData !== null) {
-            if (!$this->formValidator->validate($workshopTime, $formData, $group)) {
+            $errors = $this->formValidator->validate($workshopTime, $formData, $group);
+            if (!empty($errors)) {
                 $this->addFlash('danger', 'Registration form is not filled correctly');
+
+                // THIS OUTPUTS NOT TRANSLATED MESSAGES!!!
+                foreach ($errors as $error) {
+                    $this->addFlash('danger', $error);
+                }
             } else {
                 $entries = 1;
                 if ($group) {

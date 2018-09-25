@@ -185,7 +185,7 @@ class DateFieldTest extends TestCase
      */
     public function testValidate($field, $formData, $expected)
     {
-        $errors = DateField::validate($field, $formData);
+        $errors = (new DateField())->validate($field, $formData);
         $this->assertEquals($expected, $errors, '', 0.0, 10, true);
     }
 }
