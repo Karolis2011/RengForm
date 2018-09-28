@@ -38,6 +38,10 @@
                         </dl>
                         <div class="px-2 pb-2 btn-group">
                             <a class="btn btn-outline-secondary"
+                               href="{{ path('workshop_send_email', {'workshopId': workshop.id }) }}">
+                                {% trans %}Send Email{% endtrans %}
+                            </a>
+                            <a class="btn btn-outline-secondary"
                                href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">
                                 {% trans %}Edit{% endtrans %}
                             </a>
