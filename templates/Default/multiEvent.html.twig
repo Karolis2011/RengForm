@@ -67,6 +67,7 @@
                                             {% if is_granted('ROLE_USER') %}<span class="badge badge-pill badge-success">{{ time.entries }}</span>{% endif %}
                                         {% else %}
                                             {% trans %}Unlimited{% endtrans %}
+                                            {% if is_granted('ROLE_USER') %}<span class="badge badge-pill badge-success">{{ time.entries }}</span>{% endif %}
                                         {% endif %}
                                     </td>
                                     {% if is_granted('ROLE_USER') %}
