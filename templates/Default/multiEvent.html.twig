@@ -41,7 +41,7 @@
                             <th>{% trans %}Workshop name{% endtrans %}</th>
                             <th>{% trans %}Start Time{% endtrans %}</th>
                             <th>{% trans %}End Time{% endtrans %}</th>
-                            <th>{% trans %}Places left{% endtrans %}</th>
+                            <th>{% trans %}Places left{% endtrans %}{% if is_granted('ROLE_USER') %} ({% trans %}Registrations{% endtrans %}){% endif %}</th>
                             {% if is_granted('ROLE_USER') %}
                                 <th>*</th>
                             {% endif %}
@@ -64,15 +64,24 @@
                                     <td>
                                         {% if workshop.capacity is not null %}
                                             <span class="badge badge-pill {% if time.available %}badge-primary{% else %}badge-secondary{% endif %}">{{ time.entriesLeft }}</span>
+                                            {% if is_granted('ROLE_USER') %}<span class="badge badge-pill badge-success">{{ time.entries }}</span>{% endif %}
                                         {% else %}
                                             {% trans %}Unlimited{% endtrans %}
                                         {% endif %}
                                     </td>
                                     {% if is_granted('ROLE_USER') %}
                                         <td>
-                                            <a class="btn btn-outline-secondary btn-sm" href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
-                                                {% trans %}View registrations{% endtrans %}
-                                            </a>
+                                            <div class="dropdown dropleft">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    A
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">{% trans %}View registrations{% endtrans %}</a>
+                                                    <a class="dropdown-item" href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">{% trans %}Edit{% endtrans %}</a>
+                                                    <a class="dropdown-item" href="{{ path('workshop_update_times', {'workshopId': workshop.id }) }}">{% trans %}Edit Times{% endtrans %}</a>
+                                                    <a class="dropdown-item" href="{{ path('download_registrations_workshop', {'workshop': time.id }) }}">{% trans %}Edit Times{% endtrans %}</a>
+                                                </div>
+                                            </div>
                                         </td>
                                     {% endif %}
                                 </tr>
@@ -86,6 +95,11 @@
     {% else %}
         <p>{% trans %}Event is empty{% endtrans %}.</p>
     {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/popper/popper.min.js') }}"></script>
+    {{ parent() }}
 {% endblock %}
 
 {% block javascript_inline %}
