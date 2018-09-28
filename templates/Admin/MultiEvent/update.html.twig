@@ -22,6 +22,10 @@
                 {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Title'}}) }}
             </div>
             <div class="form-group">
+                {{ form_label(form.isOpen) }}
+                {{ form_widget(form.isOpen, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
                 {{ form_label(form.date) }}
                 <div class="input-group datetimepicker">
                     {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}

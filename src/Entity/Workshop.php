@@ -78,6 +78,11 @@ class Workshop
     private $category;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isOpen;
+
+    /**
      * Workshop constructor.
      */
     public function __construct()
@@ -288,5 +293,17 @@ class Workshop
                 ->atPath('formConfig')
                 ->addViolation();
         }
+    }
+
+    public function getIsOpen(): ?bool
+    {
+        return $this->isOpen;
+    }
+
+    public function setIsOpen(bool $isOpen): self
+    {
+        $this->isOpen = $isOpen;
+
+        return $this;
     }
 }

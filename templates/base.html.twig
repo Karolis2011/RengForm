@@ -6,17 +6,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>RengForm | {% block title %}{% endblock %}</title>
+    <title>{% block ptitle %}{% endblock %}{% block title %}{% endblock %}</title>
 
     <link rel="icon" href="{{ asset('/img/favicon.ico') }}" type="image/x-icon">
 
     {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
     {% endblock %}
 </head>
 
 <body class="bg-light" style="height: 100%">
+{% block nav %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <span class="navbar-brand mb-0 h1">RengForm</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +26,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav ml-auto">
-            {{ render(controller('App\\Controller\\Admin\\ThemeController::menu', {'view': 'user'})) }}
+            {{ render(controller('App\\Controller\\Admin\\ThemeController::menu', {'view': (is_granted('ROLE_USER')) ? 'admin' : 'user'})) }}
             <div class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% trans %}Language{% endtrans %}
@@ -38,11 +40,19 @@
                     </a>
                 </div>
             </div>
+            {% if is_granted('ROLE_USER') %}
+                <a class="nav-item nav-link" href="{{ path('logout') }}">{% trans %}Sign out{% endtrans %}</a>
+            {% endif %}
         </div>
     </div>
 </nav>
+{% endblock %}
 
+<div class="container">
 {% block body %}{% endblock %}
+</div>
+
+{% block footer %}{% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>

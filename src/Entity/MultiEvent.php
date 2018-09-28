@@ -62,6 +62,11 @@ class MultiEvent
     private $owner;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isOpen;
+
+    /**
      * MultiEvent constructor.
      */
     public function __construct()
@@ -233,5 +238,17 @@ class MultiEvent
                 ->atPath('endDate')
                 ->addViolation();
         }
+    }
+
+    public function getIsOpen(): ?bool
+    {
+        return $this->isOpen;
+    }
+
+    public function setIsOpen(bool $isOpen): self
+    {
+        $this->isOpen = $isOpen;
+
+        return $this;
     }
 }

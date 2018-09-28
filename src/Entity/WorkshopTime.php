@@ -137,15 +137,30 @@ class WorkshopTime
      */
     public function getEntriesLeft()
     {
+        if($this->workshop->getCapacity() === null) {
+            return 1000000;
+        }
         return $this->workshop->getCapacity() - $this->entries;
     }
 
     /**
+     * @param bool $isAdmin
      * @return bool
      */
-    public function isAvailable()
+    public function isAvailable(bool $isAdmin = false)
     {
-        return $this->workshop->getCapacity() === null || $this->workshop->getCapacity() > $this->entries;
+        $haveOpenSlots = $this->getWorkshop()->getCapacity() === null || $this->getWorkshop()->getCapacity() > $this->entries;
+        $isClosed = !$this->getWorkshop()->getIsOpen() || !$this->getWorkshop()->getCategory()->getEvent()->getIsOpen();
+        return (!$isClosed || $isAdmin) && $haveOpenSlots;
+    }
+
+    /**
+     * @param bool $isAdmin
+     * @return bool
+     */
+    public function getIsAvailable(bool $isAdmin = false)
+    {
+        return $this->isAvailable($isAdmin);
     }
 
     /**

@@ -164,11 +164,22 @@ class EventTime
     }
 
     /**
+     * @param bool $isAdmin
      * @return bool
      */
-    public function isAvailable()
+    public function isAvailable(bool $isAdmin = false)
     {
-        return $this->event->getCapacity() === null || $this->event->getCapacity() > $this->entries;
+        $haveOpenSlots = $this->getEvent()->getCapacity() === null || $this->getEvent()->getCapacity() > $this->entries;
+        return $haveOpenSlots && (!$this->getEvent()->getIsOpen() || $isAdmin);
+    }
+
+    /**
+     * @param bool $isAdmin
+     * @return bool
+     */
+    public function getIsAvailable(bool $isAdmin = false)
+    {
+        return $this->isAvailable($isAdmin);
     }
 
     /**

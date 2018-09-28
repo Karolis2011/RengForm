@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Class RegistrationController
@@ -128,19 +129,19 @@ class RegistrationController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function registerSimple(Request $request, $timeId)
+    public function registerSimple(Request $request, $timeId, AuthorizationCheckerInterface $authChecker)
     {
         $formData = $request->get('registration', null);
         $time = $this->workshopTimeRepository->find($timeId);
 
         if ($time !== null) {
-            return $this->processWorkshop($time, $formData);
+            return $this->processWorkshop($time, $formData, false, $authChecker);
         }
 
         $time = $this->eventTimeRepository->find($timeId);
 
         if ($time !== null) {
-            return $this->processEvent($time, $formData);
+            return $this->processEvent($time, $formData, false, $authChecker);
         }
 
         throw new NotFoundHttpException(sprintf('Workshop or Event by id %s not found', $timeId));
@@ -152,19 +153,19 @@ class RegistrationController extends Controller
      * @return Response
      * @throws \Exception
      */
-    public function registerMulti(Request $request, $timeId)
+    public function registerMulti(Request $request, $timeId, AuthorizationCheckerInterface $authChecker)
     {
         $formData = $request->get('registration', null);
         $time = $this->workshopTimeRepository->find($timeId);
 
         if ($time !== null) {
-            return $this->processWorkshop($time, $formData, true);
+            return $this->processWorkshop($time, $formData, true, $authChecker);
         }
 
         $time = $this->eventTimeRepository->find($timeId);
 
         if ($time !== null) {
-            return $this->processEvent($time, $formData, true);
+            return $this->processEvent($time, $formData, true, $authChecker);
         }
 
         throw new NotFoundHttpException(sprintf('Workshop or Event by id %s not found', $timeId));
@@ -177,10 +178,14 @@ class RegistrationController extends Controller
      * @return Response
      * @throws \Exception
      */
-    private function processEvent(EventTime $eventTime, $formData, bool $group = false): Response
+    private function processEvent(EventTime $eventTime, $formData, bool $group = false, AuthorizationCheckerInterface $authChecker): Response
     {
-        if (!$eventTime->isAvailable()) {
-            $this->addFlash('danger', 'Event is full.');
+        if (!$eventTime->isAvailable($authChecker->isGranted('ROLE_USER'))) {
+            if($eventTime->getEntriesLeft() <= 0) {
+                $this->addFlash('danger', 'Event is full.');
+            } else {
+                $this->addFlash('danger', 'Registration for this event is closed.');
+            }
         } elseif ($formData !== null) {
             $errors = $this->formValidator->validate($eventTime, $formData, $group);
             if (!empty($errors)) {
@@ -259,10 +264,14 @@ class RegistrationController extends Controller
      * @return Response
      * @throws \Exception
      */
-    private function processWorkshop(WorkshopTime $workshopTime, $formData, bool $group = false): Response
+    private function processWorkshop(WorkshopTime $workshopTime, $formData, bool $group = false, AuthorizationCheckerInterface $authChecker): Response
     {
-        if (!$workshopTime->isAvailable()) {
-            $this->addFlash('danger', 'Workshop is full.');
+        if (!$workshopTime->isAvailable($authChecker->isGranted('ROLE_USER'))) {
+            if($workshopTime->getEntriesLeft() <= 0) {
+                $this->addFlash('danger', 'Workshop is full.');
+            } else {
+                $this->addFlash('danger', 'Registration for this workshop is closed.');
+            }
         } elseif ($formData !== null) {
             $errors = $this->formValidator->validate($workshopTime, $formData, $group);
             if (!empty($errors)) {

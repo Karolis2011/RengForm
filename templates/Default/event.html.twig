@@ -1,24 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% extends 'Default/base.html.twig' %}
 
-    <title>{{ eventTime.event.title }} | {{ eventTime.startTime|date('Y-m-d H:i') }}</title>
-    <link rel="icon" href="{{ asset('/img/favicon.ico') }}" type="image/x-icon">
+{% block title %}{{ eventTime.event.title }} | {{ eventTime.startTime|date('Y-m-d H:i') }}{% endblock %}
 
-    <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('style/css/font-awesome/font-awesome.min.css') }}">
+{% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('style/css/datetimepicker/bootstrap-datetimepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/select2/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/css/select2/select2-bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
-</head>
+{% endblock %}
 
-<body class="bg-light">
-<div class="container">
+{% block body %}
     <div class="py-5 text-center">
         <h2>{{ eventTime.event.title }}</h2>
         <h6>{{ eventTime.startTime|date('Y-m-d H:i') }}</h6>
@@ -34,56 +25,44 @@
                     </div>
                 {% endfor %}
             {% endfor %}
-
-            <h4 class="mb-3">{% trans %}Registration{% endtrans %}</h4>
-            <form name="registration" method="post">
-                {% if groupRegistration %}
-                    {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.groupFormConfig.configParsed })) }}
-                {% else %}
-                    {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.formConfig.configParsed })) }}
-                {% endif %}
-                <button class="btn btn-primary btn-lg btn-block" type="submit">{% trans %}Register{% endtrans %}</button>
-            </form>
+            {% if workshopTime.isAvailable(is_granted('ROLE_USER')) %}
+                <h4 class="mb-3">{% trans %}Registration{% endtrans %}</h4>
+                <form name="registration" method="post">
+                    {% if groupRegistration %}
+                        {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.groupFormConfig.configParsed })) }}
+                    {% else %}
+                        {{ render(controller('App\\Controller\\Event\\FormController::renderForm', { 'config': eventTime.event.formConfig.configParsed })) }}
+                    {% endif %}
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">{% trans %}Register{% endtrans %}</button>
+                </form>
+            {% endif %}
         </div>
     </div>
+{% endblock %}
 
-    <footer class="my-5 pt-5 text-muted text-center text-small">
-        <ul class="list-inline">
-            <li class="list-inline-item">
-                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
-                    <span class="flag-icon flag-icon-gb"></span>
-                </a>
-            </li>
-            <li class="list-inline-item">
-                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
-                    <span class="flag-icon flag-icon-lt"></span>
-                </a>
-            </li>
-        </ul>
-    </footer>
-</div>
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/popper/popper.min.js') }}"></script>
+    <script src="{{ asset('js/moment/moment.min.js') }}"></script>
+    <script src="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
+{% endblock %}
 
+{% block javascript_inline %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
 
-<script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('js/popper/popper.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
-<script src="{{ asset('js/moment/moment.min.js') }}"></script>
-<script src="{{ asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
-<script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
+            $(".datetimepicker").datetimepicker({
+                'format': 'YYYY-MM-DD',
+                'showClose': true
+            });
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-
-        $(".datetimepicker").datetimepicker({
-            'format': 'YYYY-MM-DD',
-            'showClose': true
+            $(".formSelect").select2({
+                theme: "bootstrap4"
+            });
         });
-
-        $(".formSelect").select2({
-            theme: "bootstrap4"
-        });
-    });
-</script>
-</body>
-</html>
+    </script>
+{% endblock %}

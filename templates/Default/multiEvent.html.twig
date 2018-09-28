@@ -1,18 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+{% extends 'Default/base.html.twig' %}
 
-    <title>{{ event.title }}</title>
-    <link rel="icon" href="{{ asset('/img/favicon.ico') }}" type="image/x-icon">
+{% block title %}{{ event.title }}{% endblock %}
 
-    <link rel="stylesheet" href="{{ asset('style/css/bootstrap/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('style/css/flag-icon/flag-icon.min.css') }}">
+{% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="{{ asset('style/css/custom/table.css') }}">
-
     <style>
     .popup {
         font-size: 0.8em;
@@ -20,15 +12,20 @@
         z-index: 100;
     }
     </style>
-</head>
+{% endblock %}
 
-<body class="bg-light">
-<div class="container">
+{% block body %}
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
         <h1 class="display-4">{{ event.title }}</h1>
         <h6>{{ event.date|date('Y-m-d H:i') }} - {{ event.endDate|date('Y-m-d H:i') }}</h6>
         <p class="lead">{{ event.description }}</p>
     </div>
+    {% if not event.isOpen %}
+        <div class="alert alert-danger" role="alert">
+            {% trans %}Registration is closed.{% endtrans %}
+        </div>
+    {% endif %}
+    
 
     {% for category in event.categories if not event.empty %}
         {% if category.workshops is not empty %}
@@ -45,6 +42,9 @@
                             <th>{% trans %}Start Time{% endtrans %}</th>
                             <th>{% trans %}End Time{% endtrans %}</th>
                             <th>{% trans %}Places left{% endtrans %}</th>
+                            {% if is_granted('ROLE_USER') %}
+                                <th>*</th>
+                            {% endif %}
                         </tr>
                         </thead>
                         <tbody>
@@ -68,6 +68,13 @@
                                             {% trans %}Unlimited{% endtrans %}
                                         {% endif %}
                                     </td>
+                                    {% if is_granted('ROLE_USER') %}
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm" href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">
+                                                {% trans %}View registrations{% endtrans %}
+                                            </a>
+                                        </td>
+                                    {% endif %}
                                 </tr>
                             {% endfor %}
                         {% endfor %}
@@ -79,31 +86,14 @@
     {% else %}
         <p>{% trans %}Event is empty{% endtrans %}.</p>
     {% endfor %}
+{% endblock %}
 
-    <footer class="my-5 pt-5 text-muted text-center text-small">
-        <ul class="list-inline">
-            <li class="list-inline-item">
-                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'en'})) }}">
-                    <span class="flag-icon flag-icon-gb"></span>
-                </a>
-            </li>
-            <li class="list-inline-item">
-                <a href="{{ render(controller('App\\Controller\\LanguageController::changeLanguage', {'language': 'lt'})) }}">
-                    <span class="flag-icon flag-icon-lt"></span>
-                </a>
-            </li>
-        </ul>
-    </footer>
-</div>
-
-<script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
-<script>
-    $('.clickable-row .link').hover(function() {
-        $(this).parents('.clickable-row').find('.popup').show(200);
-    }, function() {
-        $(this).parents('.clickable-row').find('.popup').hide(200);
-    })
-</script>
-</body>
-</html>
+{% block javascript_inline %}
+    <script>
+        $('.clickable-row .link').hover(function() {
+            $(this).parents('.clickable-row').find('.popup').show(200);
+        }, function() {
+            $(this).parents('.clickable-row').find('.popup').hide(200);
+        })
+    </script>
+{% endblock %}

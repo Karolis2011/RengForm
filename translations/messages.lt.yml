@@ -120,6 +120,7 @@ Simple: Paprasta
 For group: Skirta grupėms
 Form for groups: Forma skirta grupėms
 Group registration form (optional): Grupių registracijai skirta forma (neprivaloma)
+Group registration form: Grupių registracijai skirta forma
 Regular registration: Įprasta registracija
 Group registration: Grupės registracija
 Please choose registration type: Pasirinkite registracijos tipą
@@ -127,3 +128,7 @@ Formconfig: Registracijos forma
 Workshop does not have enough space left.: Užsiėmime nepakanka laisvų vietų.
 Event does not have enough space left.: Renginyje nepakanka laisvų vietų.
 End Time: Pabaiga
+Is open: Ar atidaryta
+Registration is closed.: Registracija uždaryta.
+Registration for this workshop is closed.: Registracija šiam užsiemimui uždaryta.
+Registration for this event is closed.: Registracija šiam renginiui uždaryta.

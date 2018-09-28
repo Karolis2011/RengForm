@@ -78,6 +78,11 @@ class Event
     private $owner;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isOpen;
+
+    /**
      * Event constructor.
      */
     public function __construct()
@@ -288,5 +293,17 @@ class Event
                 ->atPath('formConfig')
                 ->addViolation();
         }
+    }
+
+    public function getIsOpen(): ?bool
+    {
+        return $this->isOpen;
+    }
+
+    public function setIsOpen(bool $isOpen): self
+    {
+        $this->isOpen = $isOpen;
+
+        return $this;
     }
 }
