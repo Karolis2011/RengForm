@@ -80,7 +80,7 @@
                                                     <a class="dropdown-item" href="{{ path('workshop_registrations', {'workshopId': workshop.id }) }}">{% trans %}View registrations{% endtrans %}</a>
                                                     <a class="dropdown-item" href="{{ path('workshop_update', {'workshopId': workshop.id }) }}">{% trans %}Edit{% endtrans %}</a>
                                                     <a class="dropdown-item" href="{{ path('workshop_update_times', {'workshopId': workshop.id }) }}">{% trans %}Edit Times{% endtrans %}</a>
-                                                    <a class="dropdown-item" href="{{ path('download_registrations_workshop', {'workshop': time.id }) }}">{% trans %}Edit Times{% endtrans %}</a>
+                                                    <a class="dropdown-item" href="{{ path('download_registrations_workshop', {'workshop': time.id }) }}">{% trans %}{% trans %}Download registrations{% endtrans %} ({% trans %}Single Workshop{% endtrans %}){% endtrans %}</a>
                                                 </div>
                                             </div>
                                         </td>
